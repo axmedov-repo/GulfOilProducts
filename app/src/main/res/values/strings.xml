@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Gulf App</string>
+
+    <string name="txt_gulf_products_en">Gulf Products</string>
+    <string name="txt_gulf_products_ru">Продукты Gulf</string>
+
+    <string name="txt_search_en">Search</string>
+    <string name="txt_search_ru">Поиск</string>
+
 </resources>

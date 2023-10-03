@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav"
+    app:startDestination="@id/productsScreen">
+    <fragment
+        android:id="@+id/productsScreen"
+        android:name="com.axmedov.gulfapp.screens.old_variant.product.ProductsScreen"
+        android:label="screen_products"
+        tools:layout="@layout/screen_products" >
+        <action
+            android:id="@+id/action_productsScreen_to_oilsScreen"
+            app:destination="@id/oilsScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/subProductsScreen"
+        android:name="com.axmedov.gulfapp.screens.old_variant.sub_product.SubProductsScreen"
+        android:label="screen_sub_products"
+        tools:layout="@layout/screen_sub_products" />
+    <fragment
+        android:id="@+id/oilScreen"
+        android:name="com.axmedov.gulfapp.screens.old_variant.oil.OilScreen"
+        android:label="screen_oil"
+        tools:layout="@layout/screen_oil" >
+        <action
+            android:id="@+id/action_oilScreen_to_subOilScreen"
+            app:destination="@id/subOilScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/subOilScreen"
+        android:name="com.axmedov.gulfapp.screens.old_variant.sub_oil.SubOilScreen"
+        android:label="screen_sub_oil"
+        tools:layout="@layout/screen_sub_oil" >
+        <action
+            android:id="@+id/action_subOilScreen_to_oilDetailsScreen"
+            app:destination="@id/oilDetailsScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/oilDetailsScreen"
+        android:name="com.axmedov.gulfapp.screens.old_variant.oil_details.OilDetailsScreen"
+        android:label="screen_oil_details"
+        tools:layout="@layout/screen_oil_details" />
+    <fragment
+        android:id="@+id/oilsScreen"
+        android:name="com.axmedov.gulfapp.screens.new_variant.OilsScreen"
+        android:label="screen_oils"
+        tools:layout="@layout/screen_oils" >
+        <action
+            android:id="@+id/action_oilsScreen_to_pdfScreen"
+            app:destination="@id/pdfScreen" />
+        <argument
+            android:name="productType"
+            app:argType="com.axmedov.gulfapp.data.enums.ProductTypes" />
+    </fragment>
+    <fragment
+        android:id="@+id/pdfScreen"
+        android:name="com.axmedov.gulfapp.screens.pdf.PdfScreen"
+        android:label="screen_pdf"
+        tools:layout="@layout/screen_pdf" >
+        <argument
+            android:name="pdfName"
+            app:argType="string" />
+    </fragment>
+</navigation>
