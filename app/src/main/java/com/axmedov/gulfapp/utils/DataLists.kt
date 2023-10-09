@@ -8,33 +8,6 @@ import com.axmedov.gulfapp.data.entities.SubOilData
 import com.axmedov.gulfapp.data.entities.SubProductData
 import com.axmedov.gulfapp.data.enums.ProductTypes
 
-val productsList = listOf<ProductData>(
-    ProductData(
-        id = 0,
-        name = "Passenger Car",
-        image = R.drawable.ic_car,
-        productType = ProductTypes.PASSENGER_CAR
-    ),
-    ProductData(
-        id = 1,
-        name = "Commercial Vehicle",
-        image = R.drawable.ic_commercial_cars,
-        productType = ProductTypes.COMMERCIAL
-    ),
-    ProductData(
-        id = 2,
-        name = "Automatic Transmission",
-        image = R.drawable.ic_motorcycle,
-        productType = ProductTypes.AUTOMATIC_TRANSMISSION
-    ),
-    ProductData(
-        id = 3,
-        name = "Radiator Coolant",
-        image = R.drawable.ic_radiator_coolant,
-        productType = ProductTypes.RADIATOR_COOLANT
-    )
-)
-
 val subProductsList = listOf<SubProductData>(
     SubProductData(
         id = 0, name = "Cars"
@@ -1067,11 +1040,50 @@ val newOilsList = listOf<NewOilData>(
     )
 )
 
+val productsList = listOf<ProductData>(
+    ProductData(
+        id = 0,
+        name = "Passenger Car",
+        image = R.drawable.ic_car,
+        productType = ProductTypes.PASSENGER_CAR
+    ),
+    ProductData(
+        id = 1,
+        name = "Commercial Vehicle",
+        image = R.drawable.ic_commercial_cars,
+        productType = ProductTypes.COMMERCIAL
+    ),
+    ProductData(
+        id = 2,
+        name = "Automatic Transmission",
+        image = R.drawable.ic_motorcycle,
+        productType = ProductTypes.AUTOMATIC_TRANSMISSION
+    ),
+    ProductData(
+        id = 3,
+        name = "Radiator Coolant",
+        image = R.drawable.ic_radiator_coolant,
+        productType = ProductTypes.RADIATOR_COOLANT
+    ),
+    ProductData(
+        id = 4,
+        name = "Heavy Duty Diesel",
+        image = R.drawable.ic_motorcycle,
+        productType = ProductTypes.HEAVY_DUTY_DIESEL
+    ),
+    ProductData(
+        id = 5,
+        name = "Hydraulic Brake Fluid",
+        image = R.drawable.ic_radiator_coolant,
+        productType = ProductTypes.HYDRAULIC_BRAKE_FLUID
+    )
+)
+
 val passengerCarListEn = listOf<NewOilData>(
     NewOilData(
         0,
-        "Gulf UltraSynth GDI",
-        "Fully Synthetic Resource Conserving Motor Oil",
-        "gulf_ultrasynth_gdi.pdf"
+        "Gulf Formula Elite",
+        "Premium Catalyst Compatible Passenger Car Motor Oil",
+        "gulf_formula_elite_en.pdf"
     )
 )
