@@ -1079,11 +1079,311 @@ val productsList = listOf<ProductData>(
     )
 )
 
+// 1.Passenger Car
+
 val passengerCarListEn = listOf<NewOilData>(
     NewOilData(
         0,
         "Gulf Formula Elite",
         "Premium Catalyst Compatible Passenger Car Motor Oil",
         "gulf_formula_elite_en.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Formula G",
+        "Passenger Car Motor Oil",
+        "gulf_formula_g_en.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Max",
+        "Passenger Car Motor Oil",
+        "gulf_max_en.pdf"
+    ),
+    NewOilData(
+        3,
+        "Gulf Max Ultra Plus",
+        "Semi-Synthetic Passenger Car Motor Oil",
+        "gulf_max_ultra_plus_en.pdf"
+    ),
+    NewOilData(
+        4,
+        "Gulf Ultrasynth Gdi",
+        "Fully Synthetic Resource Conserving Motor Oil",
+        "gulf_ultrasynth_gdi_en.pdf"
+    )
+)
+
+val passengerCarListRu = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf Formula Elite",
+        "Premium Catalyst Compatible Passenger Car Motor Oil",
+        "gulf_formula_elite_ru.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Formula G",
+        "Passenger Car Motor Oil",
+        "gulf_formula_g_ru.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Max",
+        "Passenger Car Motor Oil",
+        "gulf_max_ru.pdf"
+    ),
+    NewOilData(
+        3,
+        "Gulf Max Ultra Plus",
+        "Semi-Synthetic Passenger Car Motor Oil",
+        "gulf_max_ultra_plus_ru.pdf"
+    ),
+    NewOilData(
+        4,
+        "Gulf Ultrasynth Gdi",
+        "Fully Synthetic Resource Conserving Motor Oil",
+        "gulf_ultrasynth_gdi_ru.pdf"
+    )
+)
+
+// 2.Commercial
+
+val commercialCarListEn = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf Super Duty CF",
+        "Commercial Vehicle Engine Oil",
+        "gulf_super_duty_cf_en.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Super Duty CI-4+",
+        "Commercial Vehicle Engine Oil",
+        "gulf_super_duty_cl_4+_en.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Super Duty LE",
+        "Commercial Vehicle Engine Oil",
+        "gulf_super_duty_le_en.pdf"
+    ),
+    NewOilData(
+        3,
+        "Gulf Superfleet Professional",
+        "Synthetic Technology for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_en.pdf"
+    ),
+    NewOilData(
+        4,
+        "Gulf Superfleet Supreme",
+        "Commercial Vehicle Engine Oil",
+        "gulf_superfleet_supreme_en.pdf"
+    )
+)
+
+val commercialCarListRu = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf Super Duty CF",
+        "Commercial Vehicle Engine Oil",
+        "gulf_super_duty_cf_ru.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Super Duty CI-4+",
+        "Commercial Vehicle Engine Oil",
+        "gulf_super_duty_cl_4+_ru.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Super Duty LE",
+        "Commercial Vehicle Engine Oil",
+        "gulf_super_duty_le_ru.pdf"
+    ),
+    NewOilData(
+        3,
+        "Gulf Superfleet Professional",
+        "Synthetic Technology for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_ru.pdf"
+    ),
+    NewOilData(
+        4,
+        "Gulf Superfleet Professional + Long Drain",
+        "Synthetic Technology for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_long_drain_ru.pdf"
+    ),
+    NewOilData(
+        5,
+        "Gulf Superfleet Supreme",
+        "Commercial Vehicle Engine Oil",
+        "gulf_superfleet_supreme_ru.pdf"
+    )
+)
+
+// 3.Heavy Duty Diesel
+
+val heavyDutyDieselOilsListEn = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf Super Duty CH-4",
+        "Mineral Engine Oil for Heavy Duty Diesel Engines",
+        "gulf_super_duty_ch_4_en.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Superfleet Professional ECON",
+        "Advanced Full Synthetic Engine Oil for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_econ.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Superfleet Professional Long Drain",
+        "Synthetic Technology for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_long_drain_en.pdf"
+    ),
+    NewOilData(
+        3,
+        "Gulf Superfleet Professional + Long Drain",
+        "Synthetic Technology for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_+long_drain_en.pdf"
+    )
+)
+
+val heavyDutyDieselOilsListRu = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf Super Duty CH-4",
+        "Mineral Engine Oil for Heavy Duty Diesel Engines",
+        "gulf_super_duty_ch_4_ru.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Superfleet Professional ECON",
+        "Advanced Full Synthetic Engine Oil for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_econ.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Superfleet Professional Long Drain",
+        "Synthetic Technology for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_long_drain_ru.pdf"
+    ),
+    NewOilData(
+        3,
+        "Gulf Superfleet Professional + Long Drain",
+        "Synthetic Technology for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_+long_drain_ru.pdf"
+    )
+)
+
+// 4.Hydraulic Brake Fluid
+
+val hydraulicBrakeFluidListEn = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf Brake Fluid DOT 3",
+        "Hydraulic brake fluid",
+        "gulf_brake_fluid_dot3_en.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Super HD Brake Fluid DOT 4",
+        "Extra high performance hydraulic brake fluid",
+        "gulf_super_hd_brake_fluid_dot4_en.pdf"
+    )
+)
+
+val hydraulicBrakeFluidListRu = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf Brake Fluid DOT 3",
+        "Hydraulic brake fluid",
+        "gulf_brake_fluid_dot3_ru.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Super HD Brake Fluid DOT 4",
+        "Extra high performance hydraulic brake fluid",
+        "gulf_super_hd_brake_fluid_dot4_ru.pdf"
+    )
+)
+
+// 5.Radiator Coolant
+
+val radiatorCoolantListEn = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf Eurocool Consentrate",
+        "Engine Coolant",
+        "gulf_eurocool_consentrate.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Eurocool Max",
+        "Ultra-High Performance, Premix Radiator Coolant",
+        "gulf_eurocool_max_series_red_coolant.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Eurocool Series Green",
+        "Premium Ready to Use Coolant (Premixed with Water)",
+        "gulf_eurocool_series_green_coolant.pdf"
+    )
+)
+
+// 6.Automatic Transmission
+
+val automaticTransmissionListEn = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf DEXRON® VI ATF",
+        "Supreme performance Automatic Transmission Fluid",
+        "gulf_dexron_vl_atf_en.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Multi-Vehicle ATF",
+        "Premium Multi-Vehicle Automatic Transmission Fluid",
+        "gulf_multi_vehicle_atf_en.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Multi-Vehicle ATF-LV",
+        "Premium Synthetic Multi-Vehicle Automatic Transmission Fluid",
+        "gulf_multi_vehicle_atf_lv_en.pdf"
+    ),
+    NewOilData(
+        3,
+        "Gulf Multi-Vehicle CVT Fluid",
+        "Multi-Vehicle Continuously Variable Transmission (CVT) Fluid",
+        "gulf_multi_vehicle_cvt_fluid_en.pdf"
+    )
+)
+
+val automaticTransmissionListRu = listOf<NewOilData>(
+    NewOilData(
+        0,
+        "Gulf DEXRON® VI ATF",
+        "Supreme performance Automatic Transmission Fluid",
+        "gulf_dexron_vl_atf_ru.pdf"
+    ),
+    NewOilData(
+        1,
+        "Gulf Multi-Vehicle ATF",
+        "Premium Multi-Vehicle Automatic Transmission Fluid",
+        "gulf_multi_vehicle_atf_ru.pdf"
+    ),
+    NewOilData(
+        2,
+        "Gulf Multi-Vehicle ATF-LV",
+        "Premium Synthetic Multi-Vehicle Automatic Transmission Fluid",
+        "gulf_multi_vehicle_atf_lv_ru.pdf"
+    ),
+    NewOilData(
+        3,
+        "Gulf Multi-Vehicle CVT Fluid",
+        "Multi-Vehicle Continuously Variable Transmission (CVT) Fluid",
+        "gulf_multi_vehicle_cvt_fluid_ru.pdf"
     )
 )

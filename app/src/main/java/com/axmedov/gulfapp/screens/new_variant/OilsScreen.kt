@@ -11,7 +11,17 @@ import com.axmedov.gulfapp.R
 import com.axmedov.gulfapp.data.enums.Languages
 import com.axmedov.gulfapp.data.enums.ProductTypes
 import com.axmedov.gulfapp.databinding.ScreenOilsBinding
+import com.axmedov.gulfapp.utils.automaticTransmissionListEn
+import com.axmedov.gulfapp.utils.automaticTransmissionListRu
+import com.axmedov.gulfapp.utils.commercialCarListEn
+import com.axmedov.gulfapp.utils.commercialCarListRu
+import com.axmedov.gulfapp.utils.heavyDutyDieselOilsListEn
+import com.axmedov.gulfapp.utils.heavyDutyDieselOilsListRu
+import com.axmedov.gulfapp.utils.hydraulicBrakeFluidListEn
+import com.axmedov.gulfapp.utils.hydraulicBrakeFluidListRu
 import com.axmedov.gulfapp.utils.passengerCarListEn
+import com.axmedov.gulfapp.utils.passengerCarListRu
+import com.axmedov.gulfapp.utils.radiatorCoolantListEn
 import com.axmedov.gulfapp.utils.scope
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,21 +66,57 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     }
 
     private fun setModels() = binding.scope {
-        when (args.productType) {
-            ProductTypes.PASSENGER_CAR -> {
-                adapter.setData(passengerCarListEn)
+        if (language == Languages.ENGLISH) {
+            when (args.productType) {
+                ProductTypes.PASSENGER_CAR -> {
+                    adapter.setData(passengerCarListEn)
+                }
+
+                ProductTypes.COMMERCIAL -> {
+                    adapter.setData(commercialCarListEn)
+                }
+
+                ProductTypes.AUTOMATIC_TRANSMISSION -> {
+                    adapter.setData(automaticTransmissionListEn)
+                }
+
+                ProductTypes.HEAVY_DUTY_DIESEL -> {
+                    adapter.setData(heavyDutyDieselOilsListEn)
+                }
+
+                ProductTypes.HYDRAULIC_BRAKE_FLUID -> {
+                    adapter.setData(hydraulicBrakeFluidListEn)
+                }
+
+                ProductTypes.RADIATOR_COOLANT -> {
+                    adapter.setData(radiatorCoolantListEn)
+                }
             }
+        } else {
+            when (args.productType) {
+                ProductTypes.PASSENGER_CAR -> {
+                    adapter.setData(passengerCarListRu)
+                }
 
-            ProductTypes.COMMERCIAL -> {
+                ProductTypes.COMMERCIAL -> {
+                    adapter.setData(commercialCarListRu)
+                }
 
-            }
+                ProductTypes.AUTOMATIC_TRANSMISSION -> {
+                    adapter.setData(automaticTransmissionListRu)
+                }
 
-            ProductTypes.AUTOMATIC_TRANSMISSION -> {
+                ProductTypes.HEAVY_DUTY_DIESEL -> {
+                    adapter.setData(heavyDutyDieselOilsListRu)
+                }
 
-            }
+                ProductTypes.HYDRAULIC_BRAKE_FLUID -> {
+                    adapter.setData(hydraulicBrakeFluidListRu)
+                }
 
-            ProductTypes.RADIATOR_COOLANT -> {
-
+                ProductTypes.RADIATOR_COOLANT -> {
+                    adapter.setData(radiatorCoolantListEn)
+                }
             }
         }
     }
