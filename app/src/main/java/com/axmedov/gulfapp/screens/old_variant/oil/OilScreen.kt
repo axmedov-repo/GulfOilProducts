@@ -10,9 +10,8 @@ import com.axmedov.gulfapp.databinding.ScreenOilBinding
 import com.axmedov.gulfapp.utils.oilsList
 import com.axmedov.gulfapp.utils.scope
 import com.axmedov.gulfapp.utils.showToast
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class OilScreen : Fragment(R.layout.screen_oil) {
     private val binding by viewBinding(ScreenOilBinding::bind)
     private val adapter by lazy { OilAdapter() }

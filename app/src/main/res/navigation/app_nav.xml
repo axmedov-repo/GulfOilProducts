@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_nav"
-    app:startDestination="@id/productsScreen">
+    app:startDestination="@id/splashScreen">
     <fragment
         android:id="@+id/productsScreen"
         android:name="com.axmedov.gulfapp.screens.old_variant.product.ProductsScreen"
@@ -61,5 +61,14 @@
         <argument
             android:name="pdfName"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashScreen"
+        android:name="com.axmedov.gulfapp.screens.splash.SplashScreen"
+        android:label="screen_splash"
+        tools:layout="@layout/screen_splash" >
+        <action
+            android:id="@+id/action_splashScreen_to_productsScreen"
+            app:destination="@id/productsScreen" />
     </fragment>
 </navigation>

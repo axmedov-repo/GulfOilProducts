@@ -2,35 +2,56 @@ package com.axmedov.gulfapp.screens.new_variant
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.axmedov.gulfapp.R
+import com.axmedov.gulfapp.data.entities.NewOilData
 import com.axmedov.gulfapp.data.enums.Languages
 import com.axmedov.gulfapp.data.enums.ProductTypes
 import com.axmedov.gulfapp.databinding.ScreenOilsBinding
+import com.axmedov.gulfapp.screens.new_variant.viewmodel.OilsViewModel
+import com.axmedov.gulfapp.screens.new_variant.viewmodel.OilsViewModelImpl
 import com.axmedov.gulfapp.utils.automaticTransmissionListEn
 import com.axmedov.gulfapp.utils.automaticTransmissionListRu
 import com.axmedov.gulfapp.utils.commercialCarListEn
 import com.axmedov.gulfapp.utils.commercialCarListRu
 import com.axmedov.gulfapp.utils.heavyDutyDieselOilsListEn
 import com.axmedov.gulfapp.utils.heavyDutyDieselOilsListRu
+import com.axmedov.gulfapp.utils.hideKeyboard
 import com.axmedov.gulfapp.utils.hydraulicBrakeFluidListEn
 import com.axmedov.gulfapp.utils.hydraulicBrakeFluidListRu
 import com.axmedov.gulfapp.utils.passengerCarListEn
 import com.axmedov.gulfapp.utils.passengerCarListRu
 import com.axmedov.gulfapp.utils.radiatorCoolantListEn
 import com.axmedov.gulfapp.utils.scope
-import dagger.hilt.android.AndroidEntryPoint
+import com.axmedov.gulfapp.utils.showKeyboard
+import com.axmedov.gulfapp.utils.timber
+import com.axmedov.gulfapp.utils.visible
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class OilsScreen : Fragment(R.layout.screen_oils) {
     private val binding by viewBinding(ScreenOilsBinding::bind)
+    private val viewModel: OilsViewModel by viewModels<OilsViewModelImpl>()
     private val args by navArgs<OilsScreenArgs>()
     private val adapter by lazy { OilsAdapter() }
     private var language: Languages = Languages.ENGLISH
+    private var list: List<NewOilData> = ArrayList()
+    private var queryHint: String = ""
+
+    private var isKeyboardOpen = false
+    private var searchingText = ""
+    private var isSearching = false
+    private var closingByUnFocusing: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
         super.onViewCreated(view, savedInstanceState)
@@ -38,11 +59,23 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         setModels()
     }
 
+    override fun onResume() {
+        super.onResume()
+        timber("OnResume", "sdjksjdkds")
+        viewModel.getLanguage()
+    }
+
     private fun setViews() = binding.scope {
+
         rvProducts.layoutManager = LinearLayoutManager(requireContext())
         rvProducts.adapter = adapter
 
         adapter.setItemClickedListener {
+            hideKeyboard()
+            isKeyboardOpen = false
+            searchView.setQuery("", false)
+            searchView.clearFocus()
+            searchView.isIconified = true
             findNavController().navigate(OilsScreenDirections.actionOilsScreenToPdfScreen(it.pdsLink))
         }
 
@@ -52,72 +85,188 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
 
         imgLanguage.setOnClickListener {
             if (language == Languages.ENGLISH) {
-                imgLanguage.setImageResource(R.drawable.ic_flag_ru)
-                txtTitle.text = getString(R.string.txt_gulf_products_ru)
-                searchView.queryHint = getString(R.string.txt_search_ru)
                 language = Languages.RUSSIAN
+                setData()
+                viewModel.setLanguage(language)
             } else {
-                imgLanguage.setImageResource(R.drawable.ic_flag_en)
-                txtTitle.text = getString(R.string.txt_gulf_products_en)
-                searchView.queryHint = getString(R.string.txt_search_en)
                 language = Languages.ENGLISH
+                setData()
+                viewModel.setLanguage(language)
             }
+        }
+
+        initSearchListener()
+        searchView.setOnClickListener {
+            isKeyboardOpen = true
+        }
+        searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                hideKeyboard()
+                closingByUnFocusing = true
+                isKeyboardOpen = false
+                CoroutineScope(Dispatchers.IO).launch {
+                    delay(500)
+                    closingByUnFocusing = false
+                }
+            }
+        }
+
+        searchIcon.setOnClickListener {
+            if (isKeyboardOpen) {
+                closingByUnFocusing = false
+                hideKeyboard()
+                searchView.clearFocus()
+                isKeyboardOpen = false
+            } else if (!closingByUnFocusing) {
+                searchView.requestFocus()
+                showKeyboard()
+                isKeyboardOpen = true
+            }
+        }
+
+        val closeButton = binding.searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView
+        closeButton.setOnClickListener {
+            timber("Closed", "jskdjksdjk")
+            searchingText = ""
+            searchView.setQuery(null, false)
+            searchView.clearFocus()
+            setData()
+            hideKeyboard()
+            isKeyboardOpen = false
         }
     }
 
     private fun setModels() = binding.scope {
+        viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
+            language = it
+            setData()
+        }
+    }
+
+    private fun initSearchListener() = binding.scope {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    if (query.isNotEmpty()) {
+                        isSearching = searchingText != query
+                        searchingText = query.trim()
+                        search(searchingText)
+                    } else {
+                        searchingText = ""
+                        setData()
+                    }
+                    hideKeyboard()
+                    isKeyboardOpen = false
+                } else {
+                    searchingText = ""
+                    setData()
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    if (newText.isNotEmpty()) {
+                        isSearching = searchingText != newText
+                        searchingText = newText.trim()
+                        search(searchingText)
+                    } else {
+                        searchingText = ""
+                        setData()
+                    }
+                } else {
+                    searchingText = ""
+                    setData()
+                }
+                return true
+            }
+        })
+    }
+
+    private fun search(text: String) {
+        val filteredList = list.filter { it.name.lowercase().contains(text.lowercase()) }
+        binding.txtEmpty.visible(filteredList.isEmpty())
+        adapter.setData(filteredList)
+    }
+
+    private fun setData() = binding.scope {
         if (language == Languages.ENGLISH) {
+            imgLanguage.setImageResource(R.drawable.ic_flag_en)
+            txtEmpty.text = getString(R.string.txt_empty_en)
+            txtTitle.text = getString(R.string.txt_gulf_oil_products_en)
+            queryHint = getString(R.string.txt_search_en)
+
             when (args.productType) {
                 ProductTypes.PASSENGER_CAR -> {
-                    adapter.setData(passengerCarListEn)
+                    list = passengerCarListEn
                 }
 
                 ProductTypes.COMMERCIAL -> {
-                    adapter.setData(commercialCarListEn)
+                    list = commercialCarListEn
                 }
 
                 ProductTypes.AUTOMATIC_TRANSMISSION -> {
-                    adapter.setData(automaticTransmissionListEn)
+                    list = automaticTransmissionListEn
                 }
 
                 ProductTypes.HEAVY_DUTY_DIESEL -> {
-                    adapter.setData(heavyDutyDieselOilsListEn)
+                    list = heavyDutyDieselOilsListEn
                 }
 
                 ProductTypes.HYDRAULIC_BRAKE_FLUID -> {
-                    adapter.setData(hydraulicBrakeFluidListEn)
+                    list = hydraulicBrakeFluidListEn
                 }
 
                 ProductTypes.RADIATOR_COOLANT -> {
-                    adapter.setData(radiatorCoolantListEn)
+                    list = radiatorCoolantListEn
                 }
             }
         } else {
+            imgLanguage.setImageResource(R.drawable.ic_flag_ru)
+            txtTitle.text = getString(R.string.txt_gulf_oil_products_ru)
+            txtEmpty.text = getString(R.string.txt_empty_ru)
+            queryHint = getString(R.string.txt_search_ru)
+
             when (args.productType) {
                 ProductTypes.PASSENGER_CAR -> {
-                    adapter.setData(passengerCarListRu)
+                    list = passengerCarListRu
                 }
 
                 ProductTypes.COMMERCIAL -> {
-                    adapter.setData(commercialCarListRu)
+                    list = commercialCarListRu
                 }
 
                 ProductTypes.AUTOMATIC_TRANSMISSION -> {
-                    adapter.setData(automaticTransmissionListRu)
+                    list = automaticTransmissionListRu
                 }
 
                 ProductTypes.HEAVY_DUTY_DIESEL -> {
-                    adapter.setData(heavyDutyDieselOilsListRu)
+                    list = heavyDutyDieselOilsListRu
                 }
 
                 ProductTypes.HYDRAULIC_BRAKE_FLUID -> {
-                    adapter.setData(hydraulicBrakeFluidListRu)
+                    list = hydraulicBrakeFluidListRu
                 }
 
                 ProductTypes.RADIATOR_COOLANT -> {
-                    adapter.setData(radiatorCoolantListEn)
+                    list = radiatorCoolantListEn
                 }
             }
         }
+
+        searchView.queryHint = queryHint
+        txtEmpty.visible(list.isEmpty())
+
+        if (searchingText.isNotEmpty()) {
+            search(searchingText)
+        } else {
+            adapter.setData(list)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard()
+        isKeyboardOpen = false
     }
 }

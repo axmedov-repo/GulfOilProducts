@@ -1040,7 +1040,9 @@ val newOilsList = listOf<NewOilData>(
     )
 )
 
-val productsList = listOf<ProductData>(
+// Products List
+
+val productsListEn = listOf<ProductData>(
     ProductData(
         id = 0,
         name = "Passenger Car",
@@ -1056,7 +1058,7 @@ val productsList = listOf<ProductData>(
     ProductData(
         id = 2,
         name = "Automatic Transmission",
-        image = R.drawable.ic_motorcycle,
+        image = R.drawable.ic_automatic_transmission,
         productType = ProductTypes.AUTOMATIC_TRANSMISSION
     ),
     ProductData(
@@ -1068,13 +1070,52 @@ val productsList = listOf<ProductData>(
     ProductData(
         id = 4,
         name = "Heavy Duty Diesel",
-        image = R.drawable.ic_motorcycle,
+        image = R.drawable.ic_heavy_duty,
         productType = ProductTypes.HEAVY_DUTY_DIESEL
     ),
     ProductData(
         id = 5,
         name = "Hydraulic Brake Fluid",
+        image = R.drawable.ic_hydraulic_brake,
+        productType = ProductTypes.HYDRAULIC_BRAKE_FLUID
+    )
+)
+
+val productsListRu = listOf<ProductData>(
+    ProductData(
+        id = 0,
+        name = "Легковой автомобиль",
+        image = R.drawable.ic_car,
+        productType = ProductTypes.PASSENGER_CAR
+    ),
+    ProductData(
+        id = 1,
+        name = "Коммерческий автомобиль",
+        image = R.drawable.ic_commercial_cars,
+        productType = ProductTypes.COMMERCIAL
+    ),
+    ProductData(
+        id = 2,
+        name = "Автоматическая коробка передач",
+        image = R.drawable.ic_automatic_transmission,
+        productType = ProductTypes.AUTOMATIC_TRANSMISSION
+    ),
+    ProductData(
+        id = 3,
+        name = "Радиатор охлаждающей жидкости",
         image = R.drawable.ic_radiator_coolant,
+        productType = ProductTypes.RADIATOR_COOLANT
+    ),
+    ProductData(
+        id = 4,
+        name = "Тяжелый дизель",
+        image = R.drawable.ic_heavy_duty,
+        productType = ProductTypes.HEAVY_DUTY_DIESEL
+    ),
+    ProductData(
+        id = 5,
+        name = "Гидравлическая тормозная жидкость",
+        image = R.drawable.ic_hydraulic_brake,
         productType = ProductTypes.HYDRAULIC_BRAKE_FLUID
     )
 )

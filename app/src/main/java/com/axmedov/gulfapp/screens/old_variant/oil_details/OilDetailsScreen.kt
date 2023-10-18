@@ -7,9 +7,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.axmedov.gulfapp.R
 import com.axmedov.gulfapp.databinding.ScreenOilDetailsBinding
 import com.axmedov.gulfapp.utils.scope
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class OilDetailsScreen : Fragment(R.layout.screen_oil_details) {
     private val binding by viewBinding(ScreenOilDetailsBinding::bind)
 

@@ -1,10 +1,16 @@
 <resources>
-    <string name="app_name">Gulf App</string>
+    <string name="app_name">Gulf Oil App</string>
 
-    <string name="txt_gulf_products_en">Gulf Products</string>
-    <string name="txt_gulf_products_ru">Продукты Gulf</string>
+    <string name="txt_gulf_oil_products_en">Gulf Oil Products</string>
+    <string name="txt_gulf_oil_products_ru">Продукты Gulf Oil</string>
 
     <string name="txt_search_en">Search</string>
     <string name="txt_search_ru">Поиск</string>
+
+    <string name="txt_empty_en">Nothing found</string>
+    <string name="txt_empty_ru">Ничего не найдено</string>
+
+    <string name="txt_specifications_en">Specifications</string>
+    <string name="txt_specifications_ru">Характеристики</string>
 
 </resources>

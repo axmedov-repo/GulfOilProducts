@@ -4,8 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     
     <color name="orange">#FF6319</color>
-    <color name="blue">#012679</color>
-    <color name="sky_blue">#B8D9EC</color>
-    <color name="sky_blue_darker">#82C5EC</color>
+    <color name="blue">#002776</color>
+    <color name="sky_blue">#B9D9EB</color>
+    <color name="sky_blue_darker">#2A6EBB</color>
     <color name="gray">#6C6F70</color>
 </resources>
