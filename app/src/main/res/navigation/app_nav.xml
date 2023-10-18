@@ -70,5 +70,13 @@
         <action
             android:id="@+id/action_splashScreen_to_productsScreen"
             app:destination="@id/productsScreen" />
+        <action
+            android:id="@+id/action_splashScreen_to_trialEndScreen"
+            app:destination="@id/trialEndScreen" />
     </fragment>
+    <fragment
+        android:id="@+id/trialEndScreen"
+        android:name="com.axmedov.gulfapp.screens.trial_end.TrialEndScreen"
+        android:label="screen_trial_end"
+        tools:layout="@layout/screen_trial_end" />
 </navigation>
