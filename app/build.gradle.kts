@@ -80,4 +80,7 @@ dependencies {
 
     // PDF Viewer
     implementation("com.github.barteksc:android-pdf-viewer:3.2.0-beta.1")
+
+    // ViewPager Page Transformer
+    implementation("danny.view-pager-2-page-transformers:horizontal-transformers:1.0.0")
 }

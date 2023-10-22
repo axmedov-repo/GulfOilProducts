@@ -1,4 +1,4 @@
-package com.axmedov.gulfapp.screens.old_variant.product
+package com.axmedov.gulfapp.screens.product
 
 import android.os.Bundle
 import android.view.View
@@ -6,14 +6,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.axmedov.gulfapp.R
 import com.axmedov.gulfapp.data.entities.ProductData
 import com.axmedov.gulfapp.data.enums.Languages
+import com.axmedov.gulfapp.data.enums.ProductTypes
 import com.axmedov.gulfapp.databinding.ScreenProductsBinding
-import com.axmedov.gulfapp.screens.old_variant.product.view_model.ProductsViewModel
-import com.axmedov.gulfapp.screens.old_variant.product.view_model.ProductsViewModelImpl
+import com.axmedov.gulfapp.screens.product.view_model.ProductsViewModel
+import com.axmedov.gulfapp.screens.product.view_model.ProductsViewModelImpl
 import com.axmedov.gulfapp.utils.productsListEn
 import com.axmedov.gulfapp.utils.productsListRu
 import com.axmedov.gulfapp.utils.scope
@@ -44,10 +45,19 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
             }
         })
 
-        rvProducts.layoutManager = GridLayoutManager(requireContext(), 2)
+//        rvProducts.layoutManager = GridLayoutManager(requireContext(), 2)
+        rvProducts.layoutManager = LinearLayoutManager(requireContext())
         rvProducts.adapter = adapter
         adapter.setItemClickedListener {
-            findNavController().navigate(ProductsScreenDirections.actionProductsScreenToOilsScreen(it.productType))
+            if (it.productType == ProductTypes.CONTACT) {
+                findNavController().navigate(ProductsScreenDirections.actionProductsScreenToContactsScreen())
+            } else {
+                findNavController().navigate(
+                    ProductsScreenDirections.actionProductsScreenToOilsScreen(
+                        it.productType
+                    )
+                )
+            }
         }
 
         imgLanguage.setOnClickListener {

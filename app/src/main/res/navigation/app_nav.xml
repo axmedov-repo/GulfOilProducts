@@ -6,12 +6,15 @@
     app:startDestination="@id/splashScreen">
     <fragment
         android:id="@+id/productsScreen"
-        android:name="com.axmedov.gulfapp.screens.old_variant.product.ProductsScreen"
+        android:name="com.axmedov.gulfapp.screens.product.ProductsScreen"
         android:label="screen_products"
         tools:layout="@layout/screen_products" >
         <action
             android:id="@+id/action_productsScreen_to_oilsScreen"
             app:destination="@id/oilsScreen" />
+        <action
+            android:id="@+id/action_productsScreen_to_contactsScreen"
+            app:destination="@id/contactsScreen" />
     </fragment>
     <fragment
         android:id="@+id/subProductsScreen"
@@ -79,4 +82,9 @@
         android:name="com.axmedov.gulfapp.screens.trial_end.TrialEndScreen"
         android:label="screen_trial_end"
         tools:layout="@layout/screen_trial_end" />
+    <fragment
+        android:id="@+id/contactsScreen"
+        android:name="com.axmedov.gulfapp.screens.contacts.ContactsScreen"
+        android:label="screen_contacts"
+        tools:layout="@layout/screen_contacts" />
 </navigation>

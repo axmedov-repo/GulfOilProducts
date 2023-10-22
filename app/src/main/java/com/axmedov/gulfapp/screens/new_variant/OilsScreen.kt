@@ -1,6 +1,7 @@
 package com.axmedov.gulfapp.screens.new_variant
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
@@ -11,12 +12,15 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.axmedov.gulfapp.R
+import com.axmedov.gulfapp.data.entities.AdsData
 import com.axmedov.gulfapp.data.entities.NewOilData
 import com.axmedov.gulfapp.data.enums.Languages
 import com.axmedov.gulfapp.data.enums.ProductTypes
 import com.axmedov.gulfapp.databinding.ScreenOilsBinding
+import com.axmedov.gulfapp.screens.new_variant.adapter.AdsAdapter
 import com.axmedov.gulfapp.screens.new_variant.viewmodel.OilsViewModel
 import com.axmedov.gulfapp.screens.new_variant.viewmodel.OilsViewModelImpl
+import com.axmedov.gulfapp.utils.adsDataList
 import com.axmedov.gulfapp.utils.automaticTransmissionListEn
 import com.axmedov.gulfapp.utils.automaticTransmissionListRu
 import com.axmedov.gulfapp.utils.commercialCarListEn
@@ -33,8 +37,10 @@ import com.axmedov.gulfapp.utils.scope
 import com.axmedov.gulfapp.utils.showKeyboard
 import com.axmedov.gulfapp.utils.timber
 import com.axmedov.gulfapp.utils.visible
+import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -44,9 +50,15 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private val viewModel: OilsViewModel by viewModels<OilsViewModelImpl>()
     private val args by navArgs<OilsScreenArgs>()
     private val adapter by lazy { OilsAdapter() }
+    private lateinit var adsAdapter: AdsAdapter
+    private val adsList = ArrayList<AdsData>()
     private var language: Languages = Languages.ENGLISH
     private var list: List<NewOilData> = ArrayList()
     private var queryHint: String = ""
+    private var handler: Handler? = null
+    private var currentPage = 0
+    private val delayMillis: Long = 3000
+    private var job: Job? = null
 
     private var isKeyboardOpen = false
     private var searchingText = ""
@@ -63,9 +75,29 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         super.onResume()
         timber("OnResume", "sdjksjdkds")
         viewModel.getLanguage()
+        startAutoScroll()
     }
 
     private fun setViews() = binding.scope {
+        adsList.clear()
+        adsList.addAll(adsDataList)
+        adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
+        vp.adapter = adsAdapter
+        vp.setPageTransformer(DepthTransformer())
+        vp.isUserInputEnabled = false
+
+        handler = Handler()
+
+//        lifecycleScope.launch(Dispatchers.Main) {
+//            while (true) {
+//                delay(2000L)
+//                if (vp.currentItem == adsList.size - 1) {
+//                    vp.setCurrentItem(0, false)
+//                } else {
+//                    vp.currentItem += 1
+//                }
+//            }
+//        }
 
         rvProducts.layoutManager = LinearLayoutManager(requireContext())
         rvProducts.adapter = adapter
@@ -133,6 +165,41 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             setData()
             hideKeyboard()
             isKeyboardOpen = false
+        }
+    }
+
+    private fun startAutoScroll() {
+//        val runnable = object : Runnable {
+//            override fun run() {
+//                val itemCount = adapter.itemCount
+//                if (currentPage == itemCount - 1) {
+//                    currentPage = 0
+//                    binding.vp.setCurrentItem(currentPage, false)
+//                    handler!!.postDelayed(this, delayMillis)
+//                } else {
+//                    currentPage++
+//                    binding.vp.setCurrentItem(currentPage, true)
+//                    handler!!.postDelayed(this, delayMillis)
+//                }
+//            }
+//        }
+//        handler!!.postDelayed(runnable, delayMillis)
+
+        job = CoroutineScope(Dispatchers.Main).launch {
+            delay(delayMillis)
+
+            while (true) {
+                val itemCount = adapter.itemCount
+                if (currentPage == itemCount - 1) {
+                    currentPage = 0
+                    binding.vp.setCurrentItem(currentPage, false)
+                    delay(delayMillis)
+                } else {
+                    currentPage++
+                    binding.vp.setCurrentItem(currentPage, true)
+                    delay(delayMillis)
+                }
+            }
         }
     }
 
@@ -220,6 +287,10 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                 ProductTypes.RADIATOR_COOLANT -> {
                     list = radiatorCoolantListEn
                 }
+
+                else -> {
+
+                }
             }
         } else {
             imgLanguage.setImageResource(R.drawable.ic_flag_ru)
@@ -251,6 +322,10 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                 ProductTypes.RADIATOR_COOLANT -> {
                     list = radiatorCoolantListEn
                 }
+
+                else -> {
+
+                }
             }
         }
 
@@ -267,6 +342,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     override fun onPause() {
         super.onPause()
         hideKeyboard()
+        job?.cancel()
         isKeyboardOpen = false
     }
 }

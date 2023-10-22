@@ -7,6 +7,9 @@
     <string name="txt_search_en">Search</string>
     <string name="txt_search_ru">Поиск</string>
 
+    <string name="txt_contacts_en">Contacts</string>
+    <string name="txt_contacts_ru">Контакты</string>
+
     <string name="txt_empty_en">Nothing found</string>
     <string name="txt_empty_ru">Ничего не найдено</string>
 

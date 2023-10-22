@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:background="@color/white"
+    tools:context=".screens.new_variant.adapter.item.AdsItemFragment">
+
+    <ImageView
+        android:id="@+id/imgAd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:adjustViewBounds="true"
+        android:src="@drawable/vp1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/blind_view_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_8"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_9"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_10"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_11"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <View
+            android:id="@+id/blind_view_12"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+    </LinearLayout>
+
+</FrameLayout>

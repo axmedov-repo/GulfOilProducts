@@ -8,6 +8,7 @@
     <style name="Theme.GulfApp" parent="Base.Theme.GulfApp">
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/white</item>
     </style>
 </resources>

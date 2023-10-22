@@ -1,9 +1,15 @@
-package com.axmedov.gulfapp.screens.old_variant.product
+package com.axmedov.gulfapp.screens.product
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.axmedov.gulfapp.R
+import com.axmedov.gulfapp.app.App
 import com.axmedov.gulfapp.data.entities.ProductData
+import com.axmedov.gulfapp.data.enums.ProductTypes
 import com.axmedov.gulfapp.databinding.ItemProductBinding
 import com.axmedov.gulfapp.utils.scope
 
@@ -30,6 +36,21 @@ class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.VH>() {
 
         fun bind() = binding.scope {
             val data = list[absoluteAdapterPosition]
+            if (data.productType == ProductTypes.CONTACT) {
+                itemView.setBackgroundResource(R.drawable.bg_item_products_contact)
+                txtNameProduct.setTextColor(ContextCompat.getColor(App.instance, R.color.white))
+                imgProduct.setColorFilter(
+                    ContextCompat.getColor(App.instance, R.color.white),
+                    PorterDuff.Mode.SRC_IN
+                )
+            } else {
+                itemView.setBackgroundResource(R.drawable.bg_item_products)
+                txtNameProduct.setTextColor(ContextCompat.getColorStateList(App.instance, R.color.product_txt_color))
+                imgProduct.colorFilter = PorterDuffColorFilter(
+                    ContextCompat.getColorStateList(App.instance, R.color.product_img_color)!!.defaultColor,
+                    PorterDuff.Mode.SRC_IN
+                )
+            }
             imgProduct.setImageResource(data.image)
             txtNameProduct.text = data.name
         }

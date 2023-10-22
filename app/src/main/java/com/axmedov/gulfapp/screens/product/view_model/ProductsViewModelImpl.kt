@@ -1,4 +1,4 @@
-package com.axmedov.gulfapp.screens.old_variant.product.view_model
+package com.axmedov.gulfapp.screens.product.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

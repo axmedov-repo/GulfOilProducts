@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main3"
-    tools:context=".screens.product.ProductsScreen">
+    tools:context=".screens.contacts.ContactsScreen">
 
     <FrameLayout
         android:id="@+id/topBar"
@@ -15,10 +14,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:adjustViewBounds="true"
+            android:padding="16dp"
+            android:src="@drawable/ic_back" />
+
         <TextView
             android:id="@+id/txtTitle"
             style="@style/title_style"
-            android:text="@string/txt_gulf_oil_products_en"
+            android:text="@string/txt_contacts_en"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,32 +38,21 @@
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="16dp"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_flag_en" />
+            android:src="@drawable/ic_flag_en"
+            android:visibility="invisible" />
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/txtEmpty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/helvetica_neue_light"
-        android:gravity="center"
-        android:text="@string/txt_empty_en"
-        android:textColor="@color/gray"
-        android:textSize="18sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProducts"
+        android:id="@+id/rvContacts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBar"
-        tools:listitem="@layout/item_product" />
+        tools:listitem="@layout/item_contact" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
