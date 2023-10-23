@@ -13,7 +13,13 @@
     <string name="txt_empty_en">Nothing found</string>
     <string name="txt_empty_ru">Ничего не найдено</string>
 
+    <string name="txt_change_country_en">Change country</string>
+    <string name="txt_change_country_ru">Выбрать страну</string>
+
     <string name="txt_specifications_en">Specifications</string>
     <string name="txt_specifications_ru">Характеристики</string>
+
+    <string name="moto_en">Leading the future of performance with McLaren</string>
+    <string name="moto_ru">Возглавляя будущее производительности вместе с McLaren</string>
 
 </resources>

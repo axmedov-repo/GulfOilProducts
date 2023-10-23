@@ -83,4 +83,7 @@ dependencies {
 
     // ViewPager Page Transformer
     implementation("danny.view-pager-2-page-transformers:horizontal-transformers:1.0.0")
+
+    // Spinner
+    implementation("com.github.skydoves:powerspinner:1.2.4")
 }

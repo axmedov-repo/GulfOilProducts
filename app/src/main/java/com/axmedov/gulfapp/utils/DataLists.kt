@@ -8,6 +8,7 @@ import com.axmedov.gulfapp.data.entities.OilData
 import com.axmedov.gulfapp.data.entities.ProductData
 import com.axmedov.gulfapp.data.entities.SubOilData
 import com.axmedov.gulfapp.data.entities.SubProductData
+import com.axmedov.gulfapp.data.enums.CountriesEnum
 import com.axmedov.gulfapp.data.enums.ProductTypes
 
 val adsDataList = listOf<AdsData>(
@@ -551,33 +552,33 @@ val automaticTransmissionListRu = listOf<NewOilData>(
 
 val contactsList = listOf<ContactData>(
     ContactData(
-        0,
         "CIS Sales Manager",
         "Dilmurod Akhmedov",
-        "+998905254114"
+        "+998 90 525 41 14",
+        CountriesEnum.Uzbekistan
     ),
     ContactData(
-        1,
         "Gulf oil official distributor in Uzbekistan - \"Bloom\" LLC",
         "Behzod Olimov",
-        "+998994430011"
+        "+998 99 443 00 11",
+        CountriesEnum.Uzbekistan
     ),
     ContactData(
-        2,
         "Gulf oil official distributor in Azerbaijan - \"Atlas Group\" LTD MMC",
         "Zaka Salmanli",
-        "+994502124414"
+        "+994 502 124 414",
+        CountriesEnum.Azerbaijan
     ),
     ContactData(
-        3,
         "Gulf oil official distributor in Kyrgyzstan - IP \"Mamazhanov Nomanzhan\"",
         "Islombek Mamazhanov",
-        "+996553577776"
+        "+996 553 577 776",
+        CountriesEnum.Kyrgyzstan
     ),
     ContactData(
-        4,
         "Gulf oil official distributor in Turkmenistan - \"Future Star\" FZE",
         "Serdar Jumayev",
-        "+99362675199"
+        "+993 626 751 99",
+        CountriesEnum.Turkmenistan
     )
 )

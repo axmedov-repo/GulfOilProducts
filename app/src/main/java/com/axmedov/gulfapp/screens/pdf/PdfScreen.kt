@@ -1,6 +1,7 @@
 package com.axmedov.gulfapp.screens.pdf
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -8,13 +9,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.axmedov.gulfapp.R
+import com.axmedov.gulfapp.data.entities.AdsData
 import com.axmedov.gulfapp.data.enums.Languages
 import com.axmedov.gulfapp.databinding.ScreenPdfBinding
+import com.axmedov.gulfapp.screens.new_variant.adapter.AdsAdapter
 import com.axmedov.gulfapp.screens.pdf.viewmodel.PdfViewModel
 import com.axmedov.gulfapp.screens.pdf.viewmodel.PdfViewModelImpl
+import com.axmedov.gulfapp.utils.adsDataList
 import com.axmedov.gulfapp.utils.scope
 import com.axmedov.gulfapp.utils.timber
 import com.axmedov.gulfapp.utils.visible
+import com.hadar.danny.horinzontaltransformers.DepthTransformer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 //@AndroidEntryPoint
 class PdfScreen : Fragment(R.layout.screen_pdf) {
@@ -22,6 +32,13 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
     private val viewModel: PdfViewModel by viewModels<PdfViewModelImpl>()
     private val args by navArgs<PdfScreenArgs>()
     private var language: Languages = Languages.ENGLISH
+
+    private lateinit var adsAdapter: AdsAdapter
+    private val adsList = ArrayList<AdsData>()
+    private var handler: Handler? = null
+    private var currentPage = 0
+    private val delayMillis: Long = 3000
+    private var job: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
         super.onViewCreated(view, savedInstanceState)
@@ -32,14 +49,17 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
     override fun onResume() {
         super.onResume()
         viewModel.getLanguage()
+        startAutoScroll()
     }
 
     private fun setViews() = binding.scope {
-        /*         OnRenderListener {
-             fun onInitiallyRendered(pages: Int, pageWidth: Float, pageHeight: Float) {
-                 pdfView.fitToWidth(pageIndex)
-             }
-         }*/
+        adsList.clear()
+        adsList.addAll(adsDataList)
+        adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
+        vp.adapter = adsAdapter
+        vp.setPageTransformer(DepthTransformer())
+        vp.isUserInputEnabled = false
+        handler = Handler()
 
         setPdf(args.pdfName)
 
@@ -56,6 +76,25 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
                 language = Languages.ENGLISH
                 setData()
                 viewModel.setLanguage(language)
+            }
+        }
+    }
+
+    private fun startAutoScroll() {
+        job = CoroutineScope(Dispatchers.Main).launch {
+            delay(delayMillis)
+
+            while (true) {
+                val itemCount = adsAdapter.itemCount
+                if (currentPage == itemCount - 1) {
+                    currentPage = 0
+                    binding.vp.setCurrentItem(currentPage, false)
+                    delay(delayMillis)
+                } else {
+                    currentPage++
+                    binding.vp.setCurrentItem(currentPage, true)
+                    delay(delayMillis)
+                }
             }
         }
     }
@@ -99,5 +138,10 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
         pdfView.fromAsset(value)
             .nightMode(false) // toggle night mode
             .load()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        job?.cancel()
     }
 }

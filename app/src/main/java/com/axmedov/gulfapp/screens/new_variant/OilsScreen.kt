@@ -49,18 +49,19 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private val binding by viewBinding(ScreenOilsBinding::bind)
     private val viewModel: OilsViewModel by viewModels<OilsViewModelImpl>()
     private val args by navArgs<OilsScreenArgs>()
-    private val adapter by lazy { OilsAdapter() }
-    private lateinit var adsAdapter: AdsAdapter
-    private val adsList = ArrayList<AdsData>()
+    private val oilsAdapter by lazy { OilsAdapter() }
     private var language: Languages = Languages.ENGLISH
     private var list: List<NewOilData> = ArrayList()
-    private var queryHint: String = ""
+
+    private lateinit var adsAdapter: AdsAdapter
+    private val adsList = ArrayList<AdsData>()
     private var handler: Handler? = null
     private var currentPage = 0
     private val delayMillis: Long = 3000
     private var job: Job? = null
 
     private var isKeyboardOpen = false
+    private var queryHint: String = ""
     private var searchingText = ""
     private var isSearching = false
     private var closingByUnFocusing: Boolean = false
@@ -85,24 +86,11 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         vp.adapter = adsAdapter
         vp.setPageTransformer(DepthTransformer())
         vp.isUserInputEnabled = false
-
         handler = Handler()
 
-//        lifecycleScope.launch(Dispatchers.Main) {
-//            while (true) {
-//                delay(2000L)
-//                if (vp.currentItem == adsList.size - 1) {
-//                    vp.setCurrentItem(0, false)
-//                } else {
-//                    vp.currentItem += 1
-//                }
-//            }
-//        }
-
-        rvProducts.layoutManager = LinearLayoutManager(requireContext())
-        rvProducts.adapter = adapter
-
-        adapter.setItemClickedListener {
+        rvOils.layoutManager = LinearLayoutManager(requireContext())
+        rvOils.adapter = oilsAdapter
+        oilsAdapter.setItemClickedListener {
             hideKeyboard()
             isKeyboardOpen = false
             searchView.setQuery("", false)
@@ -171,7 +159,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private fun startAutoScroll() {
 //        val runnable = object : Runnable {
 //            override fun run() {
-//                val itemCount = adapter.itemCount
+//                val itemCount = oilsAdapter.itemCount
 //                if (currentPage == itemCount - 1) {
 //                    currentPage = 0
 //                    binding.vp.setCurrentItem(currentPage, false)
@@ -189,7 +177,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             delay(delayMillis)
 
             while (true) {
-                val itemCount = adapter.itemCount
+                val itemCount = oilsAdapter.itemCount
                 if (currentPage == itemCount - 1) {
                     currentPage = 0
                     binding.vp.setCurrentItem(currentPage, false)
@@ -253,7 +241,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private fun search(text: String) {
         val filteredList = list.filter { it.name.lowercase().contains(text.lowercase()) }
         binding.txtEmpty.visible(filteredList.isEmpty())
-        adapter.setData(filteredList)
+        oilsAdapter.setData(filteredList)
     }
 
     private fun setData() = binding.scope {
@@ -335,7 +323,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         if (searchingText.isNotEmpty()) {
             search(searchingText)
         } else {
-            adapter.setData(list)
+            oilsAdapter.setData(list)
         }
     }
 

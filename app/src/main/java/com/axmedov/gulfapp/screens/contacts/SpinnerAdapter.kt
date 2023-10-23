@@ -3,26 +3,25 @@ package com.axmedov.gulfapp.screens.contacts
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.axmedov.gulfapp.data.entities.ContactData
-import com.axmedov.gulfapp.data.enums.CountriesEnum
-import com.axmedov.gulfapp.databinding.ItemContactBinding
+import com.axmedov.gulfapp.databinding.ItemSpinnerBinding
 import com.axmedov.gulfapp.utils.scope
 
-class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.VH>() {
-    private val list = ArrayList<ContactData>()
+class SpinnerAdapter : RecyclerView.Adapter<SpinnerAdapter.VH>() {
+    private val list = ArrayList<String>()
 
-    fun setData(newList: List<ContactData>) {
+
+    fun setData(newList: List<String>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()
     }
 
-    private var itemClickedListener: ((ContactData) -> Unit)? = null
-    fun setItemClickedListener(f: (ContactData) -> Unit) {
+    private var itemClickedListener: ((String) -> Unit)? = null
+    fun setItemClickedListener(f: (String) -> Unit) {
         itemClickedListener = f
     }
 
-    inner class VH(private val binding: ItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class VH(private val binding: ItemSpinnerBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             itemView.setOnClickListener {
                 itemClickedListener?.invoke(list[absoluteAdapterPosition])
@@ -31,14 +30,13 @@ class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.VH>() {
 
         fun bind() = binding.scope {
             val data = list[absoluteAdapterPosition]
-            txtLocation.text = data.location
-            txtName.text = data.name
-            txtPhone.text = data.phone
+//            imgProduct.setImageResource(data.image)
+            txtItem.text = data
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
-        VH(ItemContactBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        VH(ItemSpinnerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: VH, position: Int) = holder.bind()
 

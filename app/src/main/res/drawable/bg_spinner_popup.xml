@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- White background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" /> <!-- White background color -->
+        </shape>
+    </item>
+
+    <!-- Orange vertical line on the left side -->
+    <item
+        android:width="4dp"
+        android:left="8dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/blue" /> <!-- Orange color -->
+        </shape>
+    </item>
+
+    <!-- Blue vertical line in the center -->
+    <item
+        android:width="4dp"
+        android:left="16dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/orange" /> <!-- Blue color -->
+        </shape>
+    </item>
+
+    <!-- Sky-blue vertical line on the right side -->
+    <item
+        android:width="4dp"
+        android:left="24dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/sky_blue" /> <!-- Sky-blue color -->
+        </shape>
+    </item>
+
+    <!-- Orange vertical line on the left side -->
+    <item
+        android:width="4dp"
+        android:gravity="right"
+        android:right="8dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/blue" /> <!-- Orange color -->
+        </shape>
+    </item>
+
+    <!-- Blue vertical line in the center -->
+    <item
+        android:width="4dp"
+        android:gravity="right"
+        android:right="16dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/orange" /> <!-- Blue color -->
+        </shape>
+    </item>
+
+    <!-- Sky-blue vertical line on the right side -->
+    <item
+        android:width="4dp"
+        android:gravity="right"
+        android:right="24dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/sky_blue" /> <!-- Sky-blue color -->
+        </shape>
+    </item>
+</layer-list>
