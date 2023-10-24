@@ -25,7 +25,7 @@
             android:fontFamily="@font/helvetica_neue_bold"
             android:text="Together, "
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txt2"
@@ -34,13 +34,13 @@
             android:fontFamily="@font/helvetica_neue_bold"
             android:text="we're unstoppable"
             android:textColor="@color/orange"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <ImageView
         android:id="@+id/img"
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:adjustViewBounds="true"
@@ -59,7 +59,7 @@
         android:gravity="left"
         android:text="@string/moto_ru"
         android:textColor="@color/orange"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintLeft_toLeftOf="@id/img"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img" />
@@ -74,7 +74,7 @@
         android:gravity="left"
         android:text="@string/moto_en"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@id/img"
         app:layout_constraintTop_toBottomOf="@id/txt3" />

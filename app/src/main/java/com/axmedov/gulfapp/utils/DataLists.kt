@@ -284,9 +284,9 @@ val commercialCarListEn = listOf<NewOilData>(
     ),
     NewOilData(
         2,
-        "Gulf Super Duty LE",
-        "Commercial Vehicle Engine Oil",
-        "gulf_super_duty_le_en.pdf"
+        "Gulf Super Duty CH-4",
+        "Mineral Engine Oil for Heavy Duty Diesel Engines",
+        "gulf_super_duty_ch_4_en.pdf"
     ),
     NewOilData(
         3,
@@ -299,12 +299,6 @@ val commercialCarListEn = listOf<NewOilData>(
         "Gulf Superfleet Supreme",
         "Commercial Vehicle Engine Oil",
         "gulf_superfleet_supreme_en.pdf"
-    ),
-    NewOilData(
-        5,
-        "Gulf Super Duty CH-4",
-        "Mineral Engine Oil for Heavy Duty Diesel Engines",
-        "gulf_super_duty_ch_4_en.pdf"
     ),
     NewOilData(
         6,
@@ -341,9 +335,9 @@ val commercialCarListRu = listOf<NewOilData>(
     ),
     NewOilData(
         2,
-        "Gulf Super Duty LE",
-        "Commercial Vehicle Engine Oil",
-        "gulf_super_duty_le_ru.pdf"
+        "Gulf Super Duty CH-4",
+        "Mineral Engine Oil for Heavy Duty Diesel Engines",
+        "gulf_super_duty_ch_4_ru.pdf"
     ),
     NewOilData(
         3,
@@ -356,12 +350,6 @@ val commercialCarListRu = listOf<NewOilData>(
         "Gulf Superfleet Supreme",
         "Commercial Vehicle Engine Oil",
         "gulf_superfleet_supreme_ru.pdf"
-    ),
-    NewOilData(
-        5,
-        "Gulf Super Duty CH-4",
-        "Mineral Engine Oil for Heavy Duty Diesel Engines",
-        "gulf_super_duty_ch_4_ru.pdf"
     ),
     NewOilData(
         6,
