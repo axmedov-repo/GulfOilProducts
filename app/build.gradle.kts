@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 //    id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -86,4 +88,11 @@ dependencies {
 
     // Spinner
     implementation("com.github.skydoves:powerspinner:1.2.4")
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-analytics-ktx")
 }
