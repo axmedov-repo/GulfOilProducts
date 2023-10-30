@@ -13,13 +13,17 @@ import com.axmedov.gulfapp.R
 import com.axmedov.gulfapp.data.enums.CountriesEnum
 import com.axmedov.gulfapp.data.enums.Languages
 import com.axmedov.gulfapp.databinding.ScreenContactsBinding
+import com.axmedov.gulfapp.screens.contacts.listAdapter.ContactsListAdapter
+import com.axmedov.gulfapp.screens.contacts.viewmodel.ContactsViewModel
+import com.axmedov.gulfapp.screens.contacts.viewmodel.ContactsViewModelImpl
 import com.axmedov.gulfapp.utils.contactsList
 import com.axmedov.gulfapp.utils.scope
 
 class ContactsScreen : Fragment(R.layout.screen_contacts) {
     private val binding by viewBinding(ScreenContactsBinding::bind)
     private val viewModel: ContactsViewModel by viewModels<ContactsViewModelImpl>()
-    private val countriesAdapter by lazy { ContactsAdapter() }
+    private val contactsAdapter by lazy { ContactsAdapter() }
+    private val contactsListAdapter by lazy { ContactsListAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +43,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         }
 
         rvContacts.layoutManager = LinearLayoutManager(requireContext())
-        rvContacts.adapter = countriesAdapter
+        rvContacts.adapter = contactsListAdapter
 
 //        spinnerView.setItems(CountriesEnum.values().map { it.title })
 //        spinnerView.setOnFocusChangeListener { view, b ->
@@ -58,7 +62,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val country = CountriesEnum.values()[position]
                 viewModel.setCountry(country)
-                countriesAdapter.setData(contactsList.filter { it.country == country })
+                contactsListAdapter.submitList(contactsList.filter { it.country == country })
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -74,7 +78,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
     private fun setModels() = binding.scope {
         viewModel.countryLiveData.observe(viewLifecycleOwner) { country ->
             simpleSpinner.setSelection(CountriesEnum.values().indexOf(country))
-            countriesAdapter.setData(contactsList.filter { it.country == country })
+            contactsListAdapter.submitList(contactsList.filter { it.country == country })
         }
         viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
             setData(it)

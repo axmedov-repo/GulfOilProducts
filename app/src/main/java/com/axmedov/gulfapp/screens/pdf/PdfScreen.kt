@@ -12,7 +12,7 @@ import com.axmedov.gulfapp.R
 import com.axmedov.gulfapp.data.entities.AdsData
 import com.axmedov.gulfapp.data.enums.Languages
 import com.axmedov.gulfapp.databinding.ScreenPdfBinding
-import com.axmedov.gulfapp.screens.new_variant.adapter.AdsAdapter
+import com.axmedov.gulfapp.screens.ads.AdsAdapter
 import com.axmedov.gulfapp.screens.pdf.viewmodel.PdfViewModel
 import com.axmedov.gulfapp.screens.pdf.viewmodel.PdfViewModelImpl
 import com.axmedov.gulfapp.utils.adsDataList

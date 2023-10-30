@@ -16,37 +16,10 @@
             android:id="@+id/action_productsScreen_to_contactsScreen"
             app:destination="@id/contactsScreen" />
     </fragment>
-    <fragment
-        android:id="@+id/subProductsScreen"
-        android:name="com.axmedov.gulfapp.screens.old_variant.sub_product.SubProductsScreen"
-        android:label="screen_sub_products"
-        tools:layout="@layout/screen_sub_products" />
-    <fragment
-        android:id="@+id/oilScreen"
-        android:name="com.axmedov.gulfapp.screens.old_variant.oil.OilScreen"
-        android:label="screen_oil"
-        tools:layout="@layout/screen_oil" >
-        <action
-            android:id="@+id/action_oilScreen_to_subOilScreen"
-            app:destination="@id/subOilScreen" />
-    </fragment>
-    <fragment
-        android:id="@+id/subOilScreen"
-        android:name="com.axmedov.gulfapp.screens.old_variant.sub_oil.SubOilScreen"
-        android:label="screen_sub_oil"
-        tools:layout="@layout/screen_sub_oil" >
-        <action
-            android:id="@+id/action_subOilScreen_to_oilDetailsScreen"
-            app:destination="@id/oilDetailsScreen" />
-    </fragment>
-    <fragment
-        android:id="@+id/oilDetailsScreen"
-        android:name="com.axmedov.gulfapp.screens.old_variant.oil_details.OilDetailsScreen"
-        android:label="screen_oil_details"
-        tools:layout="@layout/screen_oil_details" />
+
     <fragment
         android:id="@+id/oilsScreen"
-        android:name="com.axmedov.gulfapp.screens.new_variant.OilsScreen"
+        android:name="com.axmedov.gulfapp.screens.oils.OilsScreen"
         android:label="screen_oils"
         tools:layout="@layout/screen_oils" >
         <action

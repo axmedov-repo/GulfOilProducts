@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.axmedov.gulfapp.data.entities.ContactData
-import com.axmedov.gulfapp.data.enums.CountriesEnum
 import com.axmedov.gulfapp.databinding.ItemContactBinding
 import com.axmedov.gulfapp.utils.scope
 

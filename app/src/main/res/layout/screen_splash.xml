@@ -25,7 +25,7 @@
             android:fontFamily="@font/helvetica_neue_bold"
             android:text="Together, "
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/txt2"
@@ -34,7 +34,7 @@
             android:fontFamily="@font/helvetica_neue_bold"
             android:text="we're unstoppable"
             android:textColor="@color/orange"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

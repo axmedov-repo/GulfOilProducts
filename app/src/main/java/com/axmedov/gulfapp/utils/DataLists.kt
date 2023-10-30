@@ -4,12 +4,11 @@ import com.axmedov.gulfapp.R
 import com.axmedov.gulfapp.data.entities.AdsData
 import com.axmedov.gulfapp.data.entities.ContactData
 import com.axmedov.gulfapp.data.entities.NewOilData
-import com.axmedov.gulfapp.data.entities.OilData
 import com.axmedov.gulfapp.data.entities.ProductData
-import com.axmedov.gulfapp.data.entities.SubOilData
-import com.axmedov.gulfapp.data.entities.SubProductData
 import com.axmedov.gulfapp.data.enums.CountriesEnum
 import com.axmedov.gulfapp.data.enums.ProductTypes
+
+// Ads List
 
 val adsDataList = listOf<AdsData>(
     AdsData(
@@ -71,51 +70,6 @@ val adsDataList = listOf<AdsData>(
     ),
     AdsData(
         1, R.drawable.vp2
-    )
-)
-
-val subProductsList = listOf<SubProductData>(
-    SubProductData(
-        id = 0, name = "Cars"
-    ),
-    SubProductData(
-        id = 1, name = "Motorcycle & Scooter"
-    ),
-    SubProductData(
-        id = 2, name = "Commercial Vehicle"
-    ),
-    SubProductData(
-        id = 3, name = "Industrial"
-    )
-)
-
-val oilsList = listOf<OilData>(
-    OilData(
-        id = 0, name = "Cars", image = R.drawable.ic_car
-    ),
-    OilData(
-        id = 1, name = "Motorcycle & Scooter", image = R.drawable.ic_heavy_duty
-    ),
-    OilData(
-        id = 2, name = "Commercial Vehicle", image = R.drawable.ic_commercial_cars
-    ),
-    OilData(
-        id = 3, name = "Industrial", image = R.drawable.ic_industrial_cars
-    )
-)
-
-val subOilsList = listOf<SubOilData>(
-    SubOilData(
-        id = 0, name = "Cars", image = R.drawable.ic_car
-    ),
-    SubOilData(
-        id = 1, name = "Motorcycle & Scooter", image = R.drawable.ic_heavy_duty
-    ),
-    SubOilData(
-        id = 2, name = "Commercial Vehicle", image = R.drawable.ic_commercial_cars
-    ),
-    SubOilData(
-        id = 3, name = "Industrial", image = R.drawable.ic_industrial_cars
     )
 )
 
@@ -199,7 +153,7 @@ val productsListRu = listOf<ProductData>(
     )
 )
 
-// 1.Passenger Car
+// Passenger Car
 
 val passengerCarListEn = listOf<NewOilData>(
     NewOilData(
@@ -267,7 +221,7 @@ val passengerCarListRu = listOf<NewOilData>(
     )
 )
 
-// 2.Commercial
+// Commercial
 
 val commercialCarListEn = listOf<NewOilData>(
     NewOilData(
@@ -301,19 +255,19 @@ val commercialCarListEn = listOf<NewOilData>(
         "gulf_superfleet_supreme_en.pdf"
     ),
     NewOilData(
-        6,
+        5,
         "Gulf Superfleet Professional ECON",
         "Advanced Full Synthetic Engine Oil for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_econ.pdf"
+        "gulf_superfleet_professional_econ_en.pdf"
     ),
     NewOilData(
-        7,
+        6,
         "Gulf Superfleet Professional Long Drain",
         "Synthetic Technology for Heavy Duty Diesel Engines",
         "gulf_superfleet_professional_long_drain_en.pdf"
     ),
     NewOilData(
-        8,
+        7,
         "Gulf Superfleet Professional + Long Drain",
         "Synthetic Technology for Heavy Duty Diesel Engines",
         "gulf_superfleet_professional_+long_drain_en.pdf"
@@ -352,82 +306,26 @@ val commercialCarListRu = listOf<NewOilData>(
         "gulf_superfleet_supreme_ru.pdf"
     ),
     NewOilData(
-        6,
+        5,
         "Gulf Superfleet Professional ECON",
         "Advanced Full Synthetic Engine Oil for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_econ.pdf"
+        "gulf_superfleet_professional_econ_ru.pdf"
+    ),
+    NewOilData(
+        6,
+        "Gulf Superfleet Professional Long Drain",
+        "Synthetic Technology for Heavy Duty Diesel Engines",
+        "gulf_superfleet_professional_long_drain_ru.pdf"
     ),
     NewOilData(
         7,
-        "Gulf Superfleet Professional Long Drain",
-        "Synthetic Technology for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_long_drain_ru.pdf"
-    ),
-    NewOilData(
-        8,
         "Gulf Superfleet Professional + Long Drain",
         "Synthetic Technology for Heavy Duty Diesel Engines",
         "gulf_superfleet_professional_+long_drain_ru.pdf"
     )
 )
 
-// 3.Heavy Duty Diesel
-
-val heavyDutyDieselOilsListEn = listOf<NewOilData>(
-    NewOilData(
-        0,
-        "Gulf Super Duty CH-4",
-        "Mineral Engine Oil for Heavy Duty Diesel Engines",
-        "gulf_super_duty_ch_4_en.pdf"
-    ),
-    NewOilData(
-        1,
-        "Gulf Superfleet Professional ECON",
-        "Advanced Full Synthetic Engine Oil for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_econ.pdf"
-    ),
-    NewOilData(
-        2,
-        "Gulf Superfleet Professional Long Drain",
-        "Synthetic Technology for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_long_drain_en.pdf"
-    ),
-    NewOilData(
-        3,
-        "Gulf Superfleet Professional + Long Drain",
-        "Synthetic Technology for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_+long_drain_en.pdf"
-    )
-)
-
-val heavyDutyDieselOilsListRu = listOf<NewOilData>(
-    NewOilData(
-        0,
-        "Gulf Super Duty CH-4",
-        "Mineral Engine Oil for Heavy Duty Diesel Engines",
-        "gulf_super_duty_ch_4_ru.pdf"
-    ),
-    NewOilData(
-        1,
-        "Gulf Superfleet Professional ECON",
-        "Advanced Full Synthetic Engine Oil for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_econ.pdf"
-    ),
-    NewOilData(
-        2,
-        "Gulf Superfleet Professional Long Drain",
-        "Synthetic Technology for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_long_drain_ru.pdf"
-    ),
-    NewOilData(
-        3,
-        "Gulf Superfleet Professional + Long Drain",
-        "Synthetic Technology for Heavy Duty Diesel Engines",
-        "gulf_superfleet_professional_+long_drain_ru.pdf"
-    )
-)
-
-// 4.Hydraulic Brake Fluid
+// Hydraulic Brake Fluid
 
 val hydraulicBrakeFluidListEn = listOf<NewOilData>(
     NewOilData(
@@ -464,21 +362,30 @@ val hydraulicBrakeFluidListRu = listOf<NewOilData>(
 val radiatorCoolantListEn = listOf<NewOilData>(
     NewOilData(
         0,
-        "Gulf Eurocool Consentrate",
-        "Engine Coolant",
-        "gulf_eurocool_consentrate.pdf"
+        "Gulf Eurocool Max",
+        "Ultra-High Performance, Premix Radiator Coolant",
+        "gulf_eurocool_max_en.pdf"
     ),
     NewOilData(
         1,
+        "Gulf Eurocool",
+        "Premium Ready to Use Coolant (Premixed with Water)",
+        "gulf_eurocool_en.pdf"
+    )
+)
+
+val radiatorCoolantListRu = listOf<NewOilData>(
+    NewOilData(
+        0,
         "Gulf Eurocool Max",
         "Ultra-High Performance, Premix Radiator Coolant",
-        "gulf_eurocool_max_series_red_coolant.pdf"
+        "gulf_eurocool_max_ru.pdf"
     ),
     NewOilData(
-        2,
-        "Gulf Eurocool Series Green",
+        1,
+        "Gulf Eurocool",
         "Premium Ready to Use Coolant (Premixed with Water)",
-        "gulf_eurocool_series_green_coolant.pdf"
+        "gulf_eurocool_ru.pdf"
     )
 )
 
@@ -537,6 +444,8 @@ val automaticTransmissionListRu = listOf<NewOilData>(
         "gulf_multi_vehicle_cvt_fluid_ru.pdf"
     )
 )
+
+// Contacts
 
 val contactsList = listOf<ContactData>(
     ContactData(

@@ -15,7 +15,7 @@ import com.axmedov.gulfapp.data.entities.ProductData
 import com.axmedov.gulfapp.data.enums.Languages
 import com.axmedov.gulfapp.data.enums.ProductTypes
 import com.axmedov.gulfapp.databinding.ScreenProductsBinding
-import com.axmedov.gulfapp.screens.new_variant.adapter.AdsAdapter
+import com.axmedov.gulfapp.screens.ads.AdsAdapter
 import com.axmedov.gulfapp.screens.product.view_model.ProductsViewModel
 import com.axmedov.gulfapp.screens.product.view_model.ProductsViewModelImpl
 import com.axmedov.gulfapp.utils.adsDataList
