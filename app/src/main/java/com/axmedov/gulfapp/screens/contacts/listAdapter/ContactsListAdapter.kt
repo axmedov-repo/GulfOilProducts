@@ -9,7 +9,12 @@ import com.axmedov.gulfapp.data.entities.ContactData
 import com.axmedov.gulfapp.databinding.ItemContactBinding
 import com.axmedov.gulfapp.utils.scope
 
-class ContactsListAdapter : ListAdapter<ContactData, ContactViewHolder>(ContactItemDiffCallback()) {
+class ContactsListAdapter : ListAdapter<ContactData, ContactsListAdapter.ContactViewHolder>(ContactItemDiffCallback()) {
+
+    private var phoneClickedListener: ((String) -> Unit)? = null
+    fun setPhoneClickedListener(f: (String) -> Unit) {
+        phoneClickedListener = f
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         return ContactViewHolder(ItemContactBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -18,14 +23,22 @@ class ContactsListAdapter : ListAdapter<ContactData, ContactViewHolder>(ContactI
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         holder.bindData(getItem(position))
     }
-}
 
-class ContactViewHolder(private val binding: ItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ContactViewHolder(private val binding: ItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bindData(contact: ContactData) = binding.scope {
-        txtLocation.text = contact.location
-        txtName.text = contact.name
-        txtPhone.text = contact.phone
+        init {
+            binding.scope {
+                txtPhone.setOnClickListener {
+                    phoneClickedListener?.invoke(getItem(absoluteAdapterPosition).phone)
+                }
+            }
+        }
+
+        fun bindData(contact: ContactData) = binding.scope {
+            txtLocation.text = contact.location
+            txtName.text = contact.name
+            txtPhone.text = contact.phone
+        }
     }
 }
 

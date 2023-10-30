@@ -3,14 +3,11 @@ package com.axmedov.gulfapp.utils
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.telephony.TelephonyManager
 import android.widget.CheckBox
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.axmedov.gulfapp.app.App
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -122,4 +119,14 @@ private fun getCorrectSecond(indicator: Int): String {
     } else if (indicator in 1..9) {
         "0$indicator"
     } else "$indicator"
+}
+
+fun Fragment.getCurrentCountryCode(): String {
+    val tm = requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    return tm.networkCountryIso
+}
+
+fun Activity.getCurrentCountryCode(): String {
+    val tm = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    return tm.networkCountryIso
 }

@@ -1,28 +1,28 @@
 package com.axmedov.gulfapp.screens.contacts
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.axmedov.gulfapp.R
-import com.axmedov.gulfapp.data.enums.CountriesEnum
 import com.axmedov.gulfapp.data.enums.Languages
 import com.axmedov.gulfapp.databinding.ScreenContactsBinding
 import com.axmedov.gulfapp.screens.contacts.listAdapter.ContactsListAdapter
 import com.axmedov.gulfapp.screens.contacts.viewmodel.ContactsViewModel
 import com.axmedov.gulfapp.screens.contacts.viewmodel.ContactsViewModelImpl
 import com.axmedov.gulfapp.utils.contactsList
+import com.axmedov.gulfapp.utils.getCurrentCountryCode
 import com.axmedov.gulfapp.utils.scope
+import com.axmedov.gulfapp.utils.showToast
 
 class ContactsScreen : Fragment(R.layout.screen_contacts) {
     private val binding by viewBinding(ScreenContactsBinding::bind)
     private val viewModel: ContactsViewModel by viewModels<ContactsViewModelImpl>()
-    private val contactsAdapter by lazy { ContactsAdapter() }
     private val contactsListAdapter by lazy { ContactsListAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
@@ -34,7 +34,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
     override fun onResume() {
         super.onResume()
         viewModel.getLanguage()
-        viewModel.getCountry()
+//        viewModel.getCountry()
     }
 
     private fun setViews() = binding.scope {
@@ -44,6 +44,30 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
 
         rvContacts.layoutManager = LinearLayoutManager(requireContext())
         rvContacts.adapter = contactsListAdapter
+        contactsListAdapter.setPhoneClickedListener {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:${txtHeadContactPhone.text}")
+            startActivity(intent)
+        }
+        txtHeadContactPhone.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:${txtHeadContactPhone.text}")
+            startActivity(intent)
+        }
+        txtHeadContactEmail.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = Uri.parse("mailto:")
+            intent.putExtra(Intent.EXTRA_EMAIL, txtHeadContactEmail.text)
+            startActivity(intent)
+        }
+        txtHeadContactWebsite.setOnClickListener {
+            var url = txtHeadContactWebsite.text
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                url = "https://$url"
+            }
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url.toString()))
+            startActivity(intent)
+        }
 
 //        spinnerView.setItems(CountriesEnum.values().map { it.title })
 //        spinnerView.setOnFocusChangeListener { view, b ->
@@ -55,31 +79,32 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
 //            showToast(newItem)
 //        }
 
-        val spinnerAdapter =
-            ArrayAdapter(requireContext(), R.layout.item_spinner, CountriesEnum.values().map { it.title })
-        simpleSpinner.adapter = spinnerAdapter
-        simpleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val country = CountriesEnum.values()[position]
-                viewModel.setCountry(country)
-                contactsListAdapter.submitList(contactsList.filter { it.country == country })
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Handle when nothing is selected
-            }
-        }
-
-        txtChangeCountry.setOnClickListener {
-            simpleSpinner.performClick()
-        }
+//        val spinnerAdapter =
+//            ArrayAdapter(requireContext(), R.layout.item_spinner, CountriesEnum.values().map { it.title })
+//        simpleSpinner.adapter = spinnerAdapter
+//        simpleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                val country = CountriesEnum.values()[position]
+//                viewModel.setCountry(country)
+//                contactsListAdapter.submitList(contactsList.filter { it.country == country })
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//                // Handle when nothing is selected
+//            }
+//        }
+//
+//        txtChangeCountry.setOnClickListener {
+//            simpleSpinner.performClick()
+//        }
     }
 
     private fun setModels() = binding.scope {
-        viewModel.countryLiveData.observe(viewLifecycleOwner) { country ->
-            simpleSpinner.setSelection(CountriesEnum.values().indexOf(country))
-            contactsListAdapter.submitList(contactsList.filter { it.country == country })
-        }
+//        viewModel.countryLiveData.observe(viewLifecycleOwner) { country ->
+//            simpleSpinner.setSelection(CountriesEnum.values().indexOf(country))
+//        }
+
+        contactsListAdapter.submitList(contactsList.filter { it.country.code.lowercase() == getCurrentCountryCode().lowercase() })
         viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
             setData(it)
         }
