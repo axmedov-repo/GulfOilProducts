@@ -18,7 +18,6 @@ import com.axmedov.gulfapp.screens.contacts.viewmodel.ContactsViewModelImpl
 import com.axmedov.gulfapp.utils.contactsList
 import com.axmedov.gulfapp.utils.getCurrentCountryCode
 import com.axmedov.gulfapp.utils.scope
-import com.axmedov.gulfapp.utils.showToast
 
 class ContactsScreen : Fragment(R.layout.screen_contacts) {
     private val binding by viewBinding(ScreenContactsBinding::bind)
@@ -45,28 +44,20 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         rvContacts.layoutManager = LinearLayoutManager(requireContext())
         rvContacts.adapter = contactsListAdapter
         contactsListAdapter.setPhoneClickedListener {
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:${txtHeadContactPhone.text}")
-            startActivity(intent)
+            openPhone(it)
         }
+        contactsListAdapter.setEmailClickedListener {
+            openEmail(it)
+        }
+
         txtHeadContactPhone.setOnClickListener {
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:${txtHeadContactPhone.text}")
-            startActivity(intent)
+            openPhone(txtHeadContactPhone.text.toString())
         }
         txtHeadContactEmail.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO)
-            intent.data = Uri.parse("mailto:")
-            intent.putExtra(Intent.EXTRA_EMAIL, txtHeadContactEmail.text)
-            startActivity(intent)
+            openEmail(txtHeadContactEmail.text.toString())
         }
         txtHeadContactWebsite.setOnClickListener {
-            var url = txtHeadContactWebsite.text
-            if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                url = "https://$url"
-            }
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url.toString()))
-            startActivity(intent)
+            openWebsite(txtHeadContactWebsite.text.toString())
         }
 
 //        spinnerView.setItems(CountriesEnum.values().map { it.title })
@@ -97,6 +88,27 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
 //        txtChangeCountry.setOnClickListener {
 //            simpleSpinner.performClick()
 //        }
+    }
+
+    private fun openPhone(phone: String) {
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel:$phone")
+        startActivity(intent)
+    }
+
+    private fun openEmail(email: String) {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("mailto:$email")
+        startActivity(intent)
+    }
+
+    private fun openWebsite(siteUrl: String) {
+        var url = siteUrl
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "https://$url"
+        }
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     private fun setModels() = binding.scope {

@@ -449,33 +449,35 @@ val automaticTransmissionListRu = listOf<NewOilData>(
 
 val contactsList = listOf<ContactData>(
     ContactData(
-        "CIS Sales Manager",
-        "Dilmurod Akhmedov",
-        "+998 90 525 41 14",
-        CountriesEnum.Uzbekistan
+        location = "CIS Sales Manager",
+        name = "Dilmurod Akhmedov",
+        phone = "+998 90 525 41 14",
+        email = "dilmurod.akhmedov@gulfoiluae.com",
+        country = CountriesEnum.Uzbekistan
     ),
     ContactData(
-        "Gulf oil official distributor in Uzbekistan - \"Bloom\" LLC",
-        "Behzod Olimov",
-        "+998 99 443 00 11",
-        CountriesEnum.Uzbekistan
+        location = "Gulf oil official distributor in Uzbekistan - \"Bloom\" LLC",
+        name = "Behzod Olimov",
+        phone = "+998 99 443 00 11",
+        email = "behzod_1993@inbox.ru",
+        country = CountriesEnum.Uzbekistan
     ),
     ContactData(
-        "Gulf oil official distributor in Azerbaijan - \"Atlas Group\" LTD MMC",
-        "Zaka Salmanli",
-        "+994 502 124 414",
-        CountriesEnum.Azerbaijan
+        location = "Gulf oil official distributor in Azerbaijan - \"Atlas Group\" LTD MMC",
+        name = "Zaka Salmanli",
+        phone = "+994 502 124 414",
+        country = CountriesEnum.Azerbaijan
     ),
     ContactData(
-        "Gulf oil official distributor in Kyrgyzstan - IP \"Mamazhanov Nomanzhan\"",
-        "Islombek Mamazhanov",
-        "+996 553 577 776",
-        CountriesEnum.Kyrgyzstan
+        location = "Gulf oil official distributor in Kyrgyzstan - IP \"Mamazhanov Nomanzhan\"",
+        name = "Islombek Mamazhanov",
+        phone = "+996 553 577 776",
+        country = CountriesEnum.Kyrgyzstan
     ),
     ContactData(
-        "Gulf oil official distributor in Turkmenistan - \"Future Star\" FZE",
-        "Serdar Jumayev",
-        "+993 626 751 99",
-        CountriesEnum.Turkmenistan
+        location = "Gulf oil official distributor in Turkmenistan - \"Future Star\" FZE",
+        name = "Serdar Jumayev",
+        phone = "+993 626 751 99",
+        country = CountriesEnum.Turkmenistan
     )
 )

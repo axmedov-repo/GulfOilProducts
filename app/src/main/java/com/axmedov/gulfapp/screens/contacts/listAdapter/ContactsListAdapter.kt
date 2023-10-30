@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.axmedov.gulfapp.data.entities.ContactData
 import com.axmedov.gulfapp.databinding.ItemContactBinding
+import com.axmedov.gulfapp.utils.gone
 import com.axmedov.gulfapp.utils.scope
 
 class ContactsListAdapter : ListAdapter<ContactData, ContactsListAdapter.ContactViewHolder>(ContactItemDiffCallback()) {
@@ -14,6 +15,11 @@ class ContactsListAdapter : ListAdapter<ContactData, ContactsListAdapter.Contact
     private var phoneClickedListener: ((String) -> Unit)? = null
     fun setPhoneClickedListener(f: (String) -> Unit) {
         phoneClickedListener = f
+    }
+
+    private var emailClickedListener: ((String) -> Unit)? = null
+    fun setEmailClickedListener(f: (String) -> Unit) {
+        emailClickedListener = f
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
@@ -31,6 +37,9 @@ class ContactsListAdapter : ListAdapter<ContactData, ContactsListAdapter.Contact
                 txtPhone.setOnClickListener {
                     phoneClickedListener?.invoke(getItem(absoluteAdapterPosition).phone)
                 }
+                txtEmail.setOnClickListener {
+                    emailClickedListener?.invoke(getItem(absoluteAdapterPosition).email)
+                }
             }
         }
 
@@ -38,6 +47,11 @@ class ContactsListAdapter : ListAdapter<ContactData, ContactsListAdapter.Contact
             txtLocation.text = contact.location
             txtName.text = contact.name
             txtPhone.text = contact.phone
+
+            if (contact.email.isEmpty() || contact.email.isBlank()) {
+                txtEmail.gone()
+            }
+            txtEmail.text = contact.email
         }
     }
 }
