@@ -8,12 +8,12 @@
     android:background="@drawable/bg_item_products"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/imgProduct"
-        android:layout_width="100dp"
-        android:layout_height="64dp"
+        android:layout_width="80dp"
+        android:layout_height="44dp"
         android:adjustViewBounds="true"
         app:tint="@color/product_img_color"
         tools:src="@drawable/ic_car" />

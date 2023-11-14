@@ -7,28 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:247880736761:android:d0be05924e4090f97f6728",
+        "mobilesdk_app_id": "1:247880736761:android:0b886e86ef80a8377f6728",
         "android_client_info": {
-          "package_name": "com.axmedov.gulf"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCahy-RPY_EWvzjEwpJc8kpnt5VCEIIxRA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:247880736761:android:9f483afd132089ca7f6728",
-        "android_client_info": {
-          "package_name": "com.axmedov.gulfapp"
+          "package_name": "com.gulfoil.pdsapp"
         }
       },
       "oauth_client": [],

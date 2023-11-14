@@ -6,7 +6,7 @@
     app:startDestination="@id/splashScreen">
     <fragment
         android:id="@+id/productsScreen"
-        android:name="com.axmedov.gulfapp.screens.product.ProductsScreen"
+        android:name="com.gulfoil.pdsapp.screens.product.ProductsScreen"
         android:label="screen_products"
         tools:layout="@layout/screen_products" >
         <action
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/oilsScreen"
-        android:name="com.axmedov.gulfapp.screens.oils.OilsScreen"
+        android:name="com.gulfoil.pdsapp.screens.oils.OilsScreen"
         android:label="screen_oils"
         tools:layout="@layout/screen_oils" >
         <action
@@ -27,11 +27,11 @@
             app:destination="@id/pdfScreen" />
         <argument
             android:name="productType"
-            app:argType="com.axmedov.gulfapp.data.enums.ProductTypes" />
+            app:argType="com.gulfoil.pdsapp.data.enums.ProductTypes" />
     </fragment>
     <fragment
         android:id="@+id/pdfScreen"
-        android:name="com.axmedov.gulfapp.screens.pdf.PdfScreen"
+        android:name="com.gulfoil.pdsapp.screens.pdf.PdfScreen"
         android:label="screen_pdf"
         tools:layout="@layout/screen_pdf" >
         <argument
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashScreen"
-        android:name="com.axmedov.gulfapp.screens.splash.SplashScreen"
+        android:name="com.gulfoil.pdsapp.screens.splash.SplashScreen"
         android:label="screen_splash"
         tools:layout="@layout/screen_splash" >
         <action
@@ -52,12 +52,12 @@
     </fragment>
     <fragment
         android:id="@+id/trialEndScreen"
-        android:name="com.axmedov.gulfapp.screens.trial_end.TrialEndScreen"
+        android:name="com.gulfoil.pdsapp.screens.trial_end.TrialEndScreen"
         android:label="screen_trial_end"
         tools:layout="@layout/screen_trial_end" />
     <fragment
         android:id="@+id/contactsScreen"
-        android:name="com.axmedov.gulfapp.screens.contacts.ContactsScreen"
+        android:name="com.gulfoil.pdsapp.screens.contacts.ContactsScreen"
         android:label="screen_contacts"
         tools:layout="@layout/screen_contacts" />
 </navigation>
