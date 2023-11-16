@@ -11,16 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.data.entities.AdsData
-import com.gulfoil.pdsapp.data.entities.ProductData
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.enums.ProductTypes
 import com.gulfoil.pdsapp.databinding.ScreenProductsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModel
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModelImpl
 import com.gulfoil.pdsapp.utils.adsDataList
-import com.gulfoil.pdsapp.utils.productsListEn
-import com.gulfoil.pdsapp.utils.productsListRu
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
@@ -54,6 +50,7 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
     override fun onResume() {
         super.onResume()
         viewModel.getLanguage()
+        viewModel.getProducts()
         startAutoScroll()
     }
 
@@ -72,30 +69,29 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
         vp.isUserInputEnabled = false
         handler = Handler()
 
-//        rvProducts.layoutManager = GridLayoutManager(requireContext(), 2)
         rvProducts.layoutManager = LinearLayoutManager(requireContext())
         rvProducts.adapter = adapter
         adapter.setItemClickedListener {
-            if (it.productType == ProductTypes.CONTACT) {
-                findNavController().navigate(ProductsScreenDirections.actionProductsScreenToContactsScreen())
-            } else {
-                findNavController().navigate(
-                    ProductsScreenDirections.actionProductsScreenToOilsScreen(
-                        it.productType
-                    )
-                )
+            it.id?.let { id ->
+                findNavController().navigate(ProductsScreenDirections.actionProductsScreenToOilsScreen(id))
             }
+        }
+
+        layoutContact.setOnClickListener {
+            findNavController().navigate(ProductsScreenDirections.actionProductsScreenToContactsScreen())
         }
 
         imgLanguage.setOnClickListener {
             if (language == Languages.ENGLISH) {
                 language = Languages.RUSSIAN
-                setData()
                 viewModel.setLanguage(language)
+                viewModel.getProducts()
+                setData()
             } else {
                 language = Languages.ENGLISH
-                setData()
                 viewModel.setLanguage(language)
+                viewModel.getProducts()
+                setData()
             }
         }
     }
@@ -120,32 +116,43 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
     }
 
     private fun setModels() = binding.scope {
-        viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
-            language = it
-            setData()
+        viewModel.apply {
+            productsLiveData.observe(viewLifecycleOwner) {
+                txtEmpty.visible(it.isEmpty())
+
+                if (it.isNotEmpty()) {
+                    adapter.setData(it)
+                }
+            }
+            progressLiveData.observe(viewLifecycleOwner) {
+                progressBar.visible(it)
+            }
+            errorLiveData.observe(viewLifecycleOwner) {
+                // TODO: Handle error
+            }
+            lastLanguageLiveData.observe(viewLifecycleOwner) {
+                language = it
+                setData()
+            }
         }
     }
 
     private fun setData() = binding.scope {
-        var list: List<ProductData> = ArrayList()
         when (language) {
             Languages.ENGLISH -> {
                 imgLanguage.setImageResource(R.drawable.ic_flag_en)
                 txtEmpty.text = getString(R.string.txt_empty_en)
-                list = productsListEn
                 txtTitle.text = getString(R.string.txt_gulf_oil_products_en)
+                txtNameContact.text = getString(R.string.txt_contacts_en)
             }
 
             Languages.RUSSIAN -> {
                 imgLanguage.setImageResource(R.drawable.ic_flag_ru)
                 txtEmpty.text = getString(R.string.txt_empty_ru)
-                list = productsListRu
                 txtTitle.text = getString(R.string.txt_gulf_oil_products_ru)
+                txtNameContact.text = getString(R.string.txt_contacts_ru)
             }
         }
-
-        txtEmpty.visible(list.isEmpty())
-        adapter.setData(list)
     }
 
     override fun onPause() {

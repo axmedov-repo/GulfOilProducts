@@ -5,6 +5,6 @@ import java.io.Serializable
 
 @Keep
 data class SubProductData(
-    val id : Int,
-    val name : String
+    val id: Int,
+    val name: String
 ) : Serializable

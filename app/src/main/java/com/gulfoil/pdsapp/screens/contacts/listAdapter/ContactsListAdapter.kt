@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.gulfoil.pdsapp.data.entities.ContactData
+import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponseItem
 import com.gulfoil.pdsapp.databinding.ItemContactBinding
 import com.gulfoil.pdsapp.utils.gone
 import com.gulfoil.pdsapp.utils.scope
 
-class ContactsListAdapter : ListAdapter<ContactData, ContactsListAdapter.ContactViewHolder>(ContactItemDiffCallback()) {
+class ContactsListAdapter :
+    ListAdapter<RegionalContactResponseItem, ContactsListAdapter.ContactViewHolder>(ContactItemDiffCallback()) {
 
     private var phoneClickedListener: ((String) -> Unit)? = null
     fun setPhoneClickedListener(f: (String) -> Unit) {
@@ -35,33 +36,43 @@ class ContactsListAdapter : ListAdapter<ContactData, ContactsListAdapter.Contact
         init {
             binding.scope {
                 txtPhone.setOnClickListener {
-                    phoneClickedListener?.invoke(getItem(absoluteAdapterPosition).phone)
+                    if (!getItem(absoluteAdapterPosition).phone.isNullOrEmpty()) {
+                        phoneClickedListener?.invoke(getItem(absoluteAdapterPosition).phone.toString())
+                    }
                 }
                 txtEmail.setOnClickListener {
-                    emailClickedListener?.invoke(getItem(absoluteAdapterPosition).email)
+                    if (!getItem(absoluteAdapterPosition).email.isNullOrEmpty()) {
+                        emailClickedListener?.invoke(getItem(absoluteAdapterPosition).email.toString())
+                    }
                 }
             }
         }
 
-        fun bindData(contact: ContactData) = binding.scope {
+        fun bindData(contact: RegionalContactResponseItem) = binding.scope {
             txtLocation.text = contact.location
             txtName.text = contact.name
             txtPhone.text = contact.phone
+            txtEmail.text = contact.email
 
-            if (contact.email.isEmpty() || contact.email.isBlank()) {
+            if (contact.email.isNullOrEmpty() || contact.email.isNullOrBlank()) {
                 txtEmail.gone()
             }
-            txtEmail.text = contact.email
+            if (contact.phone.isNullOrEmpty() || contact.phone.isNullOrBlank()) {
+                txtPhone.gone()
+            }
         }
     }
 }
 
-class ContactItemDiffCallback : DiffUtil.ItemCallback<ContactData>() {
-    override fun areItemsTheSame(oldItem: ContactData, newItem: ContactData): Boolean {
+class ContactItemDiffCallback : DiffUtil.ItemCallback<RegionalContactResponseItem>() {
+    override fun areItemsTheSame(oldItem: RegionalContactResponseItem, newItem: RegionalContactResponseItem): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: ContactData, newItem: ContactData): Boolean {
+    override fun areContentsTheSame(
+        oldItem: RegionalContactResponseItem,
+        newItem: RegionalContactResponseItem
+    ): Boolean {
         return oldItem == newItem
     }
 }

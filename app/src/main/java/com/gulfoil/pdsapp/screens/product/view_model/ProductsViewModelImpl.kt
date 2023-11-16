@@ -2,23 +2,49 @@ package com.gulfoil.pdsapp.screens.product.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.gulfoil.pdsapp.data.cache.LocalStorage
+import androidx.lifecycle.viewModelScope
+import com.gulfoil.pdsapp.data.remote.responses.ProductResponse
 import com.gulfoil.pdsapp.data.enums.Languages
+import com.gulfoil.pdsapp.domain.MainRepository
+import com.gulfoil.pdsapp.utils.isConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModelImpl @Inject constructor(
-    private val localStorage: LocalStorage
+    private val mainRepository: MainRepository
 ) : ProductsViewModel, ViewModel() {
+    override val productsLiveData = MutableLiveData<ProductResponse>()
+    override val progressLiveData = MutableLiveData<Boolean>()
+    override val errorLiveData = MutableLiveData<String>()
+
+    override fun getProducts() {
+        progressLiveData.value = true
+        if (!isConnected()) {
+            progressLiveData.value = false
+        } else {
+            mainRepository.getProducts().onEach {
+                it.onSuccess {
+                    productsLiveData.value = it
+                    progressLiveData.value = false
+                }
+                it.onFailure {
+                    errorLiveData.value = it.message
+                    progressLiveData.value = false
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
 
     override val lastLanguageLiveData = MutableLiveData<Languages>()
 
     override fun setLanguage(language: Languages) {
-        localStorage.appLanguage = language
+        mainRepository.setLanguage(language)
     }
 
     override fun getLanguage() {
-        lastLanguageLiveData.value = localStorage.appLanguage
+        lastLanguageLiveData.value = mainRepository.getLanguage()
     }
 }

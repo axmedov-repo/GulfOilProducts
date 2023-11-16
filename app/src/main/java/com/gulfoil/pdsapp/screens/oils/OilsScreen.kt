@@ -13,25 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.data.entities.AdsData
-import com.gulfoil.pdsapp.data.entities.NewOilData
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.enums.ProductTypes
 import com.gulfoil.pdsapp.databinding.ScreenOilsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModel
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModelImpl
 import com.gulfoil.pdsapp.utils.adsDataList
-import com.gulfoil.pdsapp.utils.automaticTransmissionListEn
-import com.gulfoil.pdsapp.utils.automaticTransmissionListRu
-import com.gulfoil.pdsapp.utils.commercialCarListEn
-import com.gulfoil.pdsapp.utils.commercialCarListRu
 import com.gulfoil.pdsapp.utils.hideKeyboard
-import com.gulfoil.pdsapp.utils.hydraulicBrakeFluidListEn
-import com.gulfoil.pdsapp.utils.hydraulicBrakeFluidListRu
-import com.gulfoil.pdsapp.utils.passengerCarListEn
-import com.gulfoil.pdsapp.utils.passengerCarListRu
-import com.gulfoil.pdsapp.utils.radiatorCoolantListEn
-import com.gulfoil.pdsapp.utils.radiatorCoolantListRu
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.showKeyboard
 import com.gulfoil.pdsapp.utils.timber
@@ -51,7 +39,6 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private val args by navArgs<OilsScreenArgs>()
     private val oilsAdapter by lazy { OilsAdapter() }
     private var language: Languages = Languages.ENGLISH
-    private var list: List<NewOilData> = ArrayList()
 
     private lateinit var adsAdapter: AdsAdapter
     private val adsList = ArrayList<AdsData>()
@@ -61,7 +48,6 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private var job: Job? = null
 
     private var isKeyboardOpen = false
-    private var queryHint: String = ""
     private var searchingText = ""
     private var isSearching = false
     private var closingByUnFocusing: Boolean = false
@@ -76,6 +62,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         super.onResume()
         timber("OnResume", "sdjksjdkds")
         viewModel.getLanguage()
+        getOils()
         startAutoScroll()
     }
 
@@ -96,7 +83,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             searchView.setQuery("", false)
             searchView.clearFocus()
             searchView.isIconified = true
-            findNavController().navigate(OilsScreenDirections.actionOilsScreenToPdfScreen(it.pdsLink))
+            findNavController().navigate(OilsScreenDirections.actionOilsScreenToPdfScreen(it.id))
         }
 
         btnBack.setOnClickListener {
@@ -106,12 +93,14 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         imgLanguage.setOnClickListener {
             if (language == Languages.ENGLISH) {
                 language = Languages.RUSSIAN
-                setData()
                 viewModel.setLanguage(language)
+                setData()
+                getOils()
             } else {
                 language = Languages.ENGLISH
-                setData()
                 viewModel.setLanguage(language)
+                setData()
+                getOils()
             }
         }
 
@@ -150,29 +139,13 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             searchingText = ""
             searchView.setQuery(null, false)
             searchView.clearFocus()
-            setData()
+            getOils()
             hideKeyboard()
             isKeyboardOpen = false
         }
     }
 
     private fun startAutoScroll() {
-//        val runnable = object : Runnable {
-//            override fun run() {
-//                val itemCount = oilsAdapter.itemCount
-//                if (currentPage == itemCount - 1) {
-//                    currentPage = 0
-//                    binding.vp.setCurrentItem(currentPage, false)
-//                    handler!!.postDelayed(this, delayMillis)
-//                } else {
-//                    currentPage++
-//                    binding.vp.setCurrentItem(currentPage, true)
-//                    handler!!.postDelayed(this, delayMillis)
-//                }
-//            }
-//        }
-//        handler!!.postDelayed(runnable, delayMillis)
-
         job = CoroutineScope(Dispatchers.Main).launch {
             delay(delayMillis)
 
@@ -192,9 +165,26 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     }
 
     private fun setModels() = binding.scope {
-        viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
-            language = it
-            setData()
+        viewModel.apply {
+            oilsLiveData.observe(viewLifecycleOwner) {
+                txtEmpty.visible(it.isEmpty())
+                oilsAdapter.setData(it)
+            }
+            searchResponseLiveData.observe(viewLifecycleOwner) {
+                txtEmpty.visible(it.isEmpty())
+                oilsAdapter.setData(it)
+            }
+            progressLiveData.observe(viewLifecycleOwner) {
+                progressBar.visible(it)
+            }
+            errorLiveData.observe(viewLifecycleOwner) {
+                // TODO: Handle Error
+            }
+            lastLanguageLiveData.observe(viewLifecycleOwner) {
+                language = it
+                setData()
+                getOils()
+            }
         }
     }
 
@@ -208,13 +198,13 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                         search(searchingText)
                     } else {
                         searchingText = ""
-                        setData()
+                        getOils()
                     }
                     hideKeyboard()
                     isKeyboardOpen = false
                 } else {
                     searchingText = ""
-                    setData()
+                    getOils()
                 }
                 return true
             }
@@ -227,11 +217,11 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                         search(searchingText)
                     } else {
                         searchingText = ""
-                        setData()
+                        getOils()
                     }
                 } else {
                     searchingText = ""
-                    setData()
+                    getOils()
                 }
                 return true
             }
@@ -239,9 +229,15 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     }
 
     private fun search(text: String) {
-        val filteredList = list.filter { it.name.lowercase().contains(text.lowercase()) }
-        binding.txtEmpty.visible(filteredList.isEmpty())
-        oilsAdapter.setData(filteredList)
+        viewModel.searchOil(args.productId, text)
+    }
+
+    private fun getOils() {
+        if (searchingText.isNotEmpty()) {
+            search(searchingText)
+        } else {
+            viewModel.getOils(args.productId)
+        }
     }
 
     private fun setData() = binding.scope {
@@ -249,73 +245,12 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             imgLanguage.setImageResource(R.drawable.ic_flag_en)
             txtEmpty.text = getString(R.string.txt_empty_en)
             txtTitle.text = getString(R.string.txt_gulf_oil_products_en)
-            queryHint = getString(R.string.txt_search_en)
-
-            when (args.productType) {
-                ProductTypes.PASSENGER_CAR -> {
-                    list = passengerCarListEn
-                }
-
-                ProductTypes.COMMERCIAL -> {
-                    list = commercialCarListEn
-                }
-
-                ProductTypes.AUTOMATIC_TRANSMISSION -> {
-                    list = automaticTransmissionListEn
-                }
-
-                ProductTypes.HYDRAULIC_BRAKE_FLUID -> {
-                    list = hydraulicBrakeFluidListEn
-                }
-
-                ProductTypes.RADIATOR_COOLANT -> {
-                    list = radiatorCoolantListEn
-                }
-
-                else -> {
-
-                }
-            }
+            searchView.queryHint = getString(R.string.txt_search_en)
         } else {
             imgLanguage.setImageResource(R.drawable.ic_flag_ru)
             txtTitle.text = getString(R.string.txt_gulf_oil_products_ru)
             txtEmpty.text = getString(R.string.txt_empty_ru)
-            queryHint = getString(R.string.txt_search_ru)
-
-            when (args.productType) {
-                ProductTypes.PASSENGER_CAR -> {
-                    list = passengerCarListRu
-                }
-
-                ProductTypes.COMMERCIAL -> {
-                    list = commercialCarListRu
-                }
-
-                ProductTypes.AUTOMATIC_TRANSMISSION -> {
-                    list = automaticTransmissionListRu
-                }
-
-                ProductTypes.HYDRAULIC_BRAKE_FLUID -> {
-                    list = hydraulicBrakeFluidListRu
-                }
-
-                ProductTypes.RADIATOR_COOLANT -> {
-                    list = radiatorCoolantListRu
-                }
-
-                else -> {
-
-                }
-            }
-        }
-
-        searchView.queryHint = queryHint
-        txtEmpty.visible(list.isEmpty())
-
-        if (searchingText.isNotEmpty()) {
-            search(searchingText)
-        } else {
-            oilsAdapter.setData(list)
+            searchView.queryHint = getString(R.string.txt_search_ru)
         }
     }
 

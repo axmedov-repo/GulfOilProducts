@@ -1,5 +1,6 @@
-package com.gulfoil.pdsapp.screens.pdf
+package com.gulfoil.pdsapp.screens.pds
 
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -11,13 +12,13 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.data.entities.AdsData
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.databinding.ScreenPdfBinding
+import com.gulfoil.pdsapp.databinding.ScreenPdsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
-import com.gulfoil.pdsapp.screens.pdf.viewmodel.PdfViewModel
-import com.gulfoil.pdsapp.screens.pdf.viewmodel.PdfViewModelImpl
+import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModel
+import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModelImpl
 import com.gulfoil.pdsapp.utils.adsDataList
 import com.gulfoil.pdsapp.utils.scope
-import com.gulfoil.pdsapp.utils.timber
+import com.gulfoil.pdsapp.utils.showToast
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,10 +29,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PdfScreen : Fragment(R.layout.screen_pdf) {
-    private val binding by viewBinding(ScreenPdfBinding::bind)
-    private val viewModel: PdfViewModel by viewModels<PdfViewModelImpl>()
-    private val args by navArgs<PdfScreenArgs>()
+class PdsScreen : Fragment(R.layout.screen_pds) {
+    private val binding by viewBinding(ScreenPdsBinding::bind)
+    private val viewModel: PdsViewModel by viewModels<PdsViewModelImpl>()
+    private val args by navArgs<PdsScreenArgs>()
     private var language: Languages = Languages.ENGLISH
 
     private lateinit var adsAdapter: AdsAdapter
@@ -50,6 +51,7 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
     override fun onResume() {
         super.onResume()
         viewModel.getLanguage()
+        viewModel.getPds(args.oilId)
         startAutoScroll()
     }
 
@@ -62,8 +64,6 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
         vp.isUserInputEnabled = false
         handler = Handler()
 
-        setPdf(args.pdfName)
-
         btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -71,12 +71,14 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
         imgLanguage.setOnClickListener {
             if (language == Languages.ENGLISH) {
                 language = Languages.RUSSIAN
-                setData()
                 viewModel.setLanguage(language)
+                setData()
+                viewModel.getPds(args.oilId)
             } else {
                 language = Languages.ENGLISH
-                setData()
                 viewModel.setLanguage(language)
+                setData()
+                viewModel.getPds(args.oilId)
             }
         }
     }
@@ -101,9 +103,24 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
     }
 
     private fun setModels() = binding.scope {
-        viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
-            language = it
-            setData()
+        viewModel.apply {
+            pdsLiveData.observe(viewLifecycleOwner) {
+                if (it.pdf.isNullOrEmpty()) {
+                    txtEmpty.visible()
+                } else {
+                    setPdf(it.pdf)
+                }
+            }
+            progressLiveData.observe(viewLifecycleOwner) {
+                progressBar.visible(it)
+            }
+            errorLiveData.observe(viewLifecycleOwner) {
+
+            }
+            lastLanguageLiveData.observe(viewLifecycleOwner) {
+                language = it
+                setData()
+            }
         }
     }
 
@@ -113,32 +130,22 @@ class PdfScreen : Fragment(R.layout.screen_pdf) {
                 txtTitle.text = getString(R.string.txt_specifications_en)
                 txtEmpty.text = getString(R.string.txt_empty_en)
                 imgLanguage.setImageResource(R.drawable.ic_flag_en)
-                if (args.pdfName.isEmpty()) {
-                    txtEmpty.visible()
-                } else {
-                    setPdf(args.pdfName.replace(Languages.RUSSIAN.brief, Languages.ENGLISH.brief))
-                }
             }
 
             Languages.RUSSIAN -> {
                 txtTitle.text = getString(R.string.txt_specifications_ru)
                 txtEmpty.text = getString(R.string.txt_empty_ru)
                 imgLanguage.setImageResource(R.drawable.ic_flag_ru)
-                if (args.pdfName.isEmpty()) {
-                    txtEmpty.visible()
-                } else {
-                    setPdf(args.pdfName.replace(Languages.ENGLISH.brief, Languages.RUSSIAN.brief))
-                }
             }
         }
     }
 
     private fun setPdf(value: String) = binding.scope {
-        timber(args.pdfName, "skdskdlskdlskld")
-
-        pdfView.fromAsset(value)
-            .nightMode(false) // toggle night mode
+//        if (URLUtil.isValidUrl(value)) {
+        showToast(value)
+        pdfView.fromUri(Uri.parse(value)).nightMode(false) // toggle night mode
             .load()
+//        }
     }
 
     override fun onPause() {

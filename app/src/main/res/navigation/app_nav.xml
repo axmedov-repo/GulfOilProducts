@@ -26,17 +26,17 @@
             android:id="@+id/action_oilsScreen_to_pdfScreen"
             app:destination="@id/pdfScreen" />
         <argument
-            android:name="productType"
-            app:argType="com.gulfoil.pdsapp.data.enums.ProductTypes" />
+            android:name="productId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/pdfScreen"
-        android:name="com.gulfoil.pdsapp.screens.pdf.PdfScreen"
+        android:name="com.gulfoil.pdsapp.screens.pds.PdsScreen"
         android:label="screen_pdf"
-        tools:layout="@layout/screen_pdf" >
+        tools:layout="@layout/screen_pds" >
         <argument
-            android:name="pdfName"
-            app:argType="string" />
+            android:name="oilId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/splashScreen"

@@ -1,12 +1,11 @@
 package com.gulfoil.pdsapp.data.remote
 
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.gulfoil.pdsapp.BuildConfig.BASE_URL
 import com.gulfoil.pdsapp.BuildConfig.LOGGING
 import com.gulfoil.pdsapp.app.App
-import com.gulfoil.pdsapp.data.cache.LocalStorage
 import com.gulfoil.pdsapp.utils.timber
-import com.chuckerteam.chucker.api.ChuckerCollector
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,7 +13,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private val localStorage = LocalStorage()
 
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)

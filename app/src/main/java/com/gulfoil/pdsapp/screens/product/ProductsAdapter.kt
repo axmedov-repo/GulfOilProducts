@@ -1,29 +1,24 @@
 package com.gulfoil.pdsapp.screens.product
 
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.gulfoil.pdsapp.R
-import com.gulfoil.pdsapp.app.App
-import com.gulfoil.pdsapp.data.entities.ProductData
-import com.gulfoil.pdsapp.data.enums.ProductTypes
+import com.bumptech.glide.Glide
+import com.gulfoil.pdsapp.data.remote.responses.ProductResponseItem
 import com.gulfoil.pdsapp.databinding.ItemProductBinding
 import com.gulfoil.pdsapp.utils.scope
 
 class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.VH>() {
-    private val list = ArrayList<ProductData>()
+    private val list = ArrayList<ProductResponseItem>()
 
-    fun setData(newList: List<ProductData>) {
+    fun setData(newList: List<ProductResponseItem>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()
     }
 
-    private var itemClickedListener: ((ProductData) -> Unit)? = null
-    fun setItemClickedListener(f: (ProductData) -> Unit) {
+    private var itemClickedListener: ((ProductResponseItem) -> Unit)? = null
+    fun setItemClickedListener(f: (ProductResponseItem) -> Unit) {
         itemClickedListener = f
     }
 
@@ -36,22 +31,7 @@ class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.VH>() {
 
         fun bind() = binding.scope {
             val data = list[absoluteAdapterPosition]
-            if (data.productType == ProductTypes.CONTACT) {
-                itemView.setBackgroundResource(R.drawable.bg_item_products_contact)
-                txtNameProduct.setTextColor(ContextCompat.getColor(App.instance, R.color.white))
-                imgProduct.setColorFilter(
-                    ContextCompat.getColor(App.instance, R.color.white),
-                    PorterDuff.Mode.SRC_IN
-                )
-            } else {
-                itemView.setBackgroundResource(R.drawable.bg_item_products)
-                txtNameProduct.setTextColor(ContextCompat.getColorStateList(App.instance, R.color.product_txt_color))
-                imgProduct.colorFilter = PorterDuffColorFilter(
-                    ContextCompat.getColorStateList(App.instance, R.color.product_img_color)!!.defaultColor,
-                    PorterDuff.Mode.SRC_IN
-                )
-            }
-            imgProduct.setImageResource(data.image)
+            Glide.with(imgProduct.context).load(data.image).into(imgProduct)
             txtNameProduct.text = data.name
         }
     }

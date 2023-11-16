@@ -3,21 +3,21 @@ package com.gulfoil.pdsapp.screens.oils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.gulfoil.pdsapp.data.entities.NewOilData
+import com.gulfoil.pdsapp.data.remote.responses.OilResponseItem
 import com.gulfoil.pdsapp.databinding.ItemOilsBinding
 import com.gulfoil.pdsapp.utils.scope
 
 class OilsAdapter : RecyclerView.Adapter<OilsAdapter.VH>() {
-    private val list = ArrayList<NewOilData>()
+    private val list = ArrayList<OilResponseItem>()
 
-    fun setData(newList: List<NewOilData>) {
+    fun setData(newList: List<OilResponseItem>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()
     }
 
-    private var itemClickedListener: ((NewOilData) -> Unit)? = null
-    fun setItemClickedListener(f: (NewOilData) -> Unit) {
+    private var itemClickedListener: ((OilResponseItem) -> Unit)? = null
+    fun setItemClickedListener(f: (OilResponseItem) -> Unit) {
         itemClickedListener = f
     }
 

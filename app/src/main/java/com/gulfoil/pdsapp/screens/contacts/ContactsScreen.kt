@@ -15,9 +15,9 @@ import com.gulfoil.pdsapp.databinding.ScreenContactsBinding
 import com.gulfoil.pdsapp.screens.contacts.listAdapter.ContactsListAdapter
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModel
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModelImpl
-import com.gulfoil.pdsapp.utils.contactsList
 import com.gulfoil.pdsapp.utils.getCurrentCountryCode
 import com.gulfoil.pdsapp.utils.scope
+import com.gulfoil.pdsapp.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,7 +35,8 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
     override fun onResume() {
         super.onResume()
         viewModel.getLanguage()
-//        viewModel.getCountry()
+        viewModel.getPublicContacts()
+        viewModel.getRegionalContacts(getCurrentCountryCode())
     }
 
     private fun setViews() = binding.scope {
@@ -61,35 +62,6 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         txtHeadContactWebsite.setOnClickListener {
             openWebsite(txtHeadContactWebsite.text.toString())
         }
-
-//        spinnerView.setItems(CountriesEnum.values().map { it.title })
-//        spinnerView.setOnFocusChangeListener { view, b ->
-//            if (!b) {
-//                spinnerView.dismiss()
-//            }
-//        }
-//        spinnerView.setOnSpinnerItemSelectedListener<String> { oldIndex, oldItem, newIndex, newItem ->
-//            showToast(newItem)
-//        }
-
-//        val spinnerAdapter =
-//            ArrayAdapter(requireContext(), R.layout.item_spinner, CountriesEnum.values().map { it.title })
-//        simpleSpinner.adapter = spinnerAdapter
-//        simpleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                val country = CountriesEnum.values()[position]
-//                viewModel.setCountry(country)
-//                contactsListAdapter.submitList(contactsList.filter { it.country == country })
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//                // Handle when nothing is selected
-//            }
-//        }
-//
-//        txtChangeCountry.setOnClickListener {
-//            simpleSpinner.performClick()
-//        }
     }
 
     private fun openPhone(phone: String) {
@@ -114,13 +86,25 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
     }
 
     private fun setModels() = binding.scope {
-//        viewModel.countryLiveData.observe(viewLifecycleOwner) { country ->
-//            simpleSpinner.setSelection(CountriesEnum.values().indexOf(country))
-//        }
-
-        contactsListAdapter.submitList(contactsList.filter { it.country.code.lowercase() == getCurrentCountryCode().lowercase() })
+        viewModel.publicContactsLiveData.observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty()) {
+                txtHeadContactLocation.text = it.first().address
+                txtHeadContactWebsite.text = it.first().website
+                txtHeadContactEmail.text = it.first().email
+                txtHeadContactPhone.text = it.first().phone
+            }
+        }
+        viewModel.regionalContactsLiveData.observe(viewLifecycleOwner) {
+            contactsListAdapter.submitList(it)
+        }
         viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
             setData(it)
+        }
+        viewModel.progressLiveData.observe(viewLifecycleOwner) {
+            progressBar.visible(it)
+        }
+        viewModel.errorLiveData.observe(viewLifecycleOwner) {
+            // TODO: Hande Error
         }
     }
 
@@ -137,9 +121,4 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
             }
         }
     }
-
-//    override fun onPause() {
-//        super.onPause()
-//        binding.spinnerView.dismiss()
-//    }
 }

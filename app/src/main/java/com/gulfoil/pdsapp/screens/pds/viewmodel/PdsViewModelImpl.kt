@@ -1,11 +1,10 @@
-package com.gulfoil.pdsapp.screens.contacts.viewmodel
+package com.gulfoil.pdsapp.screens.pds.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.PublicContactResponse
-import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponse
+import com.gulfoil.pdsapp.data.remote.responses.PdsResponse
 import com.gulfoil.pdsapp.domain.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,24 +13,22 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactsViewModelImpl @Inject constructor(
+class PdsViewModelImpl @Inject constructor(
     private val mainRepository: MainRepository
-) : ContactsViewModel, ViewModel() {
-
-    override val publicContactsLiveData = MutableLiveData<PublicContactResponse>()
-    override val regionalContactsLiveData = MutableLiveData<RegionalContactResponse>()
+) : PdsViewModel, ViewModel() {
+    override val pdsLiveData = MutableLiveData<PdsResponse>()
     override val progressLiveData = MutableLiveData<Boolean>()
     override val errorLiveData = MutableLiveData<String>()
     override val lastLanguageLiveData = MutableLiveData<Languages>()
 
-    override fun getPublicContacts() {
+    override fun getPds(oilId: Int) {
         progressLiveData.value = true
         if (!isConnected()) {
             progressLiveData.value = false
         } else {
-            mainRepository.getPublicContact().onEach {
+            mainRepository.getPDS(oilId).onEach {
                 it.onSuccess {
-                    publicContactsLiveData.value = it
+                    pdsLiveData.value = it
                     progressLiveData.value = false
                 }
                 it.onFailure {
@@ -42,22 +39,8 @@ class ContactsViewModelImpl @Inject constructor(
         }
     }
 
-    override fun getRegionalContacts(regionCode: String) {
-        progressLiveData.value = true
-        if (!isConnected()) {
-            progressLiveData.value = false
-        } else {
-            mainRepository.getRegionalContact(regionCode).onEach {
-                it.onSuccess {
-                    regionalContactsLiveData.value = it
-                    progressLiveData.value = false
-                }
-                it.onFailure {
-                    errorLiveData.value = it.message
-                    progressLiveData.value = false
-                }
-            }.launchIn(viewModelScope)
-        }
+    override fun setLanguage(language: Languages) {
+        mainRepository.setLanguage(language)
     }
 
     override fun getLanguage() {
