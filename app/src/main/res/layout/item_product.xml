@@ -29,22 +29,21 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProduct"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
             android:layout_gravity="center"
-            android:padding="4dp"
             tools:src="@drawable/ic_car" />
 
     </FrameLayout>
 
-  <!--      <ImageView
-            android:id="@+id/imgProduct"
-            android:layout_width="80dp"
-            android:layout_height="44dp"
-            android:adjustViewBounds="true"
-            app:tint="@color/product_img_color"
-            tools:src="@drawable/ic_car" />
--->
+    <!--      <ImageView
+              android:id="@+id/imgProduct"
+              android:layout_width="80dp"
+              android:layout_height="44dp"
+              android:adjustViewBounds="true"
+              app:tint="@color/product_img_color"
+              tools:src="@drawable/ic_car" />
+  -->
     <TextView
         android:id="@+id/txtNameProduct"
         android:layout_width="match_parent"

@@ -2,15 +2,16 @@ package com.gulfoil.pdsapp.screens.pds.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.PdsResponse
+import java.io.InputStream
 
 interface PdsViewModel {
-    val pdsLiveData: LiveData<PdsResponse>
+    val pdsLiveData: LiveData<InputStream>
     val progressLiveData: LiveData<Boolean>
     val errorLiveData: LiveData<String>
+    val emptyLiveData: LiveData<Boolean>
     val lastLanguageLiveData: LiveData<Languages>
 
-    fun getPds(oilId : Int)
+    fun getPds(oilId: Int)
     fun setLanguage(language: Languages)
     fun getLanguage()
 }

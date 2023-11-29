@@ -22,12 +22,10 @@ import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.net.URL
+import java.io.InputStream
 
 @AndroidEntryPoint
 class PdsScreen : Fragment(R.layout.screen_pds) {
@@ -106,17 +104,16 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
     private fun setModels() = binding.scope {
         viewModel.apply {
             pdsLiveData.observe(viewLifecycleOwner) {
-                if (it.pdf.isNullOrEmpty()) {
-                    txtEmpty.visible()
-                } else {
-                    setPdf(it.pdf)
-                }
+                setPdf(it)
             }
             progressLiveData.observe(viewLifecycleOwner) {
                 progressBar.visible(it)
             }
             errorLiveData.observe(viewLifecycleOwner) {
 
+            }
+            emptyLiveData.observe(viewLifecycleOwner) {
+                txtEmpty.visible(it)
             }
             lastLanguageLiveData.observe(viewLifecycleOwner) {
                 language = it
@@ -141,22 +138,8 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
         }
     }
 
-    private fun setPdf(value: String) = binding.scope {
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                // Perform your background task here
-                val input = URL(value).openStream()
-
-                withContext(Dispatchers.Main) {
-                    // Update UI components here (if needed) before loading the PDF
-                    pdfView.fromStream(input).load()
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                // Handle exceptions appropriately
-            }
-        }
+    private fun setPdf(inputStream: InputStream) = binding.scope {
+        pdfView.fromStream(inputStream).load()
     }
 
     override fun onPause() {
