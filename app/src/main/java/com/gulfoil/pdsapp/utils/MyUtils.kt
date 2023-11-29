@@ -21,6 +21,10 @@ fun Fragment.showToast(message: String) {
     Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
 }
 
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
 //@SuppressLint("WrongConstant")
 //fun Fragment.showFancyToast(
 //    message: String,

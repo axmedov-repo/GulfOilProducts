@@ -23,7 +23,7 @@ object ApiClient {
 
     private fun getHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-//            .addChucker()
+            .addChucker()
             .addLogging()
             .build()
     }

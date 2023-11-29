@@ -1,6 +1,5 @@
 package com.gulfoil.pdsapp.screens.pds
 
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -18,15 +17,17 @@ import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModel
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModelImpl
 import com.gulfoil.pdsapp.utils.adsDataList
 import com.gulfoil.pdsapp.utils.scope
-import com.gulfoil.pdsapp.utils.showToast
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.net.URL
 
 @AndroidEntryPoint
 class PdsScreen : Fragment(R.layout.screen_pds) {
@@ -141,11 +142,21 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
     }
 
     private fun setPdf(value: String) = binding.scope {
-//        if (URLUtil.isValidUrl(value)) {
-        showToast(value)
-        pdfView.fromUri(Uri.parse(value)).nightMode(false) // toggle night mode
-            .load()
-//        }
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                // Perform your background task here
+                val input = URL(value).openStream()
+
+                withContext(Dispatchers.Main) {
+                    // Update UI components here (if needed) before loading the PDF
+                    pdfView.fromStream(input).load()
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Handle exceptions appropriately
+            }
+        }
     }
 
     override fun onPause() {

@@ -31,7 +31,9 @@ class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.VH>() {
 
         fun bind() = binding.scope {
             val data = list[absoluteAdapterPosition]
-            Glide.with(imgProduct.context).load(data.image).into(imgProduct)
+            Glide.with(imgProduct.context)
+                .load(data.image)
+                .into(imgProduct)
             txtNameProduct.text = data.name
         }
     }

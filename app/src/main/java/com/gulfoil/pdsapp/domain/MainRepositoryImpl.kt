@@ -60,7 +60,7 @@ class MainRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override fun getRegionalContact(regionCode: String): Flow<Result<RegionalContactResponse>> = flow {
-        val response = apiService.getRegionalContact(localStorage.appLanguage.brief, regionCode)
+        val response = apiService.getRegionalContact(localStorage.appLanguage.brief, regionCode.uppercase())
         if (response.isSuccessful && response.body() != null) {
             emit(Result.success(response.body()!!))
         } else {

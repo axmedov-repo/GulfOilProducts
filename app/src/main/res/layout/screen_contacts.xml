@@ -156,7 +156,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/helvetica_neue_medium"
-                        android:text="Gulf Oil Middle East Ltd.
+                        tools:text="Gulf Oil Middle East Ltd.
 1502-08, Regal Tower, Business Bay, Dubai, UAE"
                         android:textColor="@color/blue" />
 
@@ -183,7 +183,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/helvetica_neue_medium"
-                        android:text="www.me.gulfoilltd.com"
+                        tools:text="www.me.gulfoilltd.com"
                         android:textColor="@color/blue" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -210,7 +210,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/helvetica_neue_medium"
-                        android:text="marketing@gulfoiluae.com"
+                        tools:text="marketing@gulfoiluae.com"
                         android:textColor="@color/blue" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -237,7 +237,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/helvetica_neue_medium"
-                        android:text="+971 4 8838385"
+                        tools:text="+971 4 8838385"
                         android:textColor="@color/blue" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>

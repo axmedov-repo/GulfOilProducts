@@ -80,10 +80,12 @@ dependencies {
 
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // GlideToVector
+//    implementation("com.github.corouteam:GlideToVectorYou:v2.0.0")
 
     // PDF Viewer
-    implementation("com.github.barteksc:android-pdf-viewer:3.2.0-beta.1")
+    implementation("com.github.barteksc:android-pdf-viewer:2.8.2")
 
     // ViewPager Page Transformer
     implementation("danny.view-pager-2-page-transformers:horizontal-transformers:1.0.0")
@@ -121,6 +123,9 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.47")
     kapt("com.google.dagger:hilt-compiler:2.48")
+
+    // CircleView
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }
 
 kapt {

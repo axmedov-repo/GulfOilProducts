@@ -8,16 +8,43 @@
     android:background="@drawable/bg_item_products"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp">
 
-    <ImageView
-        android:id="@+id/imgProduct"
-        android:layout_width="80dp"
-        android:layout_height="44dp"
-        android:adjustViewBounds="true"
-        app:tint="@color/product_img_color"
-        tools:src="@drawable/ic_car" />
+    <FrameLayout
+        android:id="@+id/frameImageProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_stroke_child_img" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:padding="4dp"
+            tools:src="@drawable/ic_car" />
+
+    </FrameLayout>
+
+  <!--      <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="80dp"
+            android:layout_height="44dp"
+            android:adjustViewBounds="true"
+            app:tint="@color/product_img_color"
+            tools:src="@drawable/ic_car" />
+-->
     <TextView
         android:id="@+id/txtNameProduct"
         android:layout_width="match_parent"
@@ -27,7 +54,7 @@
         android:gravity="center"
         android:text="Cars"
         android:textColor="@color/product_txt_color"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
