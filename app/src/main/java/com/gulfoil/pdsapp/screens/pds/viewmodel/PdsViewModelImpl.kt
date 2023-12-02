@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gulfoil.pdsapp.data.enums.Languages
+import com.gulfoil.pdsapp.data.remote.responses.AdResponse
 import com.gulfoil.pdsapp.domain.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ class PdsViewModelImpl @Inject constructor(
     override val emptyLiveData = MutableLiveData<Boolean>()
     override val errorLiveData = MutableLiveData<String>()
     override val lastLanguageLiveData = MutableLiveData<Languages>()
+    override val adResponseLiveData = MutableLiveData<AdResponse>()
 
     override fun getPds(oilId: Int) {
         progressLiveData.value = true
@@ -52,6 +54,24 @@ class PdsViewModelImpl @Inject constructor(
                             }
                         }
                     }
+                }
+                it.onFailure {
+                    errorLiveData.value = it.message
+                    progressLiveData.value = false
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    override fun getAds() {
+        progressLiveData.value = true
+        if (!isConnected()) {
+            progressLiveData.value = false
+        } else {
+            mainRepository.getAds().onEach {
+                it.onSuccess {
+                    adResponseLiveData.value = it
+                    progressLiveData.value = false
                 }
                 it.onFailure {
                     errorLiveData.value = it.message

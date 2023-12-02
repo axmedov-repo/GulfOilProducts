@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,13 +13,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
-import com.gulfoil.pdsapp.data.entities.AdsData
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.databinding.ScreenOilsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModel
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModelImpl
-import com.gulfoil.pdsapp.utils.adsDataList
 import com.gulfoil.pdsapp.utils.hideKeyboard
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.showKeyboard
@@ -41,7 +40,6 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private var language: Languages = Languages.ENGLISH
 
     private lateinit var adsAdapter: AdsAdapter
-    private val adsList = ArrayList<AdsData>()
     private var handler: Handler? = null
     private var currentPage = 0
     private val delayMillis: Long = 3000
@@ -63,18 +61,11 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         timber("OnResume", "sdjksjdkds")
         viewModel.getLanguage()
         getOils()
+        viewModel.getAds()
         startAutoScroll()
     }
 
     private fun setViews() = binding.scope {
-        adsList.clear()
-        adsList.addAll(adsDataList)
-        adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
-        vp.adapter = adsAdapter
-        vp.setPageTransformer(DepthTransformer())
-        vp.isUserInputEnabled = false
-        handler = Handler()
-
         rvOils.layoutManager = LinearLayoutManager(requireContext())
         rvOils.adapter = oilsAdapter
         oilsAdapter.setItemClickedListener {
@@ -153,11 +144,11 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                 val itemCount = oilsAdapter.itemCount
                 if (currentPage == itemCount - 1) {
                     currentPage = 0
-                    binding.vp.setCurrentItem(currentPage, false)
+                    binding.adsVP.setCurrentItem(currentPage, false)
                     delay(delayMillis)
                 } else {
                     currentPage++
-                    binding.vp.setCurrentItem(currentPage, true)
+                    binding.adsVP.setCurrentItem(currentPage, true)
                     delay(delayMillis)
                 }
             }
@@ -184,6 +175,13 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                 language = it
                 setData()
                 getOils()
+            }
+            adResponseLiveData.observe(viewLifecycleOwner) { adsList ->
+                adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
+                adsVP.adapter = adsAdapter
+                adsVP.setPageTransformer(DepthTransformer())
+                adsVP.isUserInputEnabled = false
+                handler = Handler()
             }
         }
     }

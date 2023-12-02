@@ -3,19 +3,18 @@ package com.gulfoil.pdsapp.screens.pds
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
-import com.gulfoil.pdsapp.data.entities.AdsData
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.databinding.ScreenPdsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModel
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModelImpl
-import com.gulfoil.pdsapp.utils.adsDataList
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
@@ -35,7 +34,6 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
     private var language: Languages = Languages.ENGLISH
 
     private lateinit var adsAdapter: AdsAdapter
-    private val adsList = ArrayList<AdsData>()
     private var handler: Handler? = null
     private var currentPage = 0
     private val delayMillis: Long = 3000
@@ -51,18 +49,11 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
         super.onResume()
         viewModel.getLanguage()
         viewModel.getPds(args.oilId)
+        viewModel.getAds()
         startAutoScroll()
     }
 
     private fun setViews() = binding.scope {
-        adsList.clear()
-        adsList.addAll(adsDataList)
-        adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
-        vp.adapter = adsAdapter
-        vp.setPageTransformer(DepthTransformer())
-        vp.isUserInputEnabled = false
-        handler = Handler()
-
         btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -90,11 +81,11 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
                 val itemCount = adsAdapter.itemCount
                 if (currentPage == itemCount - 1) {
                     currentPage = 0
-                    binding.vp.setCurrentItem(currentPage, false)
+                    binding.adsVP.setCurrentItem(currentPage, false)
                     delay(delayMillis)
                 } else {
                     currentPage++
-                    binding.vp.setCurrentItem(currentPage, true)
+                    binding.adsVP.setCurrentItem(currentPage, true)
                     delay(delayMillis)
                 }
             }
@@ -118,6 +109,13 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
             lastLanguageLiveData.observe(viewLifecycleOwner) {
                 language = it
                 setData()
+            }
+            adResponseLiveData.observe(viewLifecycleOwner) { adsList ->
+                adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
+                adsVP.adapter = adsAdapter
+                adsVP.setPageTransformer(DepthTransformer())
+                adsVP.isUserInputEnabled = false
+                handler = Handler()
             }
         }
     }

@@ -81,6 +81,9 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    // Picasso
+    implementation("com.squareup.picasso:picasso:2.8")
+
     // GlideToVector
 //    implementation("com.github.corouteam:GlideToVectorYou:v2.0.0")
 

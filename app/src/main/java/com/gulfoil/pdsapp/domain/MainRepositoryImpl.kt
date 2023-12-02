@@ -3,6 +3,8 @@ package com.gulfoil.pdsapp.domain
 import com.gulfoil.pdsapp.data.cache.LocalStorage
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.data.remote.ApiService
+import com.gulfoil.pdsapp.data.remote.responses.AdResponse
+import com.gulfoil.pdsapp.data.remote.responses.AdResponseItem
 import com.gulfoil.pdsapp.data.remote.responses.OilResponse
 import com.gulfoil.pdsapp.data.remote.responses.PdsResponse
 import com.gulfoil.pdsapp.data.remote.responses.ProductResponse
@@ -18,6 +20,8 @@ class MainRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val localStorage: LocalStorage
 ) : MainRepository {
+    private val adsResponseList = ArrayList<AdResponseItem>()
+
     override fun getProducts(): Flow<Result<ProductResponse>> = flow {
         val response = apiService.getProducts(localStorage.appLanguage.brief)
         if (response.isSuccessful && response.body() != null) {
@@ -65,6 +69,27 @@ class MainRepositoryImpl @Inject constructor(
             emit(Result.success(response.body()!!))
         } else {
             emit(Result.failure(Throwable("${response.code()}")))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override fun getAds(): Flow<Result<AdResponse>> = flow {
+        if (adsResponseList.isEmpty()) {
+            val response = apiService.getAds(localStorage.appLanguage.brief)
+            if (response.isSuccessful && response.body() != null) {
+                adsResponseList.clear()
+                adsResponseList.addAll(response.body()!!)
+                adsResponseList.addAll(response.body()!!)
+                adsResponseList.addAll(response.body()!!)
+                val adResponse = AdResponse()
+                adResponse.addAll(adsResponseList)
+                emit(Result.success(adResponse))
+            } else {
+                emit(Result.failure(Throwable("${response.code()}")))
+            }
+        } else {
+            val adResponse = AdResponse()
+            adResponse.addAll(adsResponseList)
+            emit(Result.success(adResponse))
         }
     }.flowOn(Dispatchers.IO)
 

@@ -1,5 +1,6 @@
 package com.gulfoil.pdsapp.data.remote
 
+import com.gulfoil.pdsapp.data.remote.responses.AdResponse
 import com.gulfoil.pdsapp.data.remote.responses.OilResponse
 import com.gulfoil.pdsapp.data.remote.responses.PdsResponse
 import com.gulfoil.pdsapp.data.remote.responses.ProductResponse
@@ -45,4 +46,9 @@ interface ApiService {
         @Path("lan") lan: String,
         @Query("code") regionCode: String
     ): Response<RegionalContactResponse>
+
+    @GET("{lan}/api/v1/advertising/")
+    suspend fun getAds(
+        @Path("lan") lan: String
+    ): Response<AdResponse>
 }

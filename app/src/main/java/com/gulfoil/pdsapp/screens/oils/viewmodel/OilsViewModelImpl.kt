@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gulfoil.pdsapp.data.enums.Languages
+import com.gulfoil.pdsapp.data.remote.responses.AdResponse
 import com.gulfoil.pdsapp.data.remote.responses.OilResponse
 import com.gulfoil.pdsapp.domain.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
@@ -21,6 +22,7 @@ class OilsViewModelImpl @Inject constructor(
     override val progressLiveData = MutableLiveData<Boolean>()
     override val errorLiveData = MutableLiveData<String>()
     override val lastLanguageLiveData = MutableLiveData<Languages>()
+    override val adResponseLiveData = MutableLiveData<AdResponse>()
 
     override fun getOils(productId: Int) {
         progressLiveData.value = true
@@ -48,6 +50,24 @@ class OilsViewModelImpl @Inject constructor(
             mainRepository.getOils(productId, query).onEach {
                 it.onSuccess {
                     oilsLiveData.value = it
+                    progressLiveData.value = false
+                }
+                it.onFailure {
+                    errorLiveData.value = it.message
+                    progressLiveData.value = false
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    override fun getAds() {
+        progressLiveData.value = true
+        if (!isConnected()) {
+            progressLiveData.value = false
+        } else {
+            mainRepository.getAds().onEach {
+                it.onSuccess {
+                    adResponseLiveData.value = it
                     progressLiveData.value = false
                 }
                 it.onFailure {

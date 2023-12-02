@@ -1,6 +1,7 @@
 package com.gulfoil.pdsapp.domain
 
 import com.gulfoil.pdsapp.data.enums.Languages
+import com.gulfoil.pdsapp.data.remote.responses.AdResponse
 import com.gulfoil.pdsapp.data.remote.responses.OilResponse
 import com.gulfoil.pdsapp.data.remote.responses.PdsResponse
 import com.gulfoil.pdsapp.data.remote.responses.ProductResponse
@@ -14,6 +15,7 @@ interface MainRepository {
     fun getPDS(oilId: Int): Flow<Result<PdsResponse>>
     fun getPublicContact(): Flow<Result<PublicContactResponse>>
     fun getRegionalContact(regionCode: String): Flow<Result<RegionalContactResponse>>
+    fun getAds(): Flow<Result<AdResponse>>
     fun getLanguage(): Languages
     fun setLanguage(languages: Languages)
 }

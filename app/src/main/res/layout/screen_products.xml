@@ -68,7 +68,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/vp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@id/adsVP"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBar">
@@ -95,15 +96,17 @@
                 android:background="@drawable/bg_item_products_contact"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                app:layout_constraintBottom_toTopOf="@id/vp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                app:layout_constraintBottom_toTopOf="@id/adsVP"
                 app:layout_constraintTop_toBottomOf="@id/rvProducts">
 
                 <ImageView
                     android:id="@+id/imgContact"
-                    android:layout_width="80dp"
-                    android:layout_height="44dp"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
                     android:adjustViewBounds="true"
+                    android:padding="10dp"
                     android:src="@drawable/ic_contacts"
                     app:tint="@color/white" />
 
@@ -126,9 +129,9 @@
     </androidx.core.widget.NestedScrollView>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp"
+        android:id="@+id/adsVP"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
