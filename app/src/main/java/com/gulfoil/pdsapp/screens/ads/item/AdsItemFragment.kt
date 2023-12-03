@@ -30,7 +30,7 @@ class AdsItemFragment : Fragment(R.layout.item_ads) {
             Glide.with(imgAd.context)
                 .asBitmap()
                 .load(it.getString("ADS_IMAGE"))
-                .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)) // Disable caching for accurate dimensions
+                .diskCacheStrategy(DiskCacheStrategy.ALL) // Disable caching for accurate dimensions
                 .into(imgAd)
 
 //            Picasso.get().load(it.getString("ADS_IMAGE")).into(object : Target {

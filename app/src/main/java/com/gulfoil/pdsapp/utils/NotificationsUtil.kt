@@ -52,3 +52,12 @@ package com.gulfoil.pdsapp.utils
 //        .build()
 //        .show()
 //}
+
+private var showMessageOnTopOfScreenListener: ((String) -> Unit)? = null
+fun setShowMessageOnTopOfScreenListener(f: (String) -> Unit) {
+    showMessageOnTopOfScreenListener = f
+}
+
+fun showMessageOnTopOfScreen(message: String) {
+    showMessageOnTopOfScreenListener?.invoke(message)
+}

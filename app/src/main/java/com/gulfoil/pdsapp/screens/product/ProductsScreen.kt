@@ -1,15 +1,13 @@
 package com.gulfoil.pdsapp.screens.product
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.data.enums.Languages
@@ -17,13 +15,11 @@ import com.gulfoil.pdsapp.databinding.ScreenProductsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModel
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModelImpl
+import com.gulfoil.pdsapp.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.scope
-import com.gulfoil.pdsapp.utils.showToast
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,10 +32,16 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
     private val adapter by lazy { ProductsAdapter() }
 
     private lateinit var adsAdapter: AdsAdapter
-    private var handler: Handler? = null
     private var currentPage = 0
     private val delayMillis: Long = 3000
     private var job: Job? = null
+    private var isUIVisible: Boolean = false
+
+    init {
+        setInternetReconnectedListener {
+            getData()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
         super.onViewCreated(view, savedInstanceState)
@@ -49,10 +51,14 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
 
     override fun onResume() {
         super.onResume()
+        isUIVisible = true
+        getData()
+    }
+
+    private fun getData() {
         viewModel.getLanguage()
         viewModel.getProducts()
         viewModel.getAds()
-        startAutoScroll()
     }
 
     private fun setViews() = binding.scope {
@@ -61,6 +67,8 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
                 requireActivity().finish()
             }
         })
+        adsVP.setPageTransformer(DepthTransformer())
+        adsVP.isUserInputEnabled = false
 
         rvProducts.layoutManager = LinearLayoutManager(requireContext())
         rvProducts.adapter = adapter
@@ -87,22 +95,29 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
                 setData()
             }
         }
+
+        refreshLayout.setOnRefreshListener {
+            getData()
+        }
     }
 
     private fun startAutoScroll() {
-        job = CoroutineScope(Dispatchers.Main).launch {
+        job = lifecycleScope.launch {
             delay(delayMillis)
 
-            while (true) {
+            while (isUIVisible) {
                 val itemCount = adsAdapter.itemCount
-                if (currentPage == itemCount - 1) {
-                    currentPage = 0
-                    binding.adsVP.setCurrentItem(currentPage, false)
-                    delay(delayMillis)
-                } else {
-                    currentPage++
-                    binding.adsVP.setCurrentItem(currentPage, true)
-                    delay(delayMillis)
+
+                if (adsAdapter.itemCount != 0) {
+                    if (currentPage == itemCount - 1) {
+                        currentPage = 0
+                        binding.adsVP.setCurrentItem(currentPage, false)
+                        delay(delayMillis)
+                    } else {
+                        currentPage++
+                        binding.adsVP.setCurrentItem(currentPage, true)
+                        delay(delayMillis)
+                    }
                 }
             }
         }
@@ -119,6 +134,7 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
             }
             progressLiveData.observe(viewLifecycleOwner) {
                 progressBar.visible(it)
+                refreshLayout.isRefreshing = it
             }
             errorLiveData.observe(viewLifecycleOwner) {
                 // TODO: Handle error
@@ -130,9 +146,9 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
             adResponseLiveData.observe(viewLifecycleOwner) { adsList ->
                 adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
                 adsVP.adapter = adsAdapter
-                adsVP.setPageTransformer(DepthTransformer())
-                adsVP.isUserInputEnabled = false
-                handler = Handler()
+                adsVP.setCurrentItem(0, false)
+                job?.cancel()
+                startAutoScroll()
             }
         }
     }
@@ -158,5 +174,7 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
     override fun onPause() {
         super.onPause()
         job?.cancel()
+        currentPage = 0
+        isUIVisible = false
     }
 }

@@ -1,13 +1,12 @@
 package com.gulfoil.pdsapp.screens.oils
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +17,7 @@ import com.gulfoil.pdsapp.databinding.ScreenOilsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModel
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModelImpl
+import com.gulfoil.pdsapp.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.hideKeyboard
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.showKeyboard
@@ -40,7 +40,6 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private var language: Languages = Languages.ENGLISH
 
     private lateinit var adsAdapter: AdsAdapter
-    private var handler: Handler? = null
     private var currentPage = 0
     private val delayMillis: Long = 3000
     private var job: Job? = null
@@ -49,6 +48,13 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
     private var searchingText = ""
     private var isSearching = false
     private var closingByUnFocusing: Boolean = false
+    private var isUIVisible: Boolean = false
+
+    init {
+        setInternetReconnectedListener {
+            getData()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
         super.onViewCreated(view, savedInstanceState)
@@ -58,14 +64,20 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
 
     override fun onResume() {
         super.onResume()
-        timber("OnResume", "sdjksjdkds")
-        viewModel.getLanguage()
+        isUIVisible = true
+        getData()
+    }
+
+    private fun getData() {
         getOils()
+        viewModel.getLanguage()
         viewModel.getAds()
-        startAutoScroll()
     }
 
     private fun setViews() = binding.scope {
+        adsVP.setPageTransformer(DepthTransformer())
+        adsVP.isUserInputEnabled = false
+
         rvOils.layoutManager = LinearLayoutManager(requireContext())
         rvOils.adapter = oilsAdapter
         oilsAdapter.setItemClickedListener {
@@ -134,22 +146,29 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             hideKeyboard()
             isKeyboardOpen = false
         }
+
+        refreshLayout.setOnRefreshListener {
+            getData()
+        }
     }
 
     private fun startAutoScroll() {
-        job = CoroutineScope(Dispatchers.Main).launch {
+        job = lifecycleScope.launch {
             delay(delayMillis)
 
-            while (true) {
+            while (isUIVisible) {
                 val itemCount = oilsAdapter.itemCount
-                if (currentPage == itemCount - 1) {
-                    currentPage = 0
-                    binding.adsVP.setCurrentItem(currentPage, false)
-                    delay(delayMillis)
-                } else {
-                    currentPage++
-                    binding.adsVP.setCurrentItem(currentPage, true)
-                    delay(delayMillis)
+
+                if (adsAdapter.itemCount != 0) {
+                    if (currentPage == itemCount - 1) {
+                        currentPage = 0
+                        binding.adsVP.setCurrentItem(currentPage, false)
+                        delay(delayMillis)
+                    } else {
+                        currentPage++
+                        binding.adsVP.setCurrentItem(currentPage, true)
+                        delay(delayMillis)
+                    }
                 }
             }
         }
@@ -167,6 +186,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             }
             progressLiveData.observe(viewLifecycleOwner) {
                 progressBar.visible(it)
+                refreshLayout.isRefreshing = it
             }
             errorLiveData.observe(viewLifecycleOwner) {
                 // TODO: Handle Error
@@ -179,9 +199,8 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             adResponseLiveData.observe(viewLifecycleOwner) { adsList ->
                 adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
                 adsVP.adapter = adsAdapter
-                adsVP.setPageTransformer(DepthTransformer())
-                adsVP.isUserInputEnabled = false
-                handler = Handler()
+                job?.cancel()
+                startAutoScroll()
             }
         }
     }
@@ -254,8 +273,10 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
 
     override fun onPause() {
         super.onPause()
+        isUIVisible = false
         hideKeyboard()
         job?.cancel()
+        currentPage = 0
         isKeyboardOpen = false
     }
 }

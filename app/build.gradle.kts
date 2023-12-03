@@ -73,7 +73,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
     // Timber
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.jakewharton.timber:timber:4.7.0")
 
     // SecureSharedPreference
     implementation("com.scottyab:secure-preferences-lib:0.1.7")

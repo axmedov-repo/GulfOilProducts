@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/helvetica_neue_medium"
-        android:gravity="center"
+        android:gravity="start"
         android:text="Cars"
         android:textColor="@color/product_txt_color"
         android:textSize="16sp"

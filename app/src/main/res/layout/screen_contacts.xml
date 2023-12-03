@@ -112,7 +112,8 @@
         app:spinner_popup_elevation="14dp"
         app:spinner_popup_max_height="300dp" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="4dp"
@@ -121,141 +122,147 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBar">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/layoutHeadContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="18dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_contact"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:orientation="vertical">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/layoutHeadContact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginHorizontal="18dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_contact"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                    <ImageView
-                        android:layout_width="24dp"
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_location"
-                        app:tint="@color/orange" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtHeadContactLocation"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/helvetica_neue_medium"
-                        tools:text="Gulf Oil Middle East Ltd.
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_location"
+                            app:tint="@color/orange" />
+
+                        <TextView
+                            android:id="@+id/txtHeadContactLocation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/helvetica_neue_medium"
+                            android:text="Gulf Oil Middle East Ltd.
 1502-08, Regal Tower, Business Bay, Dubai, UAE"
-                        android:textColor="@color/blue" />
+                            android:textColor="@color/blue" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_website"
+                            app:tint="@color/orange" />
+
+                        <TextView
+                            android:id="@+id/txtHeadContactWebsite"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/helvetica_neue_medium"
+                            android:text="www.me.gulfoilltd.com"
+                            android:textColor="@color/blue" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_email"
+                            app:tint="@color/orange" />
+
+                        <TextView
+                            android:id="@+id/txtHeadContactEmail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/helvetica_neue_medium"
+                            android:text="marketing@gulfoiluae.com"
+                            android:textColor="@color/blue" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_phone"
+                            app:tint="@color/orange" />
+
+                        <TextView
+                            android:id="@+id/txtHeadContactPhone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/helvetica_neue_medium"
+                            android:text="+971 4 8838385"
+                            android:textColor="@color/blue" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvContacts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_website"
-                        app:tint="@color/orange" />
-
-                    <TextView
-                        android:id="@+id/txtHeadContactWebsite"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/helvetica_neue_medium"
-                        tools:text="www.me.gulfoilltd.com"
-                        android:textColor="@color/blue" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_email"
-                        app:tint="@color/orange" />
-
-                    <TextView
-                        android:id="@+id/txtHeadContactEmail"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/helvetica_neue_medium"
-                        tools:text="marketing@gulfoiluae.com"
-                        android:textColor="@color/blue" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_phone"
-                        app:tint="@color/orange" />
-
-                    <TextView
-                        android:id="@+id/txtHeadContactPhone"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/helvetica_neue_medium"
-                        tools:text="+971 4 8838385"
-                        android:textColor="@color/blue" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="8dp"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_contact" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvContacts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="8dp"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_contact" />
+        </androidx.core.widget.NestedScrollView>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"

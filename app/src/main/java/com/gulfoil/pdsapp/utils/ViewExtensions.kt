@@ -1,30 +1,19 @@
 package com.gulfoil.pdsapp.utils
 
-import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputLayout
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.app.App
-import com.google.android.material.textfield.TextInputLayout
 
 /**
  * CreatedBy: Abdulaziz Akhmedov
  */
-
-fun Activity.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, message, duration).show()
-}
-
-fun Fragment.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this.requireContext(), message, duration).show()
-}
 
 fun View.visible(isVisible: Boolean) {
     if (isVisible) this.visibility = View.VISIBLE

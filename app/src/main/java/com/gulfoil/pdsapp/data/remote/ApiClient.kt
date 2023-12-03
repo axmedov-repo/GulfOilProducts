@@ -29,7 +29,7 @@ object ApiClient {
     }
 }
 
-fun OkHttpClient.Builder.addLogging(): OkHttpClient.Builder {
+private fun OkHttpClient.Builder.addLogging(): OkHttpClient.Builder {
     HttpLoggingInterceptor.Level.HEADERS
     val logging = HttpLoggingInterceptor.Logger { message -> timber(message, "HTTP") }
     if (LOGGING) {
@@ -38,7 +38,7 @@ fun OkHttpClient.Builder.addLogging(): OkHttpClient.Builder {
     return this
 }
 
-fun OkHttpClient.Builder.addChucker(): OkHttpClient.Builder {
+private fun OkHttpClient.Builder.addChucker(): OkHttpClient.Builder {
     if (LOGGING) {
         addInterceptor(
             ChuckerInterceptor.Builder(App.instance)

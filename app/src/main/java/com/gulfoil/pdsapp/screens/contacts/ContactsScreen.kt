@@ -15,6 +15,7 @@ import com.gulfoil.pdsapp.databinding.ScreenContactsBinding
 import com.gulfoil.pdsapp.screens.contacts.listAdapter.ContactsListAdapter
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModel
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModelImpl
+import com.gulfoil.pdsapp.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.getCurrentCountryCode
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible
@@ -26,6 +27,12 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
     private val viewModel: ContactsViewModel by viewModels<ContactsViewModelImpl>()
     private val contactsListAdapter by lazy { ContactsListAdapter() }
 
+    init {
+        setInternetReconnectedListener {
+            getData()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
         super.onViewCreated(view, savedInstanceState)
         setViews()
@@ -34,6 +41,10 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
 
     override fun onResume() {
         super.onResume()
+        getData()
+    }
+
+    private fun getData() {
         viewModel.getLanguage()
         viewModel.getPublicContacts()
         viewModel.getRegionalContacts(getCurrentCountryCode())
@@ -61,6 +72,10 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         }
         txtHeadContactWebsite.setOnClickListener {
             openWebsite(txtHeadContactWebsite.text.toString())
+        }
+
+        refreshLayout.setOnRefreshListener {
+            getData()
         }
     }
 
@@ -102,6 +117,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         }
         viewModel.progressLiveData.observe(viewLifecycleOwner) {
             progressBar.visible(it)
+            refreshLayout.isRefreshing = it
         }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
             // TODO: Hande Error
