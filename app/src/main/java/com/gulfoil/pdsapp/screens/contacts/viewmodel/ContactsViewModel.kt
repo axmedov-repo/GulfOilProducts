@@ -11,6 +11,7 @@ interface ContactsViewModel {
     val progressLiveData: LiveData<Boolean>
     val errorLiveData: LiveData<String>
     val lastLanguageLiveData: LiveData<Languages>
+    val connectionLiveData: LiveData<Boolean>
 
     fun getPublicContacts()
     fun getRegionalContacts(regionCode: String)

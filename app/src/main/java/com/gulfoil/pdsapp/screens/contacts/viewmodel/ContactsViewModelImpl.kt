@@ -23,10 +23,13 @@ class ContactsViewModelImpl @Inject constructor(
     override val progressLiveData = MutableLiveData<Boolean>()
     override val errorLiveData = MutableLiveData<String>()
     override val lastLanguageLiveData = MutableLiveData<Languages>()
+    override val connectionLiveData = MutableLiveData<Boolean>()
 
     override fun getPublicContacts() {
         progressLiveData.value = true
-        if (!isConnected()) {
+        val isConnected = isConnected()
+        connectionLiveData.value = isConnected
+        if (!isConnected) {
             progressLiveData.value = false
         } else {
             mainRepository.getPublicContact().onEach {
@@ -44,7 +47,9 @@ class ContactsViewModelImpl @Inject constructor(
 
     override fun getRegionalContacts(regionCode: String) {
         progressLiveData.value = true
-        if (!isConnected()) {
+        val isConnected = isConnected()
+        connectionLiveData.value = isConnected
+        if (!isConnected) {
             progressLiveData.value = false
         } else {
             mainRepository.getRegionalContact(regionCode).onEach {

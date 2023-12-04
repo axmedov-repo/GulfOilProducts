@@ -12,7 +12,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.databinding.ScreenContactsBinding
-import com.gulfoil.pdsapp.screens.contacts.listAdapter.ContactsListAdapter
+import com.gulfoil.pdsapp.screens.contacts.adapters.PublicContactsAdapter
+import com.gulfoil.pdsapp.screens.contacts.adapters.RegionalContactsAdapter
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModel
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModelImpl
 import com.gulfoil.pdsapp.setInternetReconnectedListener
@@ -25,7 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class ContactsScreen : Fragment(R.layout.screen_contacts) {
     private val binding by viewBinding(ScreenContactsBinding::bind)
     private val viewModel: ContactsViewModel by viewModels<ContactsViewModelImpl>()
-    private val contactsListAdapter by lazy { ContactsListAdapter() }
+    private val regionalContactsAdapter by lazy { RegionalContactsAdapter() }
+    private val publicContactsAdapter by lazy { PublicContactsAdapter() }
 
     init {
         setInternetReconnectedListener {
@@ -55,22 +57,24 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
             findNavController().popBackStack()
         }
 
-        rvContacts.layoutManager = LinearLayoutManager(requireContext())
-        rvContacts.adapter = contactsListAdapter
-        contactsListAdapter.setPhoneClickedListener {
+        rvRegionalContacts.layoutManager = LinearLayoutManager(requireContext())
+        rvRegionalContacts.adapter = regionalContactsAdapter
+        regionalContactsAdapter.setPhoneClickedListener {
             openPhone(it)
         }
-        contactsListAdapter.setEmailClickedListener {
+        regionalContactsAdapter.setEmailClickedListener {
             openEmail(it)
         }
 
-        txtHeadContactPhone.setOnClickListener {
+        rvPublicContacts.layoutManager = LinearLayoutManager(requireContext())
+        rvPublicContacts.adapter = publicContactsAdapter
+        publicContactsAdapter.setPhoneClickedListener {
             openPhone(txtHeadContactPhone.text.toString())
         }
-        txtHeadContactEmail.setOnClickListener {
+        publicContactsAdapter.setEmailClickedListener {
             openEmail(txtHeadContactEmail.text.toString())
         }
-        txtHeadContactWebsite.setOnClickListener {
+        publicContactsAdapter.setWebsiteClickedListener {
             openWebsite(txtHeadContactWebsite.text.toString())
         }
 
@@ -102,15 +106,10 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
 
     private fun setModels() = binding.scope {
         viewModel.publicContactsLiveData.observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty()) {
-                txtHeadContactLocation.text = it.first().address
-                txtHeadContactWebsite.text = it.first().website
-                txtHeadContactEmail.text = it.first().email
-                txtHeadContactPhone.text = it.first().phone
-            }
+            publicContactsAdapter.submitList(it)
         }
         viewModel.regionalContactsLiveData.observe(viewLifecycleOwner) {
-            contactsListAdapter.submitList(it)
+            regionalContactsAdapter.submitList(it)
         }
         viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
             setData(it)
@@ -118,6 +117,9 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         viewModel.progressLiveData.observe(viewLifecycleOwner) {
             progressBar.visible(it)
             refreshLayout.isRefreshing = it
+        }
+        viewModel.connectionLiveData.observe(viewLifecycleOwner) { isConnected ->
+            layoutHeadContact.visible(!isConnected)
         }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
             // TODO: Hande Error

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".screens.contacts.ContactsScreen">
 
     <ImageView
@@ -129,21 +130,27 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="8dp">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/layoutHeadContact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="18dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_contact"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:visibility="gone">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/layoutHeadContactLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -161,6 +168,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/helvetica_neue_medium"
+                            android:lineSpacingExtra="1sp"
                             android:text="Gulf Oil Middle East Ltd.
 1502-08, Regal Tower, Business Bay, Dubai, UAE"
                             android:textColor="@color/blue" />
@@ -168,9 +176,11 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/layoutHeadContactWebsite"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginVertical="5dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -188,15 +198,18 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/helvetica_neue_medium"
+                            android:lineSpacingExtra="1sp"
                             android:text="www.me.gulfoilltd.com"
                             android:textColor="@color/blue" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/layoutHeadContactEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginVertical="5dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -215,15 +228,18 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/helvetica_neue_medium"
+                            android:lineSpacingExtra="1sp"
                             android:text="marketing@gulfoiluae.com"
                             android:textColor="@color/blue" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/layoutHeadContactPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginVertical="5dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -242,6 +258,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/helvetica_neue_medium"
+                            android:lineSpacingExtra="1sp"
                             android:text="+971 4 8838385"
                             android:textColor="@color/blue" />
 
@@ -250,13 +267,20 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvContacts"
+                    android:id="@+id/rvPublicContacts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="8dp"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_public_contact" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRegionalContacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
                     tools:itemCount="3"
-                    tools:listitem="@layout/item_contact" />
+                    tools:listitem="@layout/item_regional_contact" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
