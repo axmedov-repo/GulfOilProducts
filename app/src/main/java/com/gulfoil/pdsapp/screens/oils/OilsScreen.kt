@@ -17,7 +17,7 @@ import com.gulfoil.pdsapp.databinding.ScreenOilsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModel
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModelImpl
-import com.gulfoil.pdsapp.setInternetReconnectedListener
+import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.hideKeyboard
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.showKeyboard
@@ -149,6 +149,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
 
         refreshLayout.setOnRefreshListener {
             getData()
+            refreshLayout.isRefreshing = false
         }
     }
 
@@ -178,15 +179,18 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         viewModel.apply {
             oilsLiveData.observe(viewLifecycleOwner) {
                 txtEmpty.visible(it.isEmpty())
-                oilsAdapter.setData(it)
+                if (it.isNotEmpty()) {
+                    oilsAdapter.setData(it)
+                }
             }
             searchResponseLiveData.observe(viewLifecycleOwner) {
                 txtEmpty.visible(it.isEmpty())
-                oilsAdapter.setData(it)
+                if (it.isNotEmpty()) {
+                    oilsAdapter.setData(it)
+                }
             }
             progressLiveData.observe(viewLifecycleOwner) {
                 progressBar.visible(it)
-                refreshLayout.isRefreshing = it
             }
             errorLiveData.observe(viewLifecycleOwner) {
                 // TODO: Handle Error
@@ -200,7 +204,10 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                 adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
                 adsVP.adapter = adsAdapter
                 job?.cancel()
-                startAutoScroll()
+                if (adsList.isNotEmpty()) {
+                    adsVP.setCurrentItem(0, false)
+                    startAutoScroll()
+                }
             }
         }
     }

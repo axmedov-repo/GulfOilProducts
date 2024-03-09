@@ -14,7 +14,7 @@ import com.gulfoil.pdsapp.databinding.ScreenPdsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModel
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModelImpl
-import com.gulfoil.pdsapp.setInternetReconnectedListener
+import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
@@ -115,7 +115,7 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
                 progressBar.visible(it)
             }
             errorLiveData.observe(viewLifecycleOwner) {
-
+                // TODO: Handle Error
             }
             emptyLiveData.observe(viewLifecycleOwner) {
                 txtEmpty.visible(it)
@@ -128,7 +128,10 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
                 adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
                 adsVP.adapter = adsAdapter
                 job?.cancel()
-                startAutoScroll()
+                if (adsList.isNotEmpty()) {
+                    adsVP.setCurrentItem(0, false)
+                    startAutoScroll()
+                }
             }
         }
     }

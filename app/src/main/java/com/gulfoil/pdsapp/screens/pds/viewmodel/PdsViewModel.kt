@@ -2,7 +2,7 @@ package com.gulfoil.pdsapp.screens.pds.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.AdResponse
+import com.gulfoil.pdsapp.data.remote.responses.AdResponseItem
 import java.io.InputStream
 
 interface PdsViewModel {
@@ -11,10 +11,10 @@ interface PdsViewModel {
     val errorLiveData: LiveData<String>
     val emptyLiveData: LiveData<Boolean>
     val lastLanguageLiveData: LiveData<Languages>
-    val adResponseLiveData: LiveData<AdResponse>
+    val adResponseLiveData: LiveData<List<AdResponseItem>>
 
     fun getPds(oilId: Int)
     fun setLanguage(language: Languages)
     fun getLanguage()
-     fun getAds()
+    fun getAds()
 }

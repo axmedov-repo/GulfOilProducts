@@ -15,7 +15,7 @@ import com.gulfoil.pdsapp.databinding.ScreenProductsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModel
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModelImpl
-import com.gulfoil.pdsapp.setInternetReconnectedListener
+import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
@@ -98,6 +98,7 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
 
         refreshLayout.setOnRefreshListener {
             getData()
+            refreshLayout.isRefreshing = false
         }
     }
 
@@ -127,14 +128,13 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
         viewModel.apply {
             productsLiveData.observe(viewLifecycleOwner) {
                 txtEmpty.visible(it.isEmpty())
-
                 if (it.isNotEmpty()) {
                     adapter.setData(it)
+                    rvProducts.scheduleLayoutAnimation()
                 }
             }
             progressLiveData.observe(viewLifecycleOwner) {
                 progressBar.visible(it)
-                refreshLayout.isRefreshing = it
             }
             errorLiveData.observe(viewLifecycleOwner) {
                 // TODO: Handle error
@@ -146,9 +146,11 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
             adResponseLiveData.observe(viewLifecycleOwner) { adsList ->
                 adsAdapter = AdsAdapter(childFragmentManager, lifecycle, adsList)
                 adsVP.adapter = adsAdapter
-                adsVP.setCurrentItem(0, false)
                 job?.cancel()
-                startAutoScroll()
+                if (adsList.isNotEmpty()) {
+                    adsVP.setCurrentItem(0, false)
+                    startAutoScroll()
+                }
             }
         }
     }

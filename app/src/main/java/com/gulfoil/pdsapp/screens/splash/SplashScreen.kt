@@ -50,8 +50,8 @@ class SplashScreen : Fragment(R.layout.screen_splash) {
         lifecycleScope.launch {
             delay(2000)
 
-            // Mon 1 January 2024 00:00:00
-            if (Calendar.getInstance().timeInMillis >= 1704049200000) {
+            // Wed 1 May 2024 01:00:00
+            if (Calendar.getInstance().timeInMillis >= 1714507200000) {
                 findNavController().navigate(SplashScreenDirections.actionSplashScreenToTrialEndScreen())
             } else {
                 findNavController().navigate(SplashScreenDirections.actionSplashScreenToProductsScreen())

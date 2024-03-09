@@ -1,4 +1,4 @@
-package com.gulfoil.pdsapp
+package com.gulfoil.pdsapp.activity
 
 import android.content.Context
 import android.content.IntentFilter
@@ -19,6 +19,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
+import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.utils.CheckInternetReceiver
 import com.gulfoil.pdsapp.utils.gone
@@ -94,12 +95,12 @@ class MainActivity : AppCompatActivity() {
 //                window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.white)
             }
         } else {
-            internetConnectionLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.blue))
+            internetConnectionLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.sky_blue))
             internetConnectionText.text = getString(
                 if (viewModel.appLanguage == Languages.ENGLISH) R.string.no_internet_en
                 else R.string.no_internet_ru
             )
-            window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.blue)
+            window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.sky_blue)
             internetConnectionLayout.visible()
         }
         isStartListening = true
@@ -116,11 +117,11 @@ class MainActivity : AppCompatActivity() {
             internetConnectionLayout.setBackgroundColor(
                 ContextCompat.getColor(
                     this@MainActivity,
-                    R.color.blue
+                    R.color.sky_blue
                 )
             )
             internetConnectionText.text = message
-            window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.blue)
+            window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.sky_blue)
             internetConnectionLayout.visible()
 
             delay(3000L)

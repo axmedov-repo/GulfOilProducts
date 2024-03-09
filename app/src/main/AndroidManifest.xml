@@ -18,7 +18,7 @@
         android:theme="@style/Theme.GulfApp"
         tools:targetApi="31">
         <activity
-            android:name="com.gulfoil.pdsapp.MainActivity"
+            android:name="com.gulfoil.pdsapp.activity.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

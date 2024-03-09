@@ -116,7 +116,7 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/adsVP"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

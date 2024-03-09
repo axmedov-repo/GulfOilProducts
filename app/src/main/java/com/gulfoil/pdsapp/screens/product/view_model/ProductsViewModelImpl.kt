@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.data.remote.responses.AdResponse
+import com.gulfoil.pdsapp.data.remote.responses.AdResponseItem
 import com.gulfoil.pdsapp.data.remote.responses.ProductResponse
+import com.gulfoil.pdsapp.data.remote.responses.ProductResponseItem
 import com.gulfoil.pdsapp.domain.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +19,10 @@ import javax.inject.Inject
 class ProductsViewModelImpl @Inject constructor(
     private val mainRepository: MainRepository
 ) : ProductsViewModel, ViewModel() {
-    override val productsLiveData = MutableLiveData<ProductResponse>()
+    override val productsLiveData = MutableLiveData<List<ProductResponseItem>>()
     override val progressLiveData = MutableLiveData<Boolean>()
     override val errorLiveData = MutableLiveData<String>()
-    override val adResponseLiveData = MutableLiveData<AdResponse>()
+    override val adResponseLiveData = MutableLiveData<List<AdResponseItem>>()
 
     override fun getProducts() {
         progressLiveData.value = true

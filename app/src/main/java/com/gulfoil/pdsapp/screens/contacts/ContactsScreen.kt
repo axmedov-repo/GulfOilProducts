@@ -16,7 +16,7 @@ import com.gulfoil.pdsapp.screens.contacts.adapters.PublicContactsAdapter
 import com.gulfoil.pdsapp.screens.contacts.adapters.RegionalContactsAdapter
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModel
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModelImpl
-import com.gulfoil.pdsapp.setInternetReconnectedListener
+import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.getCurrentCountryCode
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible
@@ -80,6 +80,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
 
         refreshLayout.setOnRefreshListener {
             getData()
+            refreshLayout.isRefreshing = false
         }
     }
 
@@ -116,7 +117,6 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         }
         viewModel.progressLiveData.observe(viewLifecycleOwner) {
             progressBar.visible(it)
-            refreshLayout.isRefreshing = it
         }
         viewModel.connectionLiveData.observe(viewLifecycleOwner) { isConnected ->
             layoutHeadContact.visible(!isConnected)

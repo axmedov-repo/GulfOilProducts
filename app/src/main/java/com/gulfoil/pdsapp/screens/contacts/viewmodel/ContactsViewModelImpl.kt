@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.PublicContactResponse
-import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponse
+import com.gulfoil.pdsapp.data.remote.responses.PublicContactResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponseItem
 import com.gulfoil.pdsapp.domain.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +18,8 @@ class ContactsViewModelImpl @Inject constructor(
     private val mainRepository: MainRepository
 ) : ContactsViewModel, ViewModel() {
 
-    override val publicContactsLiveData = MutableLiveData<PublicContactResponse>()
-    override val regionalContactsLiveData = MutableLiveData<RegionalContactResponse>()
+    override val publicContactsLiveData = MutableLiveData<List<PublicContactResponseItem>>()
+    override val regionalContactsLiveData = MutableLiveData<List<RegionalContactResponseItem>>()
     override val progressLiveData = MutableLiveData<Boolean>()
     override val errorLiveData = MutableLiveData<String>()
     override val lastLanguageLiveData = MutableLiveData<Languages>()

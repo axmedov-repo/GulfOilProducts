@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.data.remote.responses.AdResponse
+import com.gulfoil.pdsapp.data.remote.responses.AdResponseItem
 import com.gulfoil.pdsapp.data.remote.responses.OilResponse
+import com.gulfoil.pdsapp.data.remote.responses.OilResponseItem
 import com.gulfoil.pdsapp.domain.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,12 +19,12 @@ import javax.inject.Inject
 class OilsViewModelImpl @Inject constructor(
     private val mainRepository: MainRepository
 ) : OilsViewModel, ViewModel() {
-    override val oilsLiveData = MutableLiveData<OilResponse>()
-    override val searchResponseLiveData = MutableLiveData<OilResponse>()
+    override val oilsLiveData = MutableLiveData<List<OilResponseItem>>()
+    override val searchResponseLiveData = MutableLiveData<List<OilResponseItem>>()
     override val progressLiveData = MutableLiveData<Boolean>()
     override val errorLiveData = MutableLiveData<String>()
     override val lastLanguageLiveData = MutableLiveData<Languages>()
-    override val adResponseLiveData = MutableLiveData<AdResponse>()
+    override val adResponseLiveData = MutableLiveData<List<AdResponseItem>>()
 
     override fun getOils(productId: Int) {
         progressLiveData.value = true

@@ -1,4 +1,4 @@
-package com.gulfoil.pdsapp
+package com.gulfoil.pdsapp.activity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
