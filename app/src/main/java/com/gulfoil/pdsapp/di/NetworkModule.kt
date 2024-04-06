@@ -1,7 +1,7 @@
 package com.gulfoil.pdsapp.di
 
 import com.gulfoil.pdsapp.data.remote.ApiClient
-import com.gulfoil.pdsapp.data.remote.ApiService
+import com.gulfoil.pdsapp.data.remote.services.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

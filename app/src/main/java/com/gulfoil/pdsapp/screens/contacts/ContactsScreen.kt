@@ -10,13 +10,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
+import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.databinding.ScreenContactsBinding
 import com.gulfoil.pdsapp.screens.contacts.adapters.PublicContactsAdapter
 import com.gulfoil.pdsapp.screens.contacts.adapters.RegionalContactsAdapter
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModel
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModelImpl
-import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.getCurrentCountryCode
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible
@@ -107,7 +107,9 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
 
     private fun setModels() = binding.scope {
         viewModel.publicContactsLiveData.observe(viewLifecycleOwner) {
-            publicContactsAdapter.submitList(it)
+            if (it.isNotEmpty()) {
+                publicContactsAdapter.submitList(it)
+            }
         }
         viewModel.regionalContactsLiveData.observe(viewLifecycleOwner) {
             regionalContactsAdapter.submitList(it)

@@ -1,4 +1,4 @@
-package com.gulfoil.pdsapp.data.remote
+package com.gulfoil.pdsapp.data.remote.services
 
 import retrofit2.Response
 import retrofit2.http.GET
@@ -10,20 +10,20 @@ interface ApiService {
     @GET("{lan}/api/v1/")
     suspend fun getProducts(
         @Path("lan") lan: String
-    ): Response<JWTResponse>
+    ): Response<String>
 
     @GET("{lan}/api/v1/{id}/")
     suspend fun searchOil(
         @Path("lan") lan: String,
         @Path("id") productId: Int
-    ): Response<JWTResponse>
+    ): Response<String>
 
     @GET("{lan}/api/v1/{id}/")
     suspend fun getOils(
         @Path("lan") lan: String,
         @Path("id") productId: Int,
         @Query("name") name: String
-    ): Response<JWTResponse>
+    ): Response<String>
 
     @GET("{lan}/api/v1/item/{id}/")
     suspend fun getPDS(
@@ -34,16 +34,16 @@ interface ApiService {
     @GET("{lan}/api/v1/contact-public/")
     suspend fun getPublicContact(
         @Path("lan") lan: String
-    ): Response<JWTResponse>
+    ): Response<String>
 
     @GET("{lan}/api/v1/contact/")
     suspend fun getRegionalContact(
         @Path("lan") lan: String,
         @Query("code") regionCode: String
-    ): Response<JWTResponse>
+    ): Response<String>
 
     @GET("{lan}/api/v1/advertising/")
     suspend fun getAds(
         @Path("lan") lan: String
-    ): Response<JWTResponse>
+    ): Response<String>
 }

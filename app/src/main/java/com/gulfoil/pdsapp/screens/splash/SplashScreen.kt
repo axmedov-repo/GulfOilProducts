@@ -23,7 +23,7 @@ import java.util.Calendar
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : Fragment(R.layout.screen_splash) {
     private val binding by viewBinding(ScreenSplashBinding::bind)
-    private val isRelease: Boolean = true
+    private val isRelease: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
         super.onViewCreated(view, savedInstanceState)

@@ -10,20 +10,20 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object ApiClient {
 
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .client(getHttpClient())
         .build()
 
     private fun getHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-//            .addChucker()
+            .addChucker()
             .addLogging()
             .build()
     }
@@ -51,6 +51,5 @@ private fun OkHttpClient.Builder.addChucker(): OkHttpClient.Builder {
     }
     return this
 }
-
 
 // -----------------------------------

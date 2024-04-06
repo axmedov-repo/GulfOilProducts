@@ -29,7 +29,10 @@ android {
         release {
             buildConfigField("Boolean", "LOGGING", "false")
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -107,6 +110,7 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.11.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
 
     // OkHttp
@@ -129,6 +133,13 @@ dependencies {
 
     // CircleView
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    // JWT Decoder RS256
+    implementation("com.auth0:java-jwt:3.18.2")
+
+    // JWT Decoder Library
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
 }
 
 kapt {
