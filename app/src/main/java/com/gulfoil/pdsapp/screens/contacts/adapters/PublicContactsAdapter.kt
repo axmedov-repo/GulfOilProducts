@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.gulfoil.pdsapp.data.remote.responses.PublicContactResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.PublicContactResponseItem
 import com.gulfoil.pdsapp.databinding.ItemPublicContactBinding
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible

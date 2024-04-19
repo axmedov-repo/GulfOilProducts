@@ -3,7 +3,7 @@ package com.gulfoil.pdsapp.screens.oils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.gulfoil.pdsapp.data.remote.responses.OilResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.OilResponseItem
 import com.gulfoil.pdsapp.databinding.ItemOilsBinding
 import com.gulfoil.pdsapp.utils.scope
 

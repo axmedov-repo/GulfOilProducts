@@ -1,4 +1,4 @@
-package com.gulfoil.pdsapp.data.remote.responses
+package com.gulfoil.pdsapp.data.remote.responses.product
 
 import androidx.annotation.Keep
 

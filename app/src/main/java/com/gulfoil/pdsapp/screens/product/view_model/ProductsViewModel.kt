@@ -2,10 +2,8 @@ package com.gulfoil.pdsapp.screens.product.view_model
 
 import androidx.lifecycle.LiveData
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.AdResponse
-import com.gulfoil.pdsapp.data.remote.responses.AdResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.ProductResponse
-import com.gulfoil.pdsapp.data.remote.responses.ProductResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.AdResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.ProductResponseItem
 
 interface ProductsViewModel {
     val productsLiveData: LiveData<List<ProductResponseItem>>

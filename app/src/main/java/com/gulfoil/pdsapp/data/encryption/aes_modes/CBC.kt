@@ -1,9 +1,9 @@
-package com.gulfoil.pdsapp.data.aes.modes
+package com.gulfoil.pdsapp.data.encryption.aes_modes
 
+import android.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import android.util.Base64
 
 // Cipher Block Chaining Mode
 
@@ -17,7 +17,10 @@ object CBC {
         return Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
     }
 
-    fun decryptAES(encryptedText: String, key: String, iv: String): String {
+    fun decryptAES(encryptedText: String, key: String?, iv: String?): String? {
+        if (key == null || iv == null) {
+            return null
+        }
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val secretKeySpec = SecretKeySpec(key.toByteArray(), "AES")
         val ivParameterSpec = IvParameterSpec(iv.toByteArray())

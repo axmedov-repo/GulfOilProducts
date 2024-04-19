@@ -2,8 +2,8 @@ package com.gulfoil.pdsapp.screens.contacts.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.PublicContactResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.PublicContactResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.RegionalContactResponseItem
 
 interface ContactsViewModel {
     val publicContactsLiveData: LiveData<List<PublicContactResponseItem>>

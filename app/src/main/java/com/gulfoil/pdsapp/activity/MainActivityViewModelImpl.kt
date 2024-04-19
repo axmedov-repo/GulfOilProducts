@@ -3,7 +3,7 @@ package com.gulfoil.pdsapp.activity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.domain.MainRepository
+import com.gulfoil.pdsapp.domain.main.MainRepository
 import com.gulfoil.pdsapp.utils.checkInternetConnection
 import com.gulfoil.pdsapp.utils.setInternetConnectionListener
 import com.gulfoil.pdsapp.utils.setShowMessageOnTopOfScreenListener

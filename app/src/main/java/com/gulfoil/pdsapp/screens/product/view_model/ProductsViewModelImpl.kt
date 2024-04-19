@@ -4,11 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.AdResponse
-import com.gulfoil.pdsapp.data.remote.responses.AdResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.ProductResponse
-import com.gulfoil.pdsapp.data.remote.responses.ProductResponseItem
-import com.gulfoil.pdsapp.domain.MainRepository
+import com.gulfoil.pdsapp.data.remote.responses.product.AdResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.ProductResponseItem
+import com.gulfoil.pdsapp.domain.main.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn

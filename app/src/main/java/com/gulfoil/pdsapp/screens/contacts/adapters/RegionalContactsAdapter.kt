@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.RegionalContactResponseItem
 import com.gulfoil.pdsapp.databinding.ItemRegionalContactBinding
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.visible

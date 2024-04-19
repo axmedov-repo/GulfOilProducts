@@ -1,20 +1,22 @@
-package com.gulfoil.pdsapp.domain
+package com.gulfoil.pdsapp.domain.main
 
-import com.gulfoil.pdsapp.data.aes.parseDecryptedAES
 import com.gulfoil.pdsapp.data.cache.LocalStorage
+import com.gulfoil.pdsapp.data.encryption.KeyStoreManager
+import com.gulfoil.pdsapp.data.encryption.decryptAndParseData
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.AdResponse
-import com.gulfoil.pdsapp.data.remote.responses.AdResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.OilResponse
-import com.gulfoil.pdsapp.data.remote.responses.OilResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.PdsResponse
-import com.gulfoil.pdsapp.data.remote.responses.ProductResponse
-import com.gulfoil.pdsapp.data.remote.responses.ProductResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.PublicContactResponse
-import com.gulfoil.pdsapp.data.remote.responses.PublicContactResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponse
-import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponseItem
-import com.gulfoil.pdsapp.data.remote.services.ApiService
+import com.gulfoil.pdsapp.data.remote.responses.product.AdResponse
+import com.gulfoil.pdsapp.data.remote.responses.product.AdResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.OilResponse
+import com.gulfoil.pdsapp.data.remote.responses.product.OilResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.PdsResponse
+import com.gulfoil.pdsapp.data.remote.responses.product.ProductResponse
+import com.gulfoil.pdsapp.data.remote.responses.product.ProductResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.PublicContactResponse
+import com.gulfoil.pdsapp.data.remote.responses.product.PublicContactResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.RegionalContactResponse
+import com.gulfoil.pdsapp.data.remote.responses.product.RegionalContactResponseItem
+import com.gulfoil.pdsapp.data.remote.services.ProductService
+import com.gulfoil.pdsapp.utils.timber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,16 +24,25 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val localStorage: LocalStorage
+    private val productService: ProductService,
+    private val localStorage: LocalStorage,
+    private val keyStoreManager: KeyStoreManager
 ) : MainRepository {
     private val adsResponseList = ArrayList<AdResponseItem>()
 
     override fun getProducts(): Flow<Result<List<ProductResponseItem>>> = flow {
-        val response = apiService.getProducts(localStorage.appLanguage.brief)
+        val response = productService.getProducts(localStorage.appLanguage.brief)
         if (response.isSuccessful && response.body() != null) {
-            val parsedData =
-                parseDecryptedAES<ProductResponse>(response.body()!!)
+            timber("keyStoreManager in MainRepo=${keyStoreManager.hashCode()}", "KEYSTORE_LOGS")
+            timber(
+                "keyStoreManager.getKey()=${keyStoreManager.getKey()}\nkeyStoreManager.getIV()=${keyStoreManager.getIV()}",
+                "KEYSTORE_LOGS"
+            )
+            val parsedData = decryptAndParseData<ProductResponse>(
+                encryptedData = response.body()!!,
+                key = keyStoreManager.getKey(),
+                iv = keyStoreManager.getIV()
+            )
             if (parsedData != null) {
                 emit(Result.success(parsedData))
             } else {
@@ -45,14 +56,18 @@ class MainRepositoryImpl @Inject constructor(
     override fun getOils(productId: Int, name: String?): Flow<Result<List<OilResponseItem>>> =
         flow {
             val response = if (name.isNullOrEmpty()) {
-                apiService.searchOil(localStorage.appLanguage.brief, productId)
+                productService.searchOil(localStorage.appLanguage.brief, productId)
             } else {
-                apiService.getOils(localStorage.appLanguage.brief, productId, name)
+                productService.getOils(localStorage.appLanguage.brief, productId, name)
             }
 
             if (response.isSuccessful && response.body() != null) {
                 val parsedData =
-                    parseDecryptedAES<OilResponse>(response.body()!!)
+                    decryptAndParseData<OilResponse>(
+                        encryptedData = response.body()!!,
+                        key = keyStoreManager.getKey(),
+                        iv = keyStoreManager.getIV()
+                    )
                 if (parsedData != null) {
                     emit(Result.success(parsedData))
                 } else {
@@ -64,9 +79,13 @@ class MainRepositoryImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
 
     override fun getPDS(oilId: Int): Flow<Result<PdsResponse>> = flow {
-        val response = apiService.getPDS(localStorage.appLanguage.brief, oilId)
+        val response = productService.getPDS(localStorage.appLanguage.brief, oilId)
         if (response.isSuccessful && response.body() != null) {
-            val parsedData = parseDecryptedAES<PdsResponse>(response.body()!!)
+            val parsedData = decryptAndParseData<PdsResponse>(
+                encryptedData = response.body()!!,
+                key = keyStoreManager.getKey(),
+                iv = keyStoreManager.getIV()
+            )
             if (parsedData != null) {
                 emit(Result.success(parsedData))
             } else {
@@ -78,10 +97,14 @@ class MainRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override fun getPublicContact(): Flow<Result<List<PublicContactResponseItem>>> = flow {
-        val response = apiService.getPublicContact(localStorage.appLanguage.brief)
+        val response = productService.getPublicContact(localStorage.appLanguage.brief)
         if (response.isSuccessful && response.body() != null) {
             val parsedData =
-                parseDecryptedAES<PublicContactResponse>(response.body()!!)
+                decryptAndParseData<PublicContactResponse>(
+                    encryptedData = response.body()!!,
+                    key = keyStoreManager.getKey(),
+                    iv = keyStoreManager.getIV()
+                )
             if (parsedData != null) {
                 emit(Result.success(parsedData))
             } else {
@@ -94,13 +117,15 @@ class MainRepositoryImpl @Inject constructor(
 
     override fun getRegionalContact(regionCode: String): Flow<Result<List<RegionalContactResponseItem>>> =
         flow {
-            val response = apiService.getRegionalContact(
+            val response = productService.getRegionalContact(
                 localStorage.appLanguage.brief, regionCode.uppercase()
             )
             if (response.isSuccessful && response.body() != null) {
                 val parsedData =
-                    parseDecryptedAES<RegionalContactResponse>(
-                        response.body()!!
+                    decryptAndParseData<RegionalContactResponse>(
+                        encryptedData = response.body()!!,
+                        key = keyStoreManager.getKey(),
+                        iv = keyStoreManager.getIV()
                     )
                 if (parsedData != null) {
                     emit(Result.success(parsedData))
@@ -114,11 +139,15 @@ class MainRepositoryImpl @Inject constructor(
 
     override fun getAds(): Flow<Result<List<AdResponseItem>>> = flow {
         if (adsResponseList.isEmpty()) {
-            val response = apiService.getAds(localStorage.appLanguage.brief)
+            val response = productService.getAds(localStorage.appLanguage.brief)
             if (response.isSuccessful && response.body() != null) {
                 adsResponseList.clear()
                 val parsedData =
-                    parseDecryptedAES<AdResponse>(response.body()!!)
+                    decryptAndParseData<AdResponse>(
+                        encryptedData = response.body()!!,
+                        key = keyStoreManager.getKey(),
+                        iv = keyStoreManager.getIV()
+                    )
                 if (parsedData != null) {
                     repeat(3) {
                         adsResponseList.addAll(parsedData)

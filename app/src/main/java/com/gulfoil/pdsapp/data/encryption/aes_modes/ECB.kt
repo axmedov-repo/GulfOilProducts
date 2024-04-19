@@ -1,4 +1,4 @@
-package com.gulfoil.pdsapp.data.aes.modes
+package com.gulfoil.pdsapp.data.encryption.aes_modes
 
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec

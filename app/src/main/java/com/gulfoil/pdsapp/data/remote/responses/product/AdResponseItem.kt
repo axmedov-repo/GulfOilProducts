@@ -1,15 +1,12 @@
-package com.gulfoil.pdsapp.data.remote.responses
+package com.gulfoil.pdsapp.data.remote.responses.product
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 @Keep
-data class ProductResponseItem(
+data class AdResponseItem(
     @SerializedName("id")
     val id: Int?,
-    @SerializedName("name")
-    val name: String?,
     @SerializedName("image")
     val image: String?
 )

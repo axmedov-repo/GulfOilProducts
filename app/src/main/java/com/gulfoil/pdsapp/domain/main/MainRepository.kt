@@ -1,12 +1,12 @@
-package com.gulfoil.pdsapp.domain
+package com.gulfoil.pdsapp.domain.main
 
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.data.remote.responses.AdResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.OilResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.PdsResponse
-import com.gulfoil.pdsapp.data.remote.responses.ProductResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.PublicContactResponseItem
-import com.gulfoil.pdsapp.data.remote.responses.RegionalContactResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.AdResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.OilResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.PdsResponse
+import com.gulfoil.pdsapp.data.remote.responses.product.ProductResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.PublicContactResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.RegionalContactResponseItem
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {

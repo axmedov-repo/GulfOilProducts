@@ -1,16 +1,16 @@
-package com.gulfoil.pdsapp.data.remote.responses
+package com.gulfoil.pdsapp.data.remote.responses.product
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
-data class PublicContactResponseItem(
+data class RegionalContactResponseItem(
     @SerializedName("address")
-    val address: String?,
+    val location: String?,
     @SerializedName("email")
     val email: String?,
-    @SerializedName("website")
-    val website: String?,
+    @SerializedName("staff")
+    val name: String?,
     @SerializedName("phone")
     val phone: String?
 )

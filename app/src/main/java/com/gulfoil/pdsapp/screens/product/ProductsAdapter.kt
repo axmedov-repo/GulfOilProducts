@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.gulfoil.pdsapp.data.remote.responses.ProductResponseItem
+import com.gulfoil.pdsapp.data.remote.responses.product.ProductResponseItem
 import com.gulfoil.pdsapp.databinding.ItemProductBinding
 import com.gulfoil.pdsapp.utils.scope
 
