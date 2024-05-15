@@ -31,6 +31,7 @@ class KeyStorage {
     var myPrivateKey: Int
         set(value) = pref.edit().putInt("myPrivateKey", value).apply()
         get() = pref.getInt("myPrivateKey", -1)
+
     var myGeneratedKey: Int
         set(value) = pref.edit().putInt("myGeneratedKey", value).apply()
         get() = pref.getInt("myGeneratedKey", -1)

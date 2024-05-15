@@ -27,12 +27,14 @@ class KeyRepositoryImpl @Inject constructor(
             keyStorage.publicKey1 = response.body()!!.publicKey1
             keyStorage.publicKey2 = response.body()!!.publicKey2
             keyStorage.myPrivateKey = Random.nextInt(1, response.body()!!.publicKey1 - 2)
+
             timber(
                 "keyStorage.myPrivateKey=${keyStorage.myPrivateKey}\n" +
                         "keyStorage.publicKey1=${keyStorage.publicKey1}\n" +
                         "keyStorage.publicKey2=${keyStorage.publicKey2}",
                 "KEYSTORE_LOGS"
             )
+
             emit(Result.success(response.body()!!))
         } else {
             emit(Result.failure(Throwable("${response.code()}")))
@@ -40,22 +42,26 @@ class KeyRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override fun exchangeGeneratedKeys(): Flow<Result<ExchangedGeneratedKeyResponse>> = flow {
-        val myGeneratedKey =
-            keyStorage.publicKey2.toDouble().pow(keyStorage.myPrivateKey.toDouble())
-                .mod(keyStorage.publicKey1.toDouble()).toInt()
-        keyStorage.myGeneratedKey = myGeneratedKey
+        // Focus Math Operations Precedence
+        keyStorage.myGeneratedKey =
+            ((keyStorage.publicKey2.toFloat().pow(keyStorage.myPrivateKey.toFloat())).mod(
+                keyStorage.publicKey1.toFloat()
+            )).toInt()
+
         timber(
             "keyStorage.myGeneratedKey=${keyStorage.myGeneratedKey}",
             "KEYSTORE_LOGS"
         )
 
-        val response = keyService.exchangeGeneratedKeys(myGeneratedKey)
+        val response = keyService.exchangeGeneratedKeys(keyStorage.myGeneratedKey)
         if (response.isSuccessful && response.body() != null) {
             keyStorage.serverGeneratedKey = response.body()!!.serverGeneratedKey
+
             timber(
                 "keyStorage.serverGeneratedKey=${keyStorage.serverGeneratedKey}",
                 "KEYSTORE_LOGS"
             )
+
             emit(Result.success(response.body()!!))
         } else {
             emit(Result.failure(Throwable("${response.code()}")))
@@ -63,13 +69,16 @@ class KeyRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override fun getAESKeyAndIV(): Flow<Result<AESKeyAndIVResponse>> = flow {
-        val sharedSymmetricKey =
-            keyStorage.serverGeneratedKey.toDouble().pow(keyStorage.myPrivateKey.toDouble())
-                .mod(keyStorage.publicKey1.toDouble()).toInt()
-        keyStorage.sharedSymmetricKey = sharedSymmetricKey
+        // Focus Math Operations Precedence
+        keyStorage.sharedSymmetricKey =
+            ((keyStorage.serverGeneratedKey.toFloat().pow(keyStorage.myPrivateKey.toFloat()))
+                .mod(keyStorage.publicKey1.toFloat())).toInt()
 
-        val response = keyService.getAESKeyAndIV(sharedSymmetricKey)
+        timber("keyStorage.sharedSymmetricKey=${keyStorage.sharedSymmetricKey}", "KEYSTORE_LOGS")
+
+        val response = keyService.getAESKeyAndIV(keyStorage.sharedSymmetricKey)
         if (response.isSuccessful && response.body() != null) {
+
             timber("keyStoreManager in KeyRepo=${keyStoreManager.hashCode()}", "KEYSTORE_LOGS")
             timber(
                 "\nresponeKey=${response.body()!!.key}" +

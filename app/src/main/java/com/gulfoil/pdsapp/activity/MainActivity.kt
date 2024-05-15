@@ -62,7 +62,8 @@ class MainActivity : AppCompatActivity() {
     private val internetConnectionObserver = Observer<Boolean> { internetConnected ->
         timber("Called internetConnectionObserver. Result=${internetConnected}", "sdjskjdksjd")
 
-        val internetConnectionLayout = findViewById<LinearLayoutCompat>(R.id.internetConnectionLayout)
+        val internetConnectionLayout =
+            findViewById<LinearLayoutCompat>(R.id.internetConnectionLayout)
         val internetConnectionText = findViewById<TextView>(R.id.internetConnectionText)
 
         val window: Window = window
@@ -83,7 +84,8 @@ class MainActivity : AppCompatActivity() {
                         if (viewModel.appLanguage == Languages.ENGLISH) R.string.successfully_online_en
                         else R.string.successfully_online_ru
                     )
-                    window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.orange)
+                    window.statusBarColor =
+                        ContextCompat.getColor(this@MainActivity, R.color.orange)
                     internetConnectionLayout.visible()
 
                     delay(1500L)
@@ -95,7 +97,12 @@ class MainActivity : AppCompatActivity() {
 //                window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.white)
             }
         } else {
-            internetConnectionLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.sky_blue))
+            internetConnectionLayout.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.sky_blue
+                )
+            )
             internetConnectionText.text = getString(
                 if (viewModel.appLanguage == Languages.ENGLISH) R.string.no_internet_en
                 else R.string.no_internet_ru
@@ -107,7 +114,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val showMessageOnTopOfScreenObserver = Observer<String> { message ->
-        val internetConnectionLayout = findViewById<LinearLayoutCompat>(R.id.internetConnectionLayout)
+        val internetConnectionLayout =
+            findViewById<LinearLayoutCompat>(R.id.internetConnectionLayout)
         val internetConnectionText = findViewById<TextView>(R.id.internetConnectionText)
 
         val window: Window = window
