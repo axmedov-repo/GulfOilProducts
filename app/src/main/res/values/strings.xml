@@ -28,4 +28,9 @@
     <string name="successfully_online_en">You are successfully online!</string>
     <string name="successfully_online_ru">Вы успешно онлайн!</string>
 
+    <string name="user_error_en">User error</string>
+    <string name="user_error_ru">Ошибка пользователя</string>
+
+    <string name="server_error_en">Server error</string>
+    <string name="server_error_ru">Ошибка сервера</string>
 </resources>

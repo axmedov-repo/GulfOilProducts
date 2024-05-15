@@ -62,9 +62,8 @@ class MainActivity : AppCompatActivity() {
     private val internetConnectionObserver = Observer<Boolean> { internetConnected ->
         timber("Called internetConnectionObserver. Result=${internetConnected}", "sdjskjdksjd")
 
-        val internetConnectionLayout =
-            findViewById<LinearLayoutCompat>(R.id.internetConnectionLayout)
-        val internetConnectionText = findViewById<TextView>(R.id.internetConnectionText)
+        val topBarLayout = findViewById<LinearLayoutCompat>(R.id.topBarLayout)
+        val topBarText = findViewById<TextView>(R.id.topBarText)
 
         val window: Window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -74,67 +73,86 @@ class MainActivity : AppCompatActivity() {
                 internetReconnectedListener?.invoke()
 
                 CoroutineScope(Dispatchers.Main).launch {
-                    internetConnectionLayout.setBackgroundColor(
+                    topBarLayout.setBackgroundColor(
                         ContextCompat.getColor(
                             this@MainActivity,
                             R.color.orange
                         )
                     )
-                    internetConnectionText.text = getString(
+                    topBarText.text = getString(
                         if (viewModel.appLanguage == Languages.ENGLISH) R.string.successfully_online_en
                         else R.string.successfully_online_ru
                     )
                     window.statusBarColor =
                         ContextCompat.getColor(this@MainActivity, R.color.orange)
-                    internetConnectionLayout.visible()
+                    topBarLayout.visible()
 
                     delay(1500L)
 
-                    internetConnectionLayout.gone()
+                    topBarLayout.gone()
                     window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.white)
                 }
-//                internetConnectionLayout.gone()
+//                topBarLayout.gone()
 //                window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.white)
             }
         } else {
-            internetConnectionLayout.setBackgroundColor(
+            topBarLayout.setBackgroundColor(
                 ContextCompat.getColor(
                     this,
                     R.color.sky_blue
                 )
             )
-            internetConnectionText.text = getString(
+            topBarText.text = getString(
                 if (viewModel.appLanguage == Languages.ENGLISH) R.string.no_internet_en
                 else R.string.no_internet_ru
             )
             window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.sky_blue)
-            internetConnectionLayout.visible()
+            topBarLayout.visible()
         }
         isStartListening = true
     }
 
     private val showMessageOnTopOfScreenObserver = Observer<String> { message ->
-        val internetConnectionLayout =
-            findViewById<LinearLayoutCompat>(R.id.internetConnectionLayout)
-        val internetConnectionText = findViewById<TextView>(R.id.internetConnectionText)
+        if (message.isEmpty()) return@Observer
+
+        val topBarLayout = findViewById<LinearLayoutCompat>(R.id.topBarLayout)
+        val topBarText = findViewById<TextView>(R.id.topBarText)
 
         val window: Window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
         CoroutineScope(Dispatchers.Main).launch {
-            internetConnectionLayout.setBackgroundColor(
+            topBarLayout.setBackgroundColor(
                 ContextCompat.getColor(
                     this@MainActivity,
                     R.color.sky_blue
                 )
             )
-            internetConnectionText.text = message
+            topBarText.text =
+                if (message.length == 3) {
+                    when (message.first()) {
+                        '4' -> getString(
+                            if (viewModel.appLanguage == Languages.ENGLISH) R.string.user_error_en
+                            else R.string.user_error_ru
+                        )
+
+                        '5' -> getString(
+                            if (viewModel.appLanguage == Languages.ENGLISH) R.string.server_error_en
+                            else R.string.server_error_ru
+                        )
+
+                        else -> message
+                    }
+                } else {
+                    message
+                }
+
             window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.sky_blue)
-            internetConnectionLayout.visible()
+            topBarLayout.visible()
 
             delay(3000L)
 
-            internetConnectionLayout.gone()
+            topBarLayout.gone()
             window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.white)
         }
     }

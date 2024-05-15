@@ -10,7 +10,7 @@
     tools:context=".activity.MainActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/internetConnectionLayout"
+        android:id="@+id/topBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/orange"
@@ -18,7 +18,7 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/internetConnectionText"
+            android:id="@+id/topBarText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
