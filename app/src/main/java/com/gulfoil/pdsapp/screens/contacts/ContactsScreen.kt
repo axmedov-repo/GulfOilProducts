@@ -19,6 +19,7 @@ import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModel
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModelImpl
 import com.gulfoil.pdsapp.utils.getCurrentCountryCode
 import com.gulfoil.pdsapp.utils.scope
+import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
 import com.gulfoil.pdsapp.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,10 +29,11 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
     private val viewModel: ContactsViewModel by viewModels<ContactsViewModelImpl>()
     private val regionalContactsAdapter by lazy { RegionalContactsAdapter() }
     private val publicContactsAdapter by lazy { PublicContactsAdapter() }
+    private var lang: Languages = Languages.ENGLISH
 
     init {
         setInternetReconnectedListener {
-            getData()
+            loadData()
         }
     }
 
@@ -39,14 +41,15 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         super.onViewCreated(view, savedInstanceState)
         setViews()
         setModels()
+        loadData()
     }
 
     override fun onResume() {
         super.onResume()
-        getData()
+        viewModel.getLanguage()
     }
 
-    private fun getData() {
+    private fun loadData() {
         viewModel.getLanguage()
         viewModel.getPublicContacts()
         viewModel.getRegionalContacts(getCurrentCountryCode())
@@ -79,7 +82,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
         }
 
         refreshLayout.setOnRefreshListener {
-            getData()
+            loadData()
             refreshLayout.isRefreshing = false
         }
     }
@@ -112,9 +115,12 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
             }
         }
         viewModel.regionalContactsLiveData.observe(viewLifecycleOwner) {
-            regionalContactsAdapter.submitList(it)
+            if (it.isNotEmpty()) {
+                regionalContactsAdapter.submitList(it)
+            }
         }
         viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
+            lang = it
             setData(it)
         }
         viewModel.progressLiveData.observe(viewLifecycleOwner) {
@@ -124,7 +130,10 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
             layoutHeadContact.visible(!isConnected)
         }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
-            // TODO: Hande Error
+            showMessageOnTopOfScreen(
+                if (lang == Languages.RUSSIAN) getString(R.string.something_went_wrong_ru)
+                else getString(R.string.something_went_wrong_en)
+            )
         }
     }
 

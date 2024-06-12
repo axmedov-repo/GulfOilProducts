@@ -12,16 +12,16 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
+import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.databinding.ScreenOilsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModel
 import com.gulfoil.pdsapp.screens.oils.viewmodel.OilsViewModelImpl
-import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.hideKeyboard
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.showKeyboard
-import com.gulfoil.pdsapp.utils.timber
+import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
@@ -94,17 +94,10 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         }
 
         imgLanguage.setOnClickListener {
-            if (language == Languages.ENGLISH) {
-                language = Languages.RUSSIAN
-                viewModel.setLanguage(language)
-                setData()
-                getOils()
-            } else {
-                language = Languages.ENGLISH
-                viewModel.setLanguage(language)
-                setData()
-                getOils()
-            }
+            language = if (language == Languages.ENGLISH) Languages.RUSSIAN else Languages.ENGLISH
+            viewModel.setLanguage(language)
+            setData()
+            getOils()
         }
 
         initSearchListener()
@@ -136,9 +129,9 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
             }
         }
 
-        val closeButton = binding.searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView
+        val closeButton: ImageView =
+            binding.searchView.findViewById(androidx.appcompat.R.id.search_close_btn)
         closeButton.setOnClickListener {
-            timber("Closed", "jskdjksdjk")
             searchingText = ""
             searchView.setQuery(null, false)
             searchView.clearFocus()
@@ -193,7 +186,10 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                 progressBar.visible(it)
             }
             errorLiveData.observe(viewLifecycleOwner) {
-                // TODO: Handle Error
+                showMessageOnTopOfScreen(
+                    if (language == Languages.RUSSIAN) getString(R.string.something_went_wrong_ru)
+                    else getString(R.string.something_went_wrong_en)
+                )
             }
             lastLanguageLiveData.observe(viewLifecycleOwner) {
                 language = it

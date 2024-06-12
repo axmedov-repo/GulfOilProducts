@@ -271,6 +271,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
+                    android:layoutAnimation="@anim/layout_animation"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_public_contact" />
 
@@ -279,6 +280,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
+                    android:layoutAnimation="@anim/layout_animation"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_regional_contact" />
 

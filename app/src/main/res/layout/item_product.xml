@@ -11,31 +11,6 @@
     android:paddingHorizontal="16dp"
     android:paddingVertical="8dp">
 
-    <!-- <FrameLayout
-         android:id="@+id/frameImageProduct"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="center_vertical"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent">
-
-         <ImageView
-             android:layout_width="84dp"
-             android:layout_height="84dp"
-             android:layout_gravity="center"
-             android:adjustViewBounds="true"
-             android:src="@drawable/ic_stroke_child_img" />
-
-         <de.hdodenhof.circleimageview.CircleImageView
-             android:id="@+id/imgProduct"
-             android:layout_width="76dp"
-             android:layout_height="76dp"
-             android:layout_gravity="center"
-             tools:src="@drawable/ic_car" />
-
-     </FrameLayout>-->
-
     <ImageView
         android:id="@+id/imgProduct"
         android:layout_width="84dp"
@@ -53,9 +28,9 @@
         android:layout_marginStart="16dp"
         android:fontFamily="@font/helvetica_neue_medium"
         android:gravity="start"
-        android:text="Cars"
         android:textColor="@color/product_txt_color"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="Cars" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

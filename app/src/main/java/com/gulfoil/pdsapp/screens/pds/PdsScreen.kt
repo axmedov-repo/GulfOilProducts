@@ -9,13 +9,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
+import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.databinding.ScreenPdsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModel
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModelImpl
-import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.scope
+import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,7 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
 
     init {
         setInternetReconnectedListener {
-            getData()
+            loadData()
         }
     }
 
@@ -47,15 +48,16 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
         super.onViewCreated(view, savedInstanceState)
         setViews()
         setModels()
+        loadData()
     }
 
     override fun onResume() {
         super.onResume()
         isUIVisible = true
-        getData()
+        viewModel.getLanguage()
     }
 
-    private fun getData() {
+    private fun loadData() {
         viewModel.getLanguage()
         viewModel.getPds(args.oilId)
         viewModel.getAds()
@@ -115,7 +117,10 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
                 progressBar.visible(it)
             }
             errorLiveData.observe(viewLifecycleOwner) {
-                // TODO: Handle Error
+                showMessageOnTopOfScreen(
+                    if (language == Languages.RUSSIAN) getString(R.string.something_went_wrong_ru)
+                    else getString(R.string.something_went_wrong_en)
+                )
             }
             emptyLiveData.observe(viewLifecycleOwner) {
                 txtEmpty.visible(it)

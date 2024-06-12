@@ -8,6 +8,7 @@ import com.gulfoil.pdsapp.data.remote.responses.product.AdResponseItem
 import com.gulfoil.pdsapp.data.remote.responses.product.ProductResponseItem
 import com.gulfoil.pdsapp.domain.main.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
+import com.gulfoil.pdsapp.utils.timber
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,6 +30,7 @@ class ProductsViewModelImpl @Inject constructor(
         } else {
             mainRepository.getProducts().onEach {
                 it.onSuccess {
+                    timber("viewModel onSuccess", "PRODUCTS_LOGS")
                     productsLiveData.value = it
                     progressLiveData.value = false
                 }

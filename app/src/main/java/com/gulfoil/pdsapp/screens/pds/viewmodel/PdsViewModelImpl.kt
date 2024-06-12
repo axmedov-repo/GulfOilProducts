@@ -40,6 +40,7 @@ class PdsViewModelImpl @Inject constructor(
                         progressLiveData.value = false
                     } else {
                         emptyLiveData.value = false
+                        progressLiveData.value = true
                         viewModelScope.launch(Dispatchers.IO) {
                             try {
                                 val input = URL(it.pdf).openStream()

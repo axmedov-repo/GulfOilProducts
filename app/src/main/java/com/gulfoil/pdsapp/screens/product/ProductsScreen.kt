@@ -10,13 +10,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
+import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.databinding.ScreenProductsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModel
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModelImpl
-import com.gulfoil.pdsapp.activity.setInternetReconnectedListener
 import com.gulfoil.pdsapp.utils.scope
+import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
+import com.gulfoil.pdsapp.utils.timber
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +41,7 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
 
     init {
         setInternetReconnectedListener {
-            getData()
+            loadData()
         }
     }
 
@@ -47,26 +49,22 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
         super.onViewCreated(view, savedInstanceState)
         setViews()
         setModels()
+        loadData()
     }
 
     override fun onResume() {
         super.onResume()
         isUIVisible = true
-        getData()
-    }
-
-    private fun getData() {
         viewModel.getLanguage()
-        viewModel.getProducts()
-        viewModel.getAds()
     }
 
     private fun setViews() = binding.scope {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
         adsVP.setPageTransformer(DepthTransformer())
         adsVP.isUserInputEnabled = false
 
@@ -74,7 +72,9 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
         rvProducts.adapter = adapter
         adapter.setItemClickedListener {
             it.id?.let { id ->
-                findNavController().navigate(ProductsScreenDirections.actionProductsScreenToOilsScreen(id))
+                findNavController().navigate(
+                    ProductsScreenDirections.actionProductsScreenToOilsScreen(id)
+                )
             }
         }
 
@@ -83,61 +83,40 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
         }
 
         imgLanguage.setOnClickListener {
-            if (language == Languages.ENGLISH) {
-                language = Languages.RUSSIAN
-                viewModel.setLanguage(language)
-                viewModel.getProducts()
-                setData()
+            language = if (language == Languages.ENGLISH) {
+                Languages.RUSSIAN
             } else {
-                language = Languages.ENGLISH
-                viewModel.setLanguage(language)
-                viewModel.getProducts()
-                setData()
+                Languages.ENGLISH
             }
+            viewModel.setLanguage(language)
+            loadData()
+            setData()
         }
 
         refreshLayout.setOnRefreshListener {
-            getData()
+            loadData()
             refreshLayout.isRefreshing = false
-        }
-    }
-
-    private fun startAutoScroll() {
-        job = lifecycleScope.launch {
-            delay(delayMillis)
-
-            while (isUIVisible) {
-                val itemCount = adsAdapter.itemCount
-
-                if (adsAdapter.itemCount != 0) {
-                    if (currentPage == itemCount - 1) {
-                        currentPage = 0
-                        binding.adsVP.setCurrentItem(currentPage, false)
-                        delay(delayMillis)
-                    } else {
-                        currentPage++
-                        binding.adsVP.setCurrentItem(currentPage, true)
-                        delay(delayMillis)
-                    }
-                }
-            }
         }
     }
 
     private fun setModels() = binding.scope {
         viewModel.apply {
             productsLiveData.observe(viewLifecycleOwner) {
-                txtEmpty.visible(it.isEmpty())
+                timber("Observing", "PRODUCTS_LOGS")
+                binding.txtEmpty.visible(it.isEmpty())
+
                 if (it.isNotEmpty()) {
                     adapter.setData(it)
-                    rvProducts.scheduleLayoutAnimation()
                 }
             }
             progressLiveData.observe(viewLifecycleOwner) {
                 progressBar.visible(it)
             }
             errorLiveData.observe(viewLifecycleOwner) {
-                // TODO: Handle error
+                showMessageOnTopOfScreen(
+                    if (language == Languages.RUSSIAN) getString(R.string.something_went_wrong_ru)
+                    else getString(R.string.something_went_wrong_en)
+                )
             }
             lastLanguageLiveData.observe(viewLifecycleOwner) {
                 language = it
@@ -150,6 +129,34 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
                 if (adsList.isNotEmpty()) {
                     adsVP.setCurrentItem(0, false)
                     startAutoScroll()
+                }
+            }
+        }
+    }
+
+    private fun loadData() {
+        viewModel.getLanguage()
+        viewModel.getProducts()
+        viewModel.getAds()
+    }
+
+    private fun startAutoScroll() {
+        job = lifecycleScope.launch {
+            delay(delayMillis)
+
+            while (isUIVisible) {
+                val itemCount = adsAdapter.itemCount
+
+                if (itemCount != 0) {
+                    if (currentPage == itemCount - 1) {
+                        currentPage = 0
+                        binding.adsVP.setCurrentItem(currentPage, false)
+                        delay(delayMillis)
+                    } else {
+                        currentPage++
+                        binding.adsVP.setCurrentItem(currentPage, true)
+                        delay(delayMillis)
+                    }
                 }
             }
         }

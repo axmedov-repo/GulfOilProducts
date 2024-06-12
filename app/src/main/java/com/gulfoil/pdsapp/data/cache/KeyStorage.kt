@@ -20,29 +20,29 @@ class KeyStorage {
 //        }
 //    }
 
-    var publicKey1: Int
-        set(value) = pref.edit().putInt("publicKey1", value).apply()
-        get() = pref.getInt("publicKey1", -1)
+    var publicKey1: Long
+        set(value) = pref.edit().putLong("publicKey1", value).apply()
+        get() = pref.getLong("publicKey1", -1)
 
-    var publicKey2: Int
-        set(value) = pref.edit().putInt("publicKey2", value).apply()
-        get() = pref.getInt("publicKey2", -1)
+    var publicKey2: Long
+        set(value) = pref.edit().putLong("publicKey2", value).apply()
+        get() = pref.getLong("publicKey2", -1)
 
-    var myPrivateKey: Int
-        set(value) = pref.edit().putInt("myPrivateKey", value).apply()
-        get() = pref.getInt("myPrivateKey", -1)
+    var myPrivateKey: Long
+        set(value) = pref.edit().putLong("myPrivateKey", value).apply()
+        get() = pref.getLong("myPrivateKey", -1)
 
-    var myGeneratedKey: Int
-        set(value) = pref.edit().putInt("myGeneratedKey", value).apply()
-        get() = pref.getInt("myGeneratedKey", -1)
+    var myGeneratedKey: Long
+        set(value) = pref.edit().putLong("myGeneratedKey", value).apply()
+        get() = pref.getLong("myGeneratedKey", -1)
 
-    var serverGeneratedKey: Int
-        set(value) = pref.edit().putInt("serverGeneratedKey", value).apply()
-        get() = pref.getInt("serverGeneratedKey", -1)
+    var serverGeneratedKey: Long
+        set(value) = pref.edit().putLong("serverGeneratedKey", value).apply()
+        get() = pref.getLong("serverGeneratedKey", -1)
 
-    var sharedSymmetricKey: Int
-        set(value) = pref.edit().putInt("sharedSymmetricKey", value).apply()
-        get() = pref.getInt("sharedSymmetricKey", -1)
+    var sharedSymmetricKey: Long
+        set(value) = pref.edit().putLong("sharedSymmetricKey", value).apply()
+        get() = pref.getLong("sharedSymmetricKey", -1)
 
     var iv: String?
         set(value) = pref.edit().putString("iv", value).apply()

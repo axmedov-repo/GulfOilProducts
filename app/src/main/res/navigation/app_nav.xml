@@ -8,7 +8,7 @@
         android:id="@+id/productsScreen"
         android:name="com.gulfoil.pdsapp.screens.product.ProductsScreen"
         android:label="screen_products"
-        tools:layout="@layout/screen_products" >
+        tools:layout="@layout/screen_products">
         <action
             android:id="@+id/action_productsScreen_to_oilsScreen"
             app:destination="@id/oilsScreen" />
@@ -21,7 +21,7 @@
         android:id="@+id/oilsScreen"
         android:name="com.gulfoil.pdsapp.screens.oils.OilsScreen"
         android:label="screen_oils"
-        tools:layout="@layout/screen_oils" >
+        tools:layout="@layout/screen_oils">
         <action
             android:id="@+id/action_oilsScreen_to_pdfScreen"
             app:destination="@id/pdfScreen" />
@@ -33,7 +33,7 @@
         android:id="@+id/pdfScreen"
         android:name="com.gulfoil.pdsapp.screens.pds.PdsScreen"
         android:label="screen_pdf"
-        tools:layout="@layout/screen_pds" >
+        tools:layout="@layout/screen_pds">
         <argument
             android:name="oilId"
             app:argType="integer" />
@@ -42,7 +42,7 @@
         android:id="@+id/splashScreen"
         android:name="com.gulfoil.pdsapp.screens.splash.SplashScreen"
         android:label="screen_splash"
-        tools:layout="@layout/screen_splash" >
+        tools:layout="@layout/screen_splash">
         <action
             android:id="@+id/action_splashScreen_to_productsScreen"
             app:destination="@id/productsScreen" />

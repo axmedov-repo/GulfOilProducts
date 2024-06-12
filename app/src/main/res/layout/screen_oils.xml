@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".screens.oils.OilsScreen">
 
     <FrameLayout
@@ -109,6 +110,7 @@
             android:id="@+id/rvOils"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layoutAnimation="@anim/layout_animation"
             tools:listitem="@layout/item_oils" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
