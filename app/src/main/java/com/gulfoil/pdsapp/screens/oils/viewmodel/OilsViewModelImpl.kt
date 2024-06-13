@@ -8,6 +8,7 @@ import com.gulfoil.pdsapp.data.remote.responses.product.AdResponseItem
 import com.gulfoil.pdsapp.data.remote.responses.product.OilResponseItem
 import com.gulfoil.pdsapp.domain.main.MainRepository
 import com.gulfoil.pdsapp.utils.isConnected
+import com.gulfoil.pdsapp.utils.timber
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -48,8 +49,9 @@ class OilsViewModelImpl @Inject constructor(
             progressLiveData.value = false
         } else {
             mainRepository.getOils(productId, query).onEach {
+                timber("query=$query, list=$it", "OIL_LOGS")
                 it.onSuccess {
-                    oilsLiveData.value = it
+                    searchResponseLiveData.value = it
                     progressLiveData.value = false
                 }
                 it.onFailure {

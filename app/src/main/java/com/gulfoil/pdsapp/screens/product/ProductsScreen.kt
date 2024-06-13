@@ -104,10 +104,7 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
             productsLiveData.observe(viewLifecycleOwner) {
                 timber("Observing", "PRODUCTS_LOGS")
                 binding.txtEmpty.visible(it.isEmpty())
-
-                if (it.isNotEmpty()) {
-                    adapter.setData(it)
-                }
+                adapter.setData(it)
             }
             progressLiveData.observe(viewLifecycleOwner) {
                 progressBar.visible(it)

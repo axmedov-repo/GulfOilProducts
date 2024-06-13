@@ -110,14 +110,10 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
 
     private fun setModels() = binding.scope {
         viewModel.publicContactsLiveData.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                publicContactsAdapter.submitList(it)
-            }
+            publicContactsAdapter.submitList(it)
         }
         viewModel.regionalContactsLiveData.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                regionalContactsAdapter.submitList(it)
-            }
+            regionalContactsAdapter.submitList(it)
         }
         viewModel.lastLanguageLiveData.observe(viewLifecycleOwner) {
             lang = it

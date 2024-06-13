@@ -22,6 +22,7 @@ import com.gulfoil.pdsapp.utils.hideKeyboard
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.showKeyboard
 import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
+import com.gulfoil.pdsapp.utils.timber
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
@@ -172,15 +173,11 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
         viewModel.apply {
             oilsLiveData.observe(viewLifecycleOwner) {
                 txtEmpty.visible(it.isEmpty())
-                if (it.isNotEmpty()) {
-                    oilsAdapter.setData(it)
-                }
+                oilsAdapter.setData(it)
             }
             searchResponseLiveData.observe(viewLifecycleOwner) {
                 txtEmpty.visible(it.isEmpty())
-                if (it.isNotEmpty()) {
-                    oilsAdapter.setData(it)
-                }
+                oilsAdapter.setData(it)
             }
             progressLiveData.observe(viewLifecycleOwner) {
                 progressBar.visible(it)
