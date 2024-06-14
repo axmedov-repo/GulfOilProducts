@@ -15,6 +15,7 @@ import com.gulfoil.pdsapp.databinding.ScreenPdsBinding
 import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModel
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModelImpl
+import com.gulfoil.pdsapp.utils.gone
 import com.gulfoil.pdsapp.utils.scope
 import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
 import com.gulfoil.pdsapp.utils.visible
@@ -158,7 +159,9 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
     }
 
     private fun setPdf(inputStream: InputStream) = binding.scope {
-        pdfView.fromStream(inputStream).load()
+        pdfView.fromStream(inputStream).onLoad {
+            progressBar.gone()
+        }.load()
     }
 
     override fun onPause() {

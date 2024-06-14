@@ -46,7 +46,7 @@ class PdsViewModelImpl @Inject constructor(
                                 val input = URL(it.pdf).openStream()
                                 withContext(Dispatchers.Main) {
                                     pdsLiveData.value = input
-                                    progressLiveData.value = false
+//                                    progressLiveData.value = false
                                 }
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -65,18 +65,18 @@ class PdsViewModelImpl @Inject constructor(
     }
 
     override fun getAds() {
-        progressLiveData.value = true
+//        progressLiveData.value = true
         if (!isConnected()) {
-            progressLiveData.value = false
+//            progressLiveData.value = false
         } else {
             mainRepository.getAds().onEach {
                 it.onSuccess {
                     adResponseLiveData.value = it
-                    progressLiveData.value = false
+//                    progressLiveData.value = false
                 }
                 it.onFailure {
                     errorLiveData.value = it.message
-                    progressLiveData.value = false
+//                    progressLiveData.value = false
                 }
             }.launchIn(viewModelScope)
         }

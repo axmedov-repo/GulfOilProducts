@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.data.remote.responses.product.AdResponseItem
 import java.io.InputStream
+import java.net.URL
 
 interface PdsViewModel {
     val pdsLiveData: LiveData<InputStream>
