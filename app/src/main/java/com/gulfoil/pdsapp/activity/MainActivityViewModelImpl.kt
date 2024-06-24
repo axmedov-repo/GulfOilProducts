@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.domain.main.MainRepository
-import com.gulfoil.pdsapp.utils.checkInternetConnection
-import com.gulfoil.pdsapp.utils.setInternetConnectionListener
+import com.gulfoil.pdsapp.utils.connection.checkInternetConnection
+import com.gulfoil.pdsapp.utils.connection.setInternetConnectionListener
 import com.gulfoil.pdsapp.utils.setShowMessageOnTopOfScreenListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

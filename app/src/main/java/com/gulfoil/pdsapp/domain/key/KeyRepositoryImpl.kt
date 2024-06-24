@@ -1,26 +1,26 @@
 package com.gulfoil.pdsapp.domain.key
 
 import com.gulfoil.pdsapp.data.cache.KeyStorage
+import com.gulfoil.pdsapp.data.cache.LocalStorage
 import com.gulfoil.pdsapp.data.encryption.KeyStoreManager
 import com.gulfoil.pdsapp.data.remote.responses.key.AESKeyAndIVResponse
 import com.gulfoil.pdsapp.data.remote.responses.key.ExchangedGeneratedKeyResponse
 import com.gulfoil.pdsapp.data.remote.responses.key.PublicKeysResponse
 import com.gulfoil.pdsapp.data.remote.services.KeyService
+import com.gulfoil.pdsapp.utils.connection.safeApiCall
 import com.gulfoil.pdsapp.utils.timber
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import kotlin.random.Random
 
 class KeyRepositoryImpl @Inject constructor(
     private val keyService: KeyService,
     private val keyStorage: KeyStorage,
-    private val keyStoreManager: KeyStoreManager
+    private val keyStoreManager: KeyStoreManager,
+    private val localStorage: LocalStorage,
 ) : KeyRepository {
 
-    override fun getPublicKeys(): Flow<Result<PublicKeysResponse>> = flow {
+    override fun getPublicKeys(): Flow<Result<PublicKeysResponse>> = safeApiCall(localStorage) {
         val response = keyService.getPublicKeys()
         if (response.isSuccessful && response.body() != null) {
             keyStorage.publicKey1 = response.body()!!.publicKey1.toLong()
@@ -34,37 +34,38 @@ class KeyRepositoryImpl @Inject constructor(
                 "KEYSTORE_LOGS"
             )
 
-            emit(Result.success(response.body()!!))
+            Result.success(response.body()!!)
         } else {
-            emit(Result.failure(Throwable("${response.code()}")))
+            Result.failure(Throwable("${response.code()}"))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
-    override fun exchangeGeneratedKeys(): Flow<Result<ExchangedGeneratedKeyResponse>> = flow {
-        keyStorage.myGeneratedKey =
-            modPow(keyStorage.publicKey2, keyStorage.myPrivateKey, keyStorage.publicKey1)
-
-        timber(
-            "keyStorage.myGeneratedKey=${keyStorage.myGeneratedKey}",
-            "KEYSTORE_LOGS"
-        )
-
-        val response = keyService.exchangeGeneratedKeys(keyStorage.myGeneratedKey.toInt())
-        if (response.isSuccessful && response.body() != null) {
-            keyStorage.serverGeneratedKey = response.body()!!.serverGeneratedKey.toLong()
+    override fun exchangeGeneratedKeys(): Flow<Result<ExchangedGeneratedKeyResponse>> =
+        safeApiCall(localStorage) {
+            keyStorage.myGeneratedKey =
+                modPow(keyStorage.publicKey2, keyStorage.myPrivateKey, keyStorage.publicKey1)
 
             timber(
-                "keyStorage.serverGeneratedKey=${keyStorage.serverGeneratedKey}",
+                "keyStorage.myGeneratedKey=${keyStorage.myGeneratedKey}",
                 "KEYSTORE_LOGS"
             )
 
-            emit(Result.success(response.body()!!))
-        } else {
-            emit(Result.failure(Throwable("${response.code()}")))
-        }
-    }.flowOn(Dispatchers.IO)
+            val response = keyService.exchangeGeneratedKeys(keyStorage.myGeneratedKey.toInt())
+            if (response.isSuccessful && response.body() != null) {
+                keyStorage.serverGeneratedKey = response.body()!!.serverGeneratedKey.toLong()
 
-    override fun getAESKeyAndIV(): Flow<Result<AESKeyAndIVResponse>> = flow {
+                timber(
+                    "keyStorage.serverGeneratedKey=${keyStorage.serverGeneratedKey}",
+                    "KEYSTORE_LOGS"
+                )
+
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Throwable("${response.code()}"))
+            }
+        }
+
+    override fun getAESKeyAndIV(): Flow<Result<AESKeyAndIVResponse>> = safeApiCall(localStorage) {
         // Focus Math Operations Precedence
         keyStorage.sharedSymmetricKey =
             modPow(keyStorage.serverGeneratedKey, keyStorage.myPrivateKey, keyStorage.publicKey1)
@@ -84,11 +85,11 @@ class KeyRepositoryImpl @Inject constructor(
             keyStoreManager.setIV(response.body()!!.iv)
             keyStoreManager.setKey(response.body()!!.key)
 
-            emit(Result.success(response.body()!!))
+            Result.success(response.body()!!)
         } else {
-            emit(Result.failure(Throwable("${response.code()}")))
+            Result.failure(Throwable("${response.code()}"))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 }
 
 private fun modPow(base: Long, exponent: Long, modulus: Long): Long {

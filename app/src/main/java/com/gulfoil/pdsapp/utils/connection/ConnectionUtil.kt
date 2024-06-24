@@ -1,4 +1,4 @@
-package com.gulfoil.pdsapp.utils
+package com.gulfoil.pdsapp.utils.connection
 
 import android.content.Context
 import android.net.ConnectivityManager

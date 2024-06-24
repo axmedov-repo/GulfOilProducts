@@ -21,9 +21,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.data.enums.Languages
-import com.gulfoil.pdsapp.utils.CheckInternetReceiver
+import com.gulfoil.pdsapp.utils.connection.CheckInternetReceiver
 import com.gulfoil.pdsapp.utils.gone
-import com.gulfoil.pdsapp.utils.isConnected
+import com.gulfoil.pdsapp.utils.connection.isConnected
 import com.gulfoil.pdsapp.utils.timber
 import com.gulfoil.pdsapp.utils.visible
 import dagger.hilt.android.AndroidEntryPoint

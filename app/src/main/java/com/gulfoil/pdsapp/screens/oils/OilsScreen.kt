@@ -183,10 +183,7 @@ class OilsScreen : Fragment(R.layout.screen_oils) {
                 progressBar.visible(it)
             }
             errorLiveData.observe(viewLifecycleOwner) {
-                showMessageOnTopOfScreen(
-                    if (language == Languages.RUSSIAN) getString(R.string.something_went_wrong_ru)
-                    else getString(R.string.something_went_wrong_en)
-                )
+                showMessageOnTopOfScreen(it)
             }
             lastLanguageLiveData.observe(viewLifecycleOwner) {
                 language = it

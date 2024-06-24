@@ -16,11 +16,9 @@ import com.gulfoil.pdsapp.data.remote.responses.product.PublicContactResponseIte
 import com.gulfoil.pdsapp.data.remote.responses.product.RegionalContactResponse
 import com.gulfoil.pdsapp.data.remote.responses.product.RegionalContactResponseItem
 import com.gulfoil.pdsapp.data.remote.services.ProductService
+import com.gulfoil.pdsapp.utils.connection.safeApiCall
 import com.gulfoil.pdsapp.utils.timber
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -30,31 +28,32 @@ class MainRepositoryImpl @Inject constructor(
 ) : MainRepository {
     private val adsResponseList = ArrayList<AdResponseItem>()
 
-    override fun getProducts(): Flow<Result<List<ProductResponseItem>>> = flow {
-        val response = productService.getProducts(localStorage.appLanguage.brief)
-        if (response.isSuccessful && response.body() != null) {
-            timber("keyStoreManager in MainRepo=${keyStoreManager.hashCode()}", "KEYSTORE_LOGS")
-            timber(
-                "keyStoreManager.getKey()=${keyStoreManager.getKey()}\nkeyStoreManager.getIV()=${keyStoreManager.getIV()}",
-                "KEYSTORE_LOGS"
-            )
-            val parsedData = decryptAndParseData<ProductResponse>(
-                encryptedData = response.body()!!,
-                key = keyStoreManager.getKey(),
-                iv = keyStoreManager.getIV()
-            )
-            if (parsedData != null) {
-                emit(Result.success(parsedData))
+    override fun getProducts(): Flow<Result<List<ProductResponseItem>>> =
+        safeApiCall(localStorage) {
+            val response = productService.getProducts(localStorage.appLanguage.brief)
+            if (response.isSuccessful && response.body() != null) {
+                timber("keyStoreManager in MainRepo=${keyStoreManager.hashCode()}", "KEYSTORE_LOGS")
+                timber(
+                    "keyStoreManager.getKey()=${keyStoreManager.getKey()}\nkeyStoreManager.getIV()=${keyStoreManager.getIV()}",
+                    "KEYSTORE_LOGS"
+                )
+                val parsedData = decryptAndParseData<ProductResponse>(
+                    encryptedData = response.body()!!,
+                    key = keyStoreManager.getKey(),
+                    iv = keyStoreManager.getIV()
+                )
+                if (parsedData != null) {
+                    Result.success(parsedData)
+                } else {
+                    Result.failure(Throwable("${response.code()}"))
+                }
             } else {
-                emit(Result.failure(Throwable("${response.code()}")))
+                Result.failure(Throwable("${response.code()}"))
             }
-        } else {
-            emit(Result.failure(Throwable("${response.code()}")))
         }
-    }.flowOn(Dispatchers.IO)
 
     override fun getOils(productId: Int, name: String?): Flow<Result<List<OilResponseItem>>> =
-        flow {
+        safeApiCall(localStorage) {
             val response = if (name.isNullOrEmpty()) {
                 productService.searchOil(localStorage.appLanguage.brief, productId)
             } else {
@@ -69,16 +68,16 @@ class MainRepositoryImpl @Inject constructor(
                         iv = keyStoreManager.getIV()
                     )
                 if (parsedData != null) {
-                    emit(Result.success(parsedData))
+                    Result.success(parsedData)
                 } else {
-                    emit(Result.failure(Throwable("${response.code()}")))
+                    Result.failure(Throwable("${response.code()}"))
                 }
             } else {
-                emit(Result.failure(Throwable("${response.code()}")))
+                Result.failure(Throwable("${response.code()}"))
             }
-        }.flowOn(Dispatchers.IO)
+        }
 
-    override fun getPDS(oilId: Int): Flow<Result<PdsResponse>> = flow {
+    override fun getPDS(oilId: Int): Flow<Result<PdsResponse>> = safeApiCall(localStorage) {
         val response = productService.getPDS(localStorage.appLanguage.brief, oilId)
         if (response.isSuccessful && response.body() != null) {
             val parsedData = decryptAndParseData<PdsResponse>(
@@ -87,36 +86,37 @@ class MainRepositoryImpl @Inject constructor(
                 iv = keyStoreManager.getIV()
             )
             if (parsedData != null) {
-                emit(Result.success(parsedData))
+                Result.success(parsedData)
             } else {
-                emit(Result.failure(Throwable("${response.code()}")))
+                Result.failure(Throwable("${response.code()}"))
             }
         } else {
-            emit(Result.failure(Throwable("${response.code()}")))
+            Result.failure(Throwable("${response.code()}"))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
-    override fun getPublicContact(): Flow<Result<List<PublicContactResponseItem>>> = flow {
-        val response = productService.getPublicContact(localStorage.appLanguage.brief)
-        if (response.isSuccessful && response.body() != null) {
-            val parsedData =
-                decryptAndParseData<PublicContactResponse>(
-                    encryptedData = response.body()!!,
-                    key = keyStoreManager.getKey(),
-                    iv = keyStoreManager.getIV()
-                )
-            if (parsedData != null) {
-                emit(Result.success(parsedData))
+    override fun getPublicContact(): Flow<Result<List<PublicContactResponseItem>>> =
+        safeApiCall(localStorage) {
+            val response = productService.getPublicContact(localStorage.appLanguage.brief)
+            if (response.isSuccessful && response.body() != null) {
+                val parsedData =
+                    decryptAndParseData<PublicContactResponse>(
+                        encryptedData = response.body()!!,
+                        key = keyStoreManager.getKey(),
+                        iv = keyStoreManager.getIV()
+                    )
+                if (parsedData != null) {
+                    Result.success(parsedData)
+                } else {
+                    Result.failure(Throwable("${response.code()}"))
+                }
             } else {
-                emit(Result.failure(Throwable("${response.code()}")))
+                Result.failure(Throwable("${response.code()}"))
             }
-        } else {
-            emit(Result.failure(Throwable("${response.code()}")))
         }
-    }.flowOn(Dispatchers.IO)
 
     override fun getRegionalContact(regionCode: String): Flow<Result<List<RegionalContactResponseItem>>> =
-        flow {
+        safeApiCall(localStorage) {
             val response = productService.getRegionalContact(
                 localStorage.appLanguage.brief, regionCode.uppercase()
             )
@@ -128,16 +128,16 @@ class MainRepositoryImpl @Inject constructor(
                         iv = keyStoreManager.getIV()
                     )
                 if (parsedData != null) {
-                    emit(Result.success(parsedData))
+                    Result.success(parsedData)
                 } else {
-                    emit(Result.failure(Throwable("${response.code()}")))
+                    Result.failure(Throwable("${response.code()}"))
                 }
             } else {
-                emit(Result.failure(Throwable("${response.code()}")))
+                Result.failure(Throwable("${response.code()}"))
             }
-        }.flowOn(Dispatchers.IO)
+        }
 
-    override fun getAds(): Flow<Result<List<AdResponseItem>>> = flow {
+    override fun getAds(): Flow<Result<List<AdResponseItem>>> = safeApiCall(localStorage) {
         if (adsResponseList.isEmpty()) {
             val response = productService.getAds(localStorage.appLanguage.brief)
             if (response.isSuccessful && response.body() != null) {
@@ -155,16 +155,16 @@ class MainRepositoryImpl @Inject constructor(
                 }
                 val adResponse = AdResponse()
                 adResponse.addAll(adsResponseList)
-                emit(Result.success(adResponse))
+                Result.success(adResponse)
             } else {
-                emit(Result.failure(Throwable("${response.code()}")))
+                Result.failure(Throwable("${response.code()}"))
             }
         } else {
             val adResponse = AdResponse()
             adResponse.addAll(adsResponseList)
-            emit(Result.success(adResponse))
+            Result.success(adResponse)
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
     override fun getLanguage(): Languages = localStorage.appLanguage
 

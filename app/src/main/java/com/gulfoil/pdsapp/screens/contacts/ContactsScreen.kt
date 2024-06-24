@@ -126,10 +126,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
             layoutHeadContact.visible(!isConnected)
         }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
-            showMessageOnTopOfScreen(
-                if (lang == Languages.RUSSIAN) getString(R.string.something_went_wrong_ru)
-                else getString(R.string.something_went_wrong_en)
-            )
+            showMessageOnTopOfScreen(it)
         }
     }
 

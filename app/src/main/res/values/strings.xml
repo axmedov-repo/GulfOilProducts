@@ -36,4 +36,13 @@
 
     <string name="something_went_wrong_en">Something went wrong</string>
     <string name="something_went_wrong_ru">Что-то пошло не так</string>
+
+    <string name="error_unable_to_resolve_host_en">Unable to resolve host. Please check your connection or try again later.</string>
+    <string name="error_unable_to_resolve_host_ru">Не удалось разрешить хост. Пожалуйста, проверьте подключение или повторите попытку позже.</string>
+
+    <string name="error_network_en">Network error. Please check your connection and try again.</string>
+    <string name="error_network_ru">Ошибка сети. Пожалуйста, проверьте подключение и повторите попытку.</string>
+
+    <string name="error_unexpected_en">Unexpected error occurred: %1$s}</string>
+    <string name="error_unexpected_ru">Произошла непредвиденная ошибка: %1$s</string>
 </resources>

@@ -5,6 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.gulfoil.pdsapp.BuildConfig.BASE_URL
 import com.gulfoil.pdsapp.BuildConfig.LOGGING
 import com.gulfoil.pdsapp.app.App
+import com.gulfoil.pdsapp.utils.connection.ConnectivityInterceptor
 import com.gulfoil.pdsapp.utils.timber
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -31,6 +32,7 @@ object ApiClient {
 
     private fun getHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(ConnectivityInterceptor())
             .addChucker()
             .addLogging()
             .build()

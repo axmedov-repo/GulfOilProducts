@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.gulfoil.pdsapp.data.enums.Languages
 import com.gulfoil.pdsapp.data.remote.responses.product.AdResponseItem
 import com.gulfoil.pdsapp.domain.main.MainRepository
-import com.gulfoil.pdsapp.utils.isConnected
+import com.gulfoil.pdsapp.utils.connection.isConnected
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn

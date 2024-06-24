@@ -1,8 +1,9 @@
-package com.gulfoil.pdsapp.utils
+package com.gulfoil.pdsapp.utils.connection
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.gulfoil.pdsapp.utils.timber
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
