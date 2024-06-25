@@ -93,8 +93,8 @@ fun <T> safeApiCall(
                 Throwable(
                     getString(
                         App.instance,
-                        if (localStorage.appLanguage == Languages.ENGLISH) R.string.successfully_online_en
-                        else R.string.successfully_online_ru
+                        if (localStorage.appLanguage == Languages.ENGLISH) R.string.error_unable_to_resolve_host_en
+                        else R.string.error_unable_to_resolve_host_ru
                     )
                 )
             )

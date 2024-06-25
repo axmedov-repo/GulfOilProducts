@@ -15,15 +15,18 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.data.enums.Languages
+import com.gulfoil.pdsapp.data.enums.MessageType
 import com.gulfoil.pdsapp.utils.connection.CheckInternetReceiver
-import com.gulfoil.pdsapp.utils.gone
 import com.gulfoil.pdsapp.utils.connection.isConnected
+import com.gulfoil.pdsapp.utils.gone
 import com.gulfoil.pdsapp.utils.timber
 import com.gulfoil.pdsapp.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         viewModel.internetConnectionLiveData.observe(this, internetConnectionObserver)
-        viewModel.showMessageOnTopOfScreenLiveData.observe(this, showMessageOnTopOfScreenObserver)
+        viewModel.showMessageLiveData.observe(this, showMessageObserver)
 
         setNavigationComponent()
     }
@@ -112,48 +115,71 @@ class MainActivity : AppCompatActivity() {
         isStartListening = true
     }
 
-    private val showMessageOnTopOfScreenObserver = Observer<String> { message ->
+    private val showMessageObserver = Observer<Triple<String, MessageType, () -> Unit>> { triple ->
+        val message = triple.first
+        val messageType = triple.second
+        val returnAction = triple.third
+
         if (message.isEmpty()) return@Observer
 
-        val topBarLayout = findViewById<LinearLayoutCompat>(R.id.topBarLayout)
-        val topBarText = findViewById<TextView>(R.id.topBarText)
+        when (messageType) {
+            MessageType.TOP_BANNER -> {
+                val topBarLayout = findViewById<LinearLayoutCompat>(R.id.topBarLayout)
+                val topBarText = findViewById<TextView>(R.id.topBarText)
 
-        val window: Window = window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                val window: Window = window
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        CoroutineScope(Dispatchers.Main).launch {
-            topBarLayout.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@MainActivity,
-                    R.color.sky_blue
-                )
-            )
-            topBarText.text =
-                if (message.length == 3) {
-                    when (message.first()) {
-                        '4' -> getString(
-                            if (viewModel.appLanguage == Languages.ENGLISH) R.string.user_error_en
-                            else R.string.user_error_ru
+                CoroutineScope(Dispatchers.Main).launch {
+                    topBarLayout.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this@MainActivity,
+                            R.color.sky_blue
                         )
+                    )
+                    topBarText.text =
+                        if (message.length == 3) {
+                            when (message.first()) {
+                                '4' -> getString(
+                                    if (viewModel.appLanguage == Languages.ENGLISH) R.string.user_error_en
+                                    else R.string.user_error_ru
+                                )
 
-                        '5' -> getString(
-                            if (viewModel.appLanguage == Languages.ENGLISH) R.string.server_error_en
-                            else R.string.server_error_ru
-                        )
+                                '5' -> getString(
+                                    if (viewModel.appLanguage == Languages.ENGLISH) R.string.server_error_en
+                                    else R.string.server_error_ru
+                                )
 
-                        else -> message
-                    }
-                } else {
-                    message
+                                else -> message
+                            }
+                        } else {
+                            message
+                        }
+
+                    window.statusBarColor =
+                        ContextCompat.getColor(this@MainActivity, R.color.sky_blue)
+                    topBarLayout.visible()
+
+                    delay(3000L)
+
+                    topBarLayout.gone()
+                    window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.white)
                 }
+            }
 
-            window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.sky_blue)
-            topBarLayout.visible()
+            MessageType.SEPARATE_SCREEN -> {
+                val layoutMessage = findViewById<ConstraintLayout>(R.id.layoutMessage)
+                val txtMessage = findViewById<TextView>(R.id.txtMessage)
+                val btnTryAgain = findViewById<AppCompatButton>(R.id.btnTryAgain)
 
-            delay(3000L)
+                layoutMessage.visible()
+                txtMessage.text = message
 
-            topBarLayout.gone()
-            window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.white)
+                btnTryAgain.setOnClickListener {
+                    returnAction()
+                    layoutMessage.gone()
+                }
+            }
         }
     }
 

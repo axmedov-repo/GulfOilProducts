@@ -14,10 +14,10 @@ class AdsAdapter(
     private val list: List<AdResponseItem>
 ) : FragmentStateAdapter(fm, lifecycle) {
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = Integer.MAX_VALUE
     override fun createFragment(position: Int): Fragment {
         val fragment = AdsItemFragment()
-        fragment.putArguments { putString("ADS_IMAGE", list[position].image) }
+        fragment.putArguments { putString("ADS_IMAGE", list[(position % (list.size))].image) }
         return fragment
     }
 }

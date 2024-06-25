@@ -13,9 +13,10 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.gulfoil.pdsapp.R
 import com.gulfoil.pdsapp.app.App
+import com.gulfoil.pdsapp.data.enums.MessageType
 import com.gulfoil.pdsapp.databinding.ScreenSplashBinding
 import com.gulfoil.pdsapp.utils.scope
-import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
+import com.gulfoil.pdsapp.utils.showMessage
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,7 +59,9 @@ class SplashScreen : Fragment(R.layout.screen_splash) {
 
                 }
                 errorLiveData.observe(viewLifecycleOwner) {
-                    showMessageOnTopOfScreen(it)
+                    showMessage(it, MessageType.SEPARATE_SCREEN) {
+                        exchangeEncryptionDetails()
+                    }
                 }
                 successLiveData.observe(this@SplashScreen, successObserver)
             }

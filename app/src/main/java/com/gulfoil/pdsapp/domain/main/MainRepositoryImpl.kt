@@ -149,9 +149,7 @@ class MainRepositoryImpl @Inject constructor(
                         iv = keyStoreManager.getIV()
                     )
                 if (parsedData != null) {
-                    repeat(3) {
-                        adsResponseList.addAll(parsedData)
-                    }
+                    adsResponseList.addAll(parsedData)
                 }
                 val adResponse = AdResponse()
                 adResponse.addAll(adsResponseList)

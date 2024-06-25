@@ -45,4 +45,13 @@
 
     <string name="error_unexpected_en">Unexpected error occurred: %1$s}</string>
     <string name="error_unexpected_ru">Произошла непредвиденная ошибка: %1$s</string>
+
+    <string name="error_trial_period_en">Trial period</string>
+    <string name="error_trial_period_ru">Пробный период</string>
+
+    <string name="error_ended_en">ended</string>
+    <string name="error_ended_ru">закончился</string>
+
+    <string name="try_again_en">Try again</string>
+    <string name="try_again_ru">Попробуйте еще раз</string>
 </resources>

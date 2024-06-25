@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.trial_end.TrialEndScreen"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_trial_end">
+    android:background="@drawable/bg_trial_end"
+    tools:context=".screens.trial_end.TrialEndScreen">
 
     <ImageView
         android:layout_width="64dp"
@@ -17,28 +17,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txt1"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtMessage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
+        android:layout_marginEnd="100dp"
         android:fontFamily="@font/helvetica_neue_bold"
-        android:text="Trial period"
+        android:text="@string/something_went_wrong_en"
         android:textColor="@color/white"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:text="ended"
-        android:textColor="@color/orange"
-        android:textSize="36sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.gulfoil.pdsapp.activity
 
 import androidx.lifecycle.LiveData
 import com.gulfoil.pdsapp.data.enums.Languages
+import com.gulfoil.pdsapp.data.enums.MessageType
 
 /**
  * CreatedBy: Abdulaziz Akhmedov
@@ -9,7 +10,7 @@ import com.gulfoil.pdsapp.data.enums.Languages
 
 interface MainActivityViewModel {
     val internetConnectionLiveData: LiveData<Boolean>
-    val showMessageOnTopOfScreenLiveData: LiveData<String>
+    val showMessageLiveData: LiveData<Triple<String, MessageType, () -> Unit>>
 
     val appLanguage: Languages
 }

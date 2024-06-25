@@ -17,7 +17,7 @@ import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModel
 import com.gulfoil.pdsapp.screens.pds.viewmodel.PdsViewModelImpl
 import com.gulfoil.pdsapp.utils.gone
 import com.gulfoil.pdsapp.utils.scope
-import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
+import com.gulfoil.pdsapp.utils.showMessage
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
 import dagger.hilt.android.AndroidEntryPoint
@@ -118,7 +118,7 @@ class PdsScreen : Fragment(R.layout.screen_pds) {
                 progressBar.visible(it)
             }
             errorLiveData.observe(viewLifecycleOwner) {
-                showMessageOnTopOfScreen(it)
+                showMessage(it)
             }
             emptyLiveData.observe(viewLifecycleOwner) {
                 txtEmpty.visible(it)

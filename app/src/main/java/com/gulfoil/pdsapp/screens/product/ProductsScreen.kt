@@ -17,7 +17,7 @@ import com.gulfoil.pdsapp.screens.ads.AdsAdapter
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModel
 import com.gulfoil.pdsapp.screens.product.view_model.ProductsViewModelImpl
 import com.gulfoil.pdsapp.utils.scope
-import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
+import com.gulfoil.pdsapp.utils.showMessage
 import com.gulfoil.pdsapp.utils.timber
 import com.gulfoil.pdsapp.utils.visible
 import com.hadar.danny.horinzontaltransformers.DepthTransformer
@@ -110,7 +110,7 @@ class ProductsScreen : Fragment(R.layout.screen_products) {
                 progressBar.visible(it)
             }
             errorLiveData.observe(viewLifecycleOwner) {
-                showMessageOnTopOfScreen(it)
+                showMessage(it)
             }
             lastLanguageLiveData.observe(viewLifecycleOwner) {
                 language = it

@@ -19,7 +19,7 @@ import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModel
 import com.gulfoil.pdsapp.screens.contacts.viewmodel.ContactsViewModelImpl
 import com.gulfoil.pdsapp.utils.getCurrentCountryCode
 import com.gulfoil.pdsapp.utils.scope
-import com.gulfoil.pdsapp.utils.showMessageOnTopOfScreen
+import com.gulfoil.pdsapp.utils.showMessage
 import com.gulfoil.pdsapp.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -126,7 +126,7 @@ class ContactsScreen : Fragment(R.layout.screen_contacts) {
             layoutHeadContact.visible(!isConnected)
         }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
-            showMessageOnTopOfScreen(it)
+            showMessage(it)
         }
     }
 
