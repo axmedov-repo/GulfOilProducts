@@ -16,7 +16,6 @@
             android:id="@+id/action_productsScreen_to_contactsScreen"
             app:destination="@id/contactsScreen" />
     </fragment>
-
     <fragment
         android:id="@+id/oilsScreen"
         android:name="com.gulfoil.pdsapp.screens.oils.OilsScreen"

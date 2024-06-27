@@ -28,6 +28,12 @@
     <string name="successfully_online_en">You are successfully online!</string>
     <string name="successfully_online_ru">Вы успешно онлайн!</string>
 
+    <string name="informational_error_en">Informational error</string>
+    <string name="informational_error_ru">Информационная ошибка</string>
+
+    <string name="redirection_error_en">Redirection error</string>
+    <string name="redirection_error_ru">Ошибка перенаправления</string>
+
     <string name="user_error_en">User error</string>
     <string name="user_error_ru">Ошибка пользователя</string>
 

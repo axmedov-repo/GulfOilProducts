@@ -93,8 +93,8 @@ fun <T> safeApiCall(
                 Throwable(
                     getString(
                         App.instance,
-                        if (localStorage.appLanguage == Languages.ENGLISH) R.string.error_unable_to_resolve_host_en
-                        else R.string.error_unable_to_resolve_host_ru
+                        if (localStorage.appLanguage == Languages.RUSSIAN) R.string.error_unable_to_resolve_host_ru
+                        else R.string.error_unable_to_resolve_host_en
                     )
                 )
             )
@@ -105,8 +105,8 @@ fun <T> safeApiCall(
                 Throwable(
                     getString(
                         App.instance,
-                        if (localStorage.appLanguage == Languages.ENGLISH) R.string.error_network_en
-                        else R.string.error_network_ru
+                        if (localStorage.appLanguage == Languages.RUSSIAN) R.string.error_network_ru
+                        else R.string.error_network_en
                     )
                 )
             )
@@ -118,8 +118,8 @@ fun <T> safeApiCall(
                     String.format(
                         getString(
                             App.instance,
-                            if (localStorage.appLanguage == Languages.ENGLISH) R.string.error_unexpected_en
-                            else R.string.error_unexpected_ru,
+                            if (localStorage.appLanguage == Languages.RUSSIAN) R.string.error_unexpected_ru
+                            else R.string.error_unexpected_en,
                         ),
                         e.message
                     )
@@ -134,8 +134,8 @@ fun <T> safeApiCall(
                 String.format(
                     getString(
                         App.instance,
-                        if (localStorage.appLanguage == Languages.ENGLISH) R.string.error_unexpected_en
-                        else R.string.error_unexpected_ru,
+                        if (localStorage.appLanguage == Languages.RUSSIAN) R.string.error_unexpected_ru
+                        else R.string.error_unexpected_en,
                     ),
                     e.message
                 )

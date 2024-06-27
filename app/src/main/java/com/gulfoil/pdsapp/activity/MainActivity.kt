@@ -83,8 +83,8 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                     topBarText.text = getString(
-                        if (viewModel.appLanguage == Languages.ENGLISH) R.string.successfully_online_en
-                        else R.string.successfully_online_ru
+                        if (viewModel.appLanguage == Languages.RUSSIAN) R.string.successfully_online_ru
+                        else R.string.successfully_online_en
                     )
                     window.statusBarColor =
                         ContextCompat.getColor(this@MainActivity, R.color.orange)
@@ -106,8 +106,8 @@ class MainActivity : AppCompatActivity() {
                 )
             )
             topBarText.text = getString(
-                if (viewModel.appLanguage == Languages.ENGLISH) R.string.no_internet_en
-                else R.string.no_internet_ru
+                if (viewModel.appLanguage == Languages.RUSSIAN) R.string.no_internet_ru
+                else R.string.no_internet_en
             )
             window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.sky_blue)
             topBarLayout.visible()
@@ -137,24 +137,7 @@ class MainActivity : AppCompatActivity() {
                             R.color.sky_blue
                         )
                     )
-                    topBarText.text =
-                        if (message.length == 3) {
-                            when (message.first()) {
-                                '4' -> getString(
-                                    if (viewModel.appLanguage == Languages.ENGLISH) R.string.user_error_en
-                                    else R.string.user_error_ru
-                                )
-
-                                '5' -> getString(
-                                    if (viewModel.appLanguage == Languages.ENGLISH) R.string.server_error_en
-                                    else R.string.server_error_ru
-                                )
-
-                                else -> message
-                            }
-                        } else {
-                            message
-                        }
+                    topBarText.text = getProperMessageForResponse(message)
 
                     window.statusBarColor =
                         ContextCompat.getColor(this@MainActivity, R.color.sky_blue)
@@ -173,13 +156,43 @@ class MainActivity : AppCompatActivity() {
                 val btnTryAgain = findViewById<AppCompatButton>(R.id.btnTryAgain)
 
                 layoutMessage.visible()
-                txtMessage.text = message
+                txtMessage.text = getProperMessageForResponse(message)
 
                 btnTryAgain.setOnClickListener {
                     returnAction()
                     layoutMessage.gone()
                 }
             }
+        }
+    }
+
+    private fun getProperMessageForResponse(message: String): String {
+        return if (message.length == 3) {
+            when (message.first()) {
+                '1' -> getString(
+                    if (viewModel.appLanguage == Languages.RUSSIAN) R.string.informational_error_ru
+                    else R.string.informational_error_en
+                )
+
+                '3' -> getString(
+                    if (viewModel.appLanguage == Languages.RUSSIAN) R.string.redirection_error_ru
+                    else R.string.redirection_error_en
+                )
+
+                '4' -> getString(
+                    if (viewModel.appLanguage == Languages.RUSSIAN) R.string.user_error_ru
+                    else R.string.user_error_en
+                )
+
+                '5' -> getString(
+                    if (viewModel.appLanguage == Languages.RUSSIAN) R.string.server_error_ru
+                    else R.string.server_error_en
+                )
+
+                else -> message
+            }
+        } else {
+            message
         }
     }
 
